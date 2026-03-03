@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#F7F4EF"/>
+  <!-- White keys -->
+  <rect x="4"  y="8" width="5" height="18" rx="1" fill="#fff" stroke="#ccc" stroke-width="0.5"/>
+  <rect x="10" y="8" width="5" height="18" rx="1" fill="#F7CCCE" stroke="#ccc" stroke-width="0.5"/>
+  <rect x="16" y="8" width="5" height="18" rx="1" fill="#fff" stroke="#ccc" stroke-width="0.5"/>
+  <rect x="22" y="8" width="5" height="18" rx="1" fill="#F7CCCE" stroke="#ccc" stroke-width="0.5"/>
+  <!-- Black keys -->
+  <rect x="8"  y="8" width="4" height="11" rx="1" fill="#1A1A1A"/>
+  <rect x="20" y="8" width="4" height="11" rx="1" fill="#6B1A1E"/>
+</svg>

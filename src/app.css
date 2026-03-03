@@ -1,0 +1,37 @@
+:root {
+  --bg: #F7F4EF;
+  --surface: #FFFFFF;
+  --text: #1A1A1A;
+  --text-muted: #888888;
+  --red: #CC2936;
+  --blue: #1D4ED8;
+  --key-white: #FFFFFF;
+  --key-black: #1A1A1A;
+  --key-scale-white: #F7CCCE;
+  --key-scale-black: #6B1A1E;
+  --key-root-white: #CC2936;
+  --key-root-black: #CC2936;
+  --key-pressed: #1D4ED8;
+  --radius: 6px;
+  --font: 'Inter', system-ui, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}

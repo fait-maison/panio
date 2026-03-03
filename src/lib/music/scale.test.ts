@@ -1,0 +1,60 @@
+import { describe, it, expect } from 'vitest';
+import { Note } from 'tonal';
+import { getScaleNotes } from './scale';
+import { MODES } from './modes';
+
+// Pitch-class integers for all white keys
+const WHITE_KEY_CHROMAS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'].map(
+	(n) => Note.chroma(n) as number
+);
+
+function mode(name: string) {
+	return MODES.find((m) => m.name === name)!;
+}
+
+function chroma(note: string) {
+	return Note.chroma(note) as number;
+}
+
+describe('getScaleNotes', () => {
+	it('C Major contains all 7 white-key chromas', () => {
+		const notes = getScaleNotes({ mode: mode('Major'), key: 'C', texture: '' });
+		for (const pc of WHITE_KEY_CHROMAS) {
+			expect(notes.has(pc), `expected chroma ${pc} in C Major`).toBe(true);
+		}
+		expect(notes.size).toBe(7);
+	});
+
+	it('A Minor contains all 7 white-key chromas', () => {
+		const notes = getScaleNotes({ mode: mode('Minor'), key: 'A', texture: '' });
+		for (const pc of WHITE_KEY_CHROMAS) {
+			expect(notes.has(pc), `expected chroma ${pc} in A Minor`).toBe(true);
+		}
+		expect(notes.size).toBe(7);
+	});
+
+	it('A Harmonic Minor raises the 7th (G# chroma 8), drops G (chroma 7)', () => {
+		const notes = getScaleNotes({ mode: mode('Harmonic Minor'), key: 'A', texture: '' });
+		expect(notes.has(chroma('G#'))).toBe(true);
+		expect(notes.has(chroma('G'))).toBe(false);
+		expect(notes.size).toBe(7);
+	});
+
+	it('C Dorian includes Eb/D# (chroma 3) and Bb/A# (chroma 10), excludes E (4) and B (11)', () => {
+		const notes = getScaleNotes({ mode: mode('Dorian'), key: 'C', texture: '' });
+		expect(notes.has(chroma('Eb'))).toBe(true);  // enharmonic with D#
+		expect(notes.has(chroma('D#'))).toBe(true);  // same chroma, different spelling
+		expect(notes.has(chroma('Bb'))).toBe(true);
+		expect(notes.has(chroma('E'))).toBe(false);
+		expect(notes.has(chroma('B'))).toBe(false);
+	});
+
+	it('returns exactly 7 notes for every mode and key', () => {
+		for (const m of MODES) {
+			for (const key of ['C', 'F#', 'Bb']) {
+				const notes = getScaleNotes({ mode: m, key, texture: '' });
+				expect(notes.size, `${key} ${m.name} should have 7 notes`).toBe(7);
+			}
+		}
+	});
+});
