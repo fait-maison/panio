@@ -9,7 +9,8 @@ export interface Ambiance {
 
 function pickRandom<T>(arr: T[], exclude?: T): T {
 	const candidates = exclude !== undefined ? arr.filter((x) => x !== exclude) : arr;
-	return candidates[Math.floor(Math.random() * candidates.length)];
+	const pool = candidates.length > 0 ? candidates : arr;
+	return pool[Math.floor(Math.random() * pool.length)];
 }
 
 export function generateAmbiance(
