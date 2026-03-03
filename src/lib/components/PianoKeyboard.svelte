@@ -2,6 +2,7 @@
 	import { Note } from 'tonal';
 	import { settingsStore } from '$lib/stores/settings';
 	import { getScaleNotes } from '$lib/music/scale';
+	import { playNote } from '$lib/audio';
 	import type { Ambiance } from '$lib/music/generator';
 
 	export let ambiance: Ambiance;
@@ -64,6 +65,7 @@
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
 				aria-label={key.noteName}
+				on:pointerdown={() => playNote(key.midi)}
 			/>
 		{/each}
 		{#each blacks as key (key.midi)}
@@ -74,6 +76,7 @@
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
 				aria-label={key.noteName}
+				on:pointerdown={() => playNote(key.midi)}
 			/>
 		{/each}
 	</div>
@@ -97,6 +100,7 @@
 		position: absolute;
 		top: 0;
 		border-radius: 0 0 3px 3px;
+		cursor: pointer;
 	}
 
 	.white {
