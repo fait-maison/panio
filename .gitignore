@@ -9,3 +9,5 @@ vite.config.ts.timestamp-*
 .idea
 .claude
 .worktrees/
+test-results/
+playwright-report/
