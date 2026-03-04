@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { TimerStore } from '$lib/stores/timer';
+	import { t } from '$lib/i18n';
 
 	export let timer: TimerStore;
 	export let onSnooze: () => void;
@@ -12,10 +13,10 @@
 	<div class="toast" role="status" aria-live="polite">
 		<div class="toast-body">
 			<div class="toast-text">
-				<span class="label">Next ambiance in</span>
+				<span class="label">{$t('toast.nextIn')}</span>
 				<span class="countdown">{timer.secondsLeft}s</span>
 			</div>
-			<button class="snooze" on:click={onSnooze}>Stay here</button>
+			<button class="snooze" on:click={onSnooze}>{$t('toast.stay')}</button>
 		</div>
 		<div class="progress-bar">
 			<div class="progress-fill" style="width: {progress}%" />

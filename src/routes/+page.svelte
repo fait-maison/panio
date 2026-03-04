@@ -3,6 +3,7 @@
 	import { ambianceStore } from '$lib/stores/ambiance';
 	import { timerStore } from '$lib/stores/timer';
 	import { midiStore } from '$lib/stores/midi';
+	import { t } from '$lib/i18n';
 	import AmbianceCard from '$lib/components/AmbianceCard.svelte';
 	import PianoKeyboard from '$lib/components/PianoKeyboard.svelte';
 	import AutoadvanceToast from '$lib/components/AutoadvanceToast.svelte';
@@ -18,7 +19,7 @@
 </script>
 
 <main>
-	<h1 class="app-title">improv piano</h1>
+	<h1 class="app-title">{$t('app.title')}</h1>
 	<AmbianceCard ambiance={$ambianceStore} timer={$timerStore} />
 	<PianoKeyboard ambiance={$ambianceStore} pressedNotes={$midiStore} />
 </main>

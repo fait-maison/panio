@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Ambiance } from '$lib/music/generator';
 	import type { TimerStore } from '$lib/stores/timer';
+	import { t } from '$lib/i18n';
 
 	export let ambiance: Ambiance;
 	export let timer: TimerStore;
@@ -17,10 +18,10 @@
 		<div class="badge">
 			<span class="key">{ambiance.key}</span>
 			<span class="separator">·</span>
-			<span class="mode">{ambiance.mode.name.toUpperCase()}</span>
+			<span class="mode">{$t('mode.' + ambiance.mode.name).toUpperCase()}</span>
 		</div>
-		<div class="texture">{ambiance.texture}</div>
-		<div class="mood">{ambiance.mode.mood}</div>
+		<div class="texture">{$t('texture.' + ambiance.texture)}</div>
+		<div class="mood">{$t('mood.' + ambiance.mode.mood)}</div>
 	</div>
 	<div class="progress-bar">
 		<div class="progress-fill" style="width:{progress}%" />

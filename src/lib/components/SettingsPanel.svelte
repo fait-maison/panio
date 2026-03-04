@@ -2,6 +2,7 @@
 	import { settingsStore } from '$lib/stores/settings';
 	import type { KeyboardSize } from '$lib/stores/settings';
 	import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
+	import { t, localeStore } from '$lib/i18n';
 
 	let open = false;
 
@@ -43,7 +44,7 @@
 </script>
 
 <!-- Gear icon button -->
-<button class="gear-btn" on:click={() => (open = !open)} aria-label="Settings">
+<button class="gear-btn" on:click={() => (open = !open)} aria-label={$t('settings.title')}>
 	<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 		<circle cx="12" cy="12" r="3" />
 		<path
@@ -54,16 +55,16 @@
 
 {#if open}
 	<!-- Backdrop -->
-	<button class="backdrop" on:click={() => (open = false)} aria-label="Close settings" />
+	<button class="backdrop" on:click={() => (open = false)} aria-label={$t('settings.close')} />
 
-	<div class="panel" role="dialog" aria-label="Settings">
+	<div class="panel" role="dialog" aria-label={$t('settings.title')}>
 		<div class="panel-header">
-			<h2>Settings</h2>
-			<button class="close-btn" on:click={() => (open = false)} aria-label="Close">✕</button>
+			<h2>{$t('settings.title')}</h2>
+			<button class="close-btn" on:click={() => (open = false)} aria-label={$t('settings.close')}>✕</button>
 		</div>
 
 		<section>
-			<h3>Keyboard size</h3>
+			<h3>{$t('settings.keyboardSize')}</h3>
 			<div class="chip-group">
 				{#each KEYBOARD_SIZES as size}
 					<button
@@ -78,7 +79,7 @@
 		</section>
 
 		<section>
-			<h3>Interval</h3>
+			<h3>{$t('settings.interval')}</h3>
 			<div class="chip-group">
 				{#each INTERVALS as interval}
 					<button
@@ -93,7 +94,7 @@
 		</section>
 
 		<section>
-			<h3>Modes</h3>
+			<h3>{$t('settings.modes')}</h3>
 			<div class="chip-group">
 				{#each ALL_MODE_NAMES as mode}
 					<button
@@ -101,14 +102,14 @@
 						class:active={$settingsStore.modePool.includes(mode)}
 						on:click={() => toggleMode(mode)}
 					>
-						{mode}
+						{$t('mode.' + mode)}
 					</button>
 				{/each}
 			</div>
 		</section>
 
 		<section>
-			<h3>Keys</h3>
+			<h3>{$t('settings.keys')}</h3>
 			<div class="chip-group">
 				{#each KEYS as key}
 					<button
@@ -119,6 +120,14 @@
 						{key}
 					</button>
 				{/each}
+			</div>
+		</section>
+
+		<section>
+			<h3>{$t('settings.language')}</h3>
+			<div class="chip-group">
+				<button class="chip" class:active={$localeStore === 'fr'} on:click={() => localeStore.set('fr')}>FR</button>
+				<button class="chip" class:active={$localeStore === 'en'} on:click={() => localeStore.set('en')}>EN</button>
 			</div>
 		</section>
 	</div>
