@@ -4,6 +4,8 @@
 	import type { Ambiance } from '$lib/music/generator';
 	import type { TimerStore } from '$lib/stores/timer';
 	import { t } from '$lib/i18n';
+	import { settingsStore } from '$lib/stores/settings';
+	import { formatProgression } from '$lib/music/progressions';
 
 	export let ambiance: Ambiance;
 	export let timer: TimerStore;
@@ -13,6 +15,13 @@
 		: timer.totalSeconds > 0
 			? ((timer.totalSeconds - timer.secondsLeft) / timer.totalSeconds) * 100
 			: 0;
+
+	$: chords = formatProgression(
+		ambiance.progression,
+		ambiance.key,
+		ambiance.mode.tonalName,
+		$settingsStore.progressionNotation
+	);
 </script>
 
 <Card.Root class="ambiance-card">
@@ -31,6 +40,15 @@
 				</Tooltip.Root>
 			</Tooltip.Provider>
 			<div class="texture">{$t('texture.' + ambiance.texture)}</div>
+		<div class="progression-sep"></div>
+		<div class="progression" aria-label="suggested progression">
+			{#each chords as chord, i}
+				<span class="chord" class:tonic={i === 0}>{chord}</span>
+				{#if i < chords.length - 1}
+					<span class="arrow" aria-hidden="true">›</span>
+				{/if}
+			{/each}
+		</div>
 		</div>
 	</Card.Content>
 	<div class="progress-bar">
@@ -88,6 +106,29 @@
 		font-style: italic;
 		letter-spacing: 0.02em;
 	}
+
+	.progression-sep {
+		width: calc(100% - 2 * var(--sp-4));
+		height: 1px;
+		background: var(--border-subtle);
+		margin-top: var(--sp-2);
+	}
+
+	.progression {
+		display: flex;
+		align-items: center;
+		gap: var(--sp-2);
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		white-space: nowrap;
+		overflow-x: auto;
+		padding-bottom: var(--sp-1);
+	}
+
+	.chord { color: var(--text); }
+	.chord.tonic { color: var(--red); }
+	.arrow { color: var(--text-muted); font-weight: 400; }
 
 	.progress-bar {
 		height: var(--progress-h);

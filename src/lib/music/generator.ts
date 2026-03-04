@@ -1,10 +1,13 @@
 import { MODES, KEYS, type ModeInfo } from './modes';
 import { TEXTURES } from './textures';
+import type { RomanProgression } from './progressions';
+import { pickProgression } from './progressions';
 
 export interface Ambiance {
 	mode: ModeInfo;
 	key: string;
 	texture: string;
+	progression: RomanProgression;
 }
 
 function pickRandom<T>(arr: T[], exclude?: T): T {
@@ -25,6 +28,7 @@ export function generateAmbiance(
 	const mode = pickRandom(resolvedModes, previous?.mode);
 	const key = pickRandom(resolvedKeys, previous?.key);
 	const texture = pickRandom(TEXTURES, previous?.texture);
+	const progression = pickProgression(mode.name, previous?.progression);
 
-	return { mode, key, texture };
+	return { mode, key, texture, progression };
 }

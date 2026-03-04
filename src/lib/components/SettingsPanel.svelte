@@ -2,7 +2,7 @@
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import * as ToggleGroup from '$lib/components/ui/toggle-group/index.js';
 	import { settingsStore } from '$lib/stores/settings';
-	import type { KeyboardSize } from '$lib/stores/settings';
+	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings';
 	import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
 	import { t, localeStore, type Locale } from '$lib/i18n';
 
@@ -63,6 +63,20 @@
 					{#each INTERVALS as interval}
 						<ToggleGroup.Item value={String(interval.value)}>{interval.label}</ToggleGroup.Item>
 					{/each}
+				</ToggleGroup.Root>
+			</section>
+
+			<section>
+				<h3>{$t('settings.progressionNotation')}</h3>
+				<ToggleGroup.Root
+					type="single"
+					value={$settingsStore.progressionNotation}
+					onValueChange={(v) => v && settingsStore.update((s) => ({ ...s, progressionNotation: v as ProgressionNotation }))}
+					variant="outline"
+					class="w-full flex-wrap"
+				>
+					<ToggleGroup.Item value="chord">{$t('settings.notation.chord')}</ToggleGroup.Item>
+					<ToggleGroup.Item value="roman">{$t('settings.notation.roman')}</ToggleGroup.Item>
 				</ToggleGroup.Root>
 			</section>
 

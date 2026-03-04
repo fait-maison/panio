@@ -2,19 +2,22 @@ import { writable } from 'svelte/store';
 import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
 
 export type KeyboardSize = 's' | 'm' | 'l';
+export type ProgressionNotation = 'roman' | 'chord';
 
 export interface Settings {
 	intervalMin: number;
 	modePool: string[];
 	keyPool: string[];
 	keyboardSize: KeyboardSize;
+	progressionNotation: ProgressionNotation;
 }
 
 const DEFAULT_SETTINGS: Settings = {
 	intervalMin: 3,
 	modePool: ['Major', 'Harmonic Minor'],
 	keyPool: KEYS,
-	keyboardSize: 'm'
+	keyboardSize: 'm',
+	progressionNotation: 'chord'
 };
 
 function loadSettings(): Settings {
