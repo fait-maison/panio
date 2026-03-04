@@ -1,6 +1,6 @@
 import { writable, derived } from 'svelte/store';
 
-type Locale = 'en' | 'fr';
+export type Locale = 'en' | 'fr';
 
 const translations = {
 	en: {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as Card from '$lib/components/ui/card/index.js';
 	import type { Ambiance } from '$lib/music/generator';
 	import type { TimerStore } from '$lib/stores/timer';
 	import { t } from '$lib/i18n';
@@ -13,41 +14,44 @@
 			: 0;
 </script>
 
-<div class="card">
-	<div class="card-content">
-		<div class="badge">
-			<span class="key">{ambiance.key}</span>
-			<span class="separator">·</span>
-			<span class="mode">{$t('mode.' + ambiance.mode.name).toUpperCase()}</span>
+<Card.Root class="ambiance-card">
+	<Card.Content class="p-0">
+		<div class="card-content">
+			<div class="badge">
+				<span class="key">{ambiance.key}</span>
+				<span class="separator">·</span>
+				<span class="mode">{$t('mode.' + ambiance.mode.name).toUpperCase()}</span>
+			</div>
+			<div class="texture">{$t('texture.' + ambiance.texture)}</div>
+			<div class="mood">{$t('mood.' + ambiance.mode.mood)}</div>
 		</div>
-		<div class="texture">{$t('texture.' + ambiance.texture)}</div>
-		<div class="mood">{$t('mood.' + ambiance.mode.mood)}</div>
-	</div>
+	</Card.Content>
 	<div class="progress-bar">
-		<div class="progress-fill" style="width:{progress}%" />
+		<div class="progress-fill" style="width:{progress}%"></div>
 	</div>
-</div>
+</Card.Root>
 
 <style>
-	.card {
-		background: var(--surface);
-		border-radius: var(--radius);
-		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+	/* Override shadcn Card defaults to match original layout */
+	:global(.ambiance-card) {
 		overflow: hidden;
+		gap: 0;
+		padding: 0;
+		box-shadow: var(--shadow-card);
 	}
 
 	.card-content {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 0.5rem;
-		padding: 2rem 1.5rem 1.5rem;
+		gap: var(--sp-2);
+		padding: var(--sp-8) var(--sp-6) var(--sp-6);
 	}
 
 	.badge {
 		display: flex;
 		align-items: baseline;
-		gap: 0.5rem;
+		gap: var(--sp-2);
 		font-weight: 800;
 		letter-spacing: 0.04em;
 	}
@@ -82,8 +86,8 @@
 	}
 
 	.progress-bar {
-		height: 4px;
-		background: #eee;
+		height: var(--progress-h);
+		background: var(--border-subtle);
 	}
 
 	.progress-fill {

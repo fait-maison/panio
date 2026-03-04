@@ -87,7 +87,7 @@
 		width: 100%;
 		overflow-x: auto;
 		overflow-y: hidden;
-		padding-bottom: 8px;
+		padding-bottom: var(--sp-2);
 		display: flex;
 		justify-content: center;
 	}
@@ -99,7 +99,7 @@
 	.key {
 		position: absolute;
 		top: 0;
-		border-radius: 0 0 3px 3px;
+		border-radius: 0 0 var(--radius-key) var(--radius-key);
 		cursor: pointer;
 	}
 
@@ -107,8 +107,8 @@
 		width: var(--white-w);
 		height: var(--white-h);
 		background: var(--key-white);
-		border: 1px solid #ccc;
-		z-index: 1;
+		border: 1px solid var(--border-key);
+		z-index: var(--z-keys);
 	}
 
 	.black {

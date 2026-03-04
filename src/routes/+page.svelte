@@ -33,8 +33,8 @@
 		flex-direction: column;
 		align-items: center;
 		min-height: 100dvh;
-		padding: 2rem 0 6rem;
-		gap: 2rem;
+		padding: var(--sp-8) 0 6rem;
+		gap: var(--sp-8);
 	}
 
 	.app-title {

@@ -27,16 +27,16 @@
 <style>
 	.toast {
 		position: fixed;
-		bottom: 1.5rem;
+		bottom: var(--sp-6);
 		left: 50%;
 		transform: translateX(-50%);
 		width: min(420px, calc(100vw - 2rem));
 		background: var(--surface);
 		border-radius: var(--radius);
-		box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+		box-shadow: var(--shadow-toast);
 		overflow: hidden;
-		animation: slide-up 0.25s ease;
-		z-index: 100;
+		animation: slide-up var(--dur-slow) ease;
+		z-index: var(--z-toast);
 	}
 
 	@keyframes slide-up {
@@ -54,14 +54,14 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 1rem 1.25rem;
-		gap: 1rem;
+		padding: var(--sp-4) var(--sp-5);
+		gap: var(--sp-4);
 	}
 
 	.toast-text {
 		display: flex;
 		align-items: baseline;
-		gap: 0.5rem;
+		gap: var(--sp-2);
 	}
 
 	.label {
@@ -93,8 +93,8 @@
 	}
 
 	.progress-bar {
-		height: 4px;
-		background: #eee;
+		height: var(--progress-h);
+		background: var(--border-subtle);
 	}
 
 	.progress-fill {
