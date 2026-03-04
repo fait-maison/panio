@@ -1,8 +1,8 @@
 # Product Requirements Document — Piano Ear Training App
 
-**Version:** 0.3
-**Date:** 2026-03-03
-**Status:** Pre-development
+**Version:** 0.4
+**Date:** 2026-03-04
+**Status:** v1 implemented
 
 ---
 
@@ -56,7 +56,7 @@ The app is a silent companion: it sets the musical context, gets out of the way,
 and nudges the user to switch after a configurable interval.
 
 **Flow:**
-1. App displays the current ambiance context: mode, key, texture hint
+1. App displays the current ambiance context: mode, key, texture hint, and a suggested chord progression
 2. User plays freely on their MIDI keyboard for the full interval duration
 3. On-screen keyboard highlights keys in real time (visual feedback only)
 4. When the interval ends, a **"Next ambiance in 5s"** card appears:
@@ -87,6 +87,7 @@ Modes are framed by their emotional color, not their harmonic function.
 | Mixolydian | Heroic, confident, open | Adventure, triumph (without full resolution) |
 | Aeolian (Natural Minor) | Sad, dramatic, longing | Loss, tragedy, romance |
 | Locrian | Dissonant, unstable, dread | Extreme tension, psychological horror |
+| Harmonic Minor | Dramatic, exotic, tense | Eastern/flamenco flavour, climactic scenes |
 
 ---
 
@@ -101,7 +102,7 @@ Session start
 
 ─── Ambiance loop ──────────────────────────────────────────
 │
-│  [Context card visible: "D Dorian · sparse · mysterious"]
+│  [Context card visible: "D Dorian · sparse · mysterious · Dm → G → C → Dm"]
 │  [On-screen keyboard highlights notes as user plays]
 │
 │  ... user plays for N minutes ...
@@ -129,10 +130,11 @@ Session end (user closes / stops)
 
 ### 8.2 Ambiance Generator
 - Draw from tonal.js for scale/mode data
-- Randomly pick: mode (from the 7 diatonic modes) + key (any of 12) + texture hint
+- Randomly pick: mode (from the 8 supported modes) + key (any of 12) + texture hint + chord progression
 - Texture hints are short descriptive strings, e.g.:
   `"sparse"`, `"pedal tone"`, `"flowing arpeggios"`, `"sustained chords"`, `"driving pulse"`, `"silence and space"`
-- Generator ensures the new ambiance differs from the current one (no immediate repeat)
+- Chord progressions are curated per-mode pools (5 progressions per mode, 4–5 chords each), loopable
+- Generator ensures each field differs from the previous ambiance (no immediate repeat on any dimension)
 
 ### 8.3 Interval Timer & Autoadvance
 - Default interval: 5 minutes (user-configurable in settings)
@@ -149,15 +151,22 @@ Session end (user closes / stops)
 - Responsive: usable on desktop, tablet, and mobile
 
 ### 8.5 UI
-- Context card: prominently shows mode name, emotional color label, key, texture hint
+- Context card: prominently shows mode name, key, texture hint, and suggested chord progression
+  - Tonic chord highlighted in red; remaining chords in default text color; arrows muted
+  - Progression row scrolls horizontally on narrow screens (no overflow clipping)
 - Minimal chrome — nothing distracting while playing
 - Autoadvance card overlays the bottom of the screen (does not hide the keyboard)
+- Language toggle: EN / FR (stored in localStorage)
 
 ### 8.6 Settings
-- Ambiance interval duration (1 / 3 / 5 / 10 minutes)
-- Mode pool: which modes to include in the random draw (all 7 by default, user can restrict)
-- Hint mode: show/hide mode note highlights on the keyboard
-- Key pool: restrict to specific keys if desired (e.g. only C, F, G for beginners)
+- **Interval duration:** 15s / 1 / 3 / 5 / 10 minutes
+- **Keyboard size:** S / M / L (controls visual width of on-screen keyboard)
+- **Progression notation:** chord symbols (`Dm → G → C`) or Roman numerals (`i → IV → VII`)
+- **Mode pool:** which of the 8 modes to include in the random draw
+- **Key pool:** restrict to specific keys if desired (e.g. only C, F, G for beginners)
+- **Language:** EN / FR
+- All settings persisted to localStorage; spread-merge on load handles missing keys from older versions
+- Note: hint mode (scale highlights on keyboard) is implemented but not yet exposed in the settings panel
 
 ---
 
@@ -180,27 +189,29 @@ The user configures their session through the settings panel:
 
 | Setting | Options |
 |---|---|
-| Mode pool | Any subset of the 7 diatonic modes |
+| Mode pool | Any subset of the 8 supported modes |
 | Key pool | Any subset of the 12 keys (or "all") |
-| Texture hints | Any subset of the available textures |
-| Interval duration | 1 / 3 / 5 / 10 min |
+| Interval duration | 15s / 1 / 3 / 5 / 10 min |
+| Keyboard size | S / M / L |
+| Progression notation | Chord symbols or Roman numerals |
 
 A beginner might restrict to Major + Dorian + Aeolian in a few familiar keys.
-An advanced user opens the full pool including Phrygian, Lydian, and Locrian.
+An advanced user opens the full pool including Phrygian, Lydian, Locrian, and Harmonic Minor.
 The app never makes this choice for the user.
 
 ---
 
 ## 11. Phased Roadmap
 
-### Phase 1 — v1 (current scope)
-- SvelteKit scaffold + tonal.js only (no Tone.js, no Drizzle)
-- MIDI input store (Web MIDI API)
-- On-screen keyboard with real-time MIDI highlighting
-- Ambiance generator (mode + key + texture)
-- Context card display
+### Phase 1 — v1 ✅ complete
+- SvelteKit scaffold + tonal.js (no Tone.js, no Drizzle)
+- MIDI input store (Web MIDI API) + MIDI device picker with localStorage persistence
+- On-screen keyboard with real-time MIDI highlighting and scale note tinting
+- Ambiance generator (mode + key + texture + chord progression)
+- Context card: mode, key, texture, chord progression row (tonic in red)
 - Interval timer + autoadvance card ("Next ambiance in 5s" + Snooze)
-- Settings panel (interval, mode pool, key pool, hint mode)
+- Settings panel: interval, keyboard size, progression notation, mode pool, key pool, language (EN/FR)
+- Design system: Tailwind v4 + shadcn-svelte (Sheet, ToggleGroup, Card, Sonner)
 
 ### Phase 2 — Feedback Layer
 - MIDI evaluator: modal consistency (% notes in active mode), density
