@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card/index.js';
+	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
 	import type { Ambiance } from '$lib/music/generator';
 	import type { TimerStore } from '$lib/stores/timer';
 	import { t } from '$lib/i18n';
@@ -17,13 +18,19 @@
 <Card.Root class="ambiance-card">
 	<Card.Content class="p-0">
 		<div class="card-content">
-			<div class="badge">
-				<span class="key">{ambiance.key}</span>
-				<span class="separator">·</span>
-				<span class="mode">{$t('mode.' + ambiance.mode.name).toUpperCase()}</span>
-			</div>
+			<Tooltip.Provider>
+				<Tooltip.Root>
+					<Tooltip.Trigger class="badge">
+						<span class="key">{ambiance.key}</span>
+						<span class="separator">·</span>
+						<span class="mode">{$t('mode.' + ambiance.mode.name).toUpperCase()}</span>
+					</Tooltip.Trigger>
+					<Tooltip.Portal>
+						<Tooltip.Content>{$t('mood.' + ambiance.mode.mood)}</Tooltip.Content>
+					</Tooltip.Portal>
+				</Tooltip.Root>
+			</Tooltip.Provider>
 			<div class="texture">{$t('texture.' + ambiance.texture)}</div>
-			<div class="mood">{$t('mood.' + ambiance.mode.mood)}</div>
 		</div>
 	</Card.Content>
 	<div class="progress-bar">
@@ -48,26 +55,30 @@
 		padding: var(--sp-8) var(--sp-6) var(--sp-6);
 	}
 
-	.badge {
+	:global(.badge) {
 		display: flex;
 		align-items: baseline;
 		gap: var(--sp-2);
 		font-weight: 800;
 		letter-spacing: 0.04em;
+		background: none;
+		border: none;
+		padding: 0;
+		cursor: default;
 	}
 
 	.key {
-		font-size: 2.5rem;
+		font-size: 1.5rem;
 		color: var(--red);
 	}
 
 	.separator {
-		font-size: 2rem;
+		font-size: 1.25rem;
 		color: var(--text-muted);
 	}
 
 	.mode {
-		font-size: 2.5rem;
+		font-size: 1.75rem;
 		color: var(--text);
 	}
 
@@ -76,13 +87,6 @@
 		color: var(--text-muted);
 		font-style: italic;
 		letter-spacing: 0.02em;
-	}
-
-	.mood {
-		font-size: 0.85rem;
-		color: var(--text-muted);
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
 	}
 
 	.progress-bar {

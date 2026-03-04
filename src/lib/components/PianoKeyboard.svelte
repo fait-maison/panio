@@ -2,7 +2,7 @@
 	import { Note } from 'tonal';
 	import { settingsStore } from '$lib/stores/settings';
 	import { getScaleNotes } from '$lib/music/scale';
-	import { playNote } from '$lib/audio';
+	import { midiStore } from '$lib/stores/midi';
 	import type { Ambiance } from '$lib/music/generator';
 
 	export let ambiance: Ambiance;
@@ -65,8 +65,11 @@
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
 				aria-label={key.noteName}
-				on:pointerdown={() => playNote(key.midi)}
-			/>
+				on:pointerdown={() => midiStore.sendNoteOn(key.midi)}
+				on:pointerup={() => midiStore.sendNoteOff(key.midi)}
+				on:pointerleave={() => midiStore.sendNoteOff(key.midi)}
+				on:pointercancel={() => midiStore.sendNoteOff(key.midi)}
+			></div>
 		{/each}
 		{#each blacks as key (key.midi)}
 			<div
@@ -76,8 +79,11 @@
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
 				aria-label={key.noteName}
-				on:pointerdown={() => playNote(key.midi)}
-			/>
+				on:pointerdown={() => midiStore.sendNoteOn(key.midi)}
+				on:pointerup={() => midiStore.sendNoteOff(key.midi)}
+				on:pointerleave={() => midiStore.sendNoteOff(key.midi)}
+				on:pointercancel={() => midiStore.sendNoteOff(key.midi)}
+			></div>
 		{/each}
 	</div>
 </div>
@@ -101,6 +107,8 @@
 		top: 0;
 		border-radius: 0 0 var(--radius-key) var(--radius-key);
 		cursor: pointer;
+		touch-action: none;
+		user-select: none;
 	}
 
 	.white {

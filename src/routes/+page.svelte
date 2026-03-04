@@ -8,6 +8,7 @@
 	import PianoKeyboard from '$lib/components/PianoKeyboard.svelte';
 	import AutoadvanceToast from '$lib/components/AutoadvanceToast.svelte';
 	import SettingsPanel from '$lib/components/SettingsPanel.svelte';
+	import MidiStatus from '$lib/components/MidiStatus.svelte';
 
 	onMount(() => {
 		midiStore.init();
@@ -26,6 +27,7 @@
 
 <AutoadvanceToast timer={$timerStore} onSnooze={() => timerStore.snooze()} />
 <SettingsPanel />
+<MidiStatus />
 
 <style>
 	main {
