@@ -19,7 +19,7 @@
 			<button class="snooze" on:click={onSnooze}>{$t('toast.stay')}</button>
 		</div>
 		<div class="progress-bar">
-			<div class="progress-fill" style="width: {progress}%" />
+			<div class="progress-fill" style="width: {progress}%"></div>
 		</div>
 	</div>
 {/if}

@@ -64,6 +64,8 @@
 				class:is-root={key.midi % 12 === rootChroma}
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
+				role="button"
+				tabindex="0"
 				aria-label={key.noteName}
 				on:pointerdown={() => midiStore.sendNoteOn(key.midi)}
 				on:pointerup={() => midiStore.sendNoteOff(key.midi)}
@@ -78,6 +80,8 @@
 				class:is-root={key.midi % 12 === rootChroma}
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
+				role="button"
+				tabindex="0"
 				aria-label={key.noteName}
 				on:pointerdown={() => midiStore.sendNoteOn(key.midi)}
 				on:pointerup={() => midiStore.sendNoteOff(key.midi)}

@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 
 export type MidiStatus = 'unsupported' | 'disconnected' | 'connected';
 export const midiStatus = writable<MidiStatus>('disconnected');
@@ -30,10 +30,7 @@ function createMidiStore() {
 			inputs.map((i) => ({ id: i.id, name: i.name ?? '', manufacturer: i.manufacturer ?? '' }))
 		);
 
-		let preferredId: string | null = null;
-		midiPreferredDeviceId.subscribe((id) => {
-			preferredId = id;
-		})();
+		const preferredId = get(midiPreferredDeviceId);
 
 		const preferred = preferredId ? inputs.find((i) => i.id === preferredId) : undefined;
 		const active = preferred ?? null;
@@ -62,10 +59,7 @@ function createMidiStore() {
 	}
 
 	function connectInputs(midiAccess: MIDIAccess) {
-		let preferredId: string | null = null;
-		midiPreferredDeviceId.subscribe((id) => {
-			preferredId = id;
-		})();
+		const preferredId = get(midiPreferredDeviceId);
 
 		midiAccess.inputs.forEach((input) => {
 			input.onmidimessage =
@@ -80,10 +74,7 @@ function createMidiStore() {
 	function getTargetOutputs(): MIDIOutput[] {
 		if (!access) return [];
 		const outputs = [...access.outputs.values()];
-		let preferredId: string | null = null;
-		midiPreferredDeviceId.subscribe((id) => {
-			preferredId = id;
-		})();
+		const preferredId = get(midiPreferredDeviceId);
 		if (!preferredId) return outputs;
 		const preferredName = [...access.inputs.values()].find((i) => i.id === preferredId)?.name;
 		const match = preferredName ? outputs.filter((o) => o.name === preferredName) : [];
