@@ -69,8 +69,8 @@
 		{#each whites as key (key.midi)}
 			<div
 				class="key white"
-				class:in-scale={scaleNotes.has(key.midi % 12)}
-				class:is-root={key.midi % 12 === rootChroma}
+				class:in-scale={settings.value.showHints && scaleNotes.has(key.midi % 12)}
+				class:is-root={settings.value.showHints && key.midi % 12 === rootChroma}
 				class:in-chord={hoverNotes.has(key.midi % 12)}
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
@@ -86,8 +86,8 @@
 		{#each blacks as key (key.midi)}
 			<div
 				class="key black"
-				class:in-scale={scaleNotes.has(key.midi % 12)}
-				class:is-root={key.midi % 12 === rootChroma}
+				class:in-scale={settings.value.showHints && scaleNotes.has(key.midi % 12)}
+				class:is-root={settings.value.showHints && key.midi % 12 === rootChroma}
 				class:in-chord={hoverNotes.has(key.midi % 12)}
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"

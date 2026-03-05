@@ -52,6 +52,20 @@
 			</section>
 
 			<section>
+				<h3>{t('settings.hints')}</h3>
+				<ToggleGroup.Root
+					type="single"
+					value={settings.value.showHints ? 'on' : 'off'}
+					onValueChange={(v) => v && settings.update((s) => ({ ...s, showHints: v === 'on' }))}
+					variant="outline"
+					class="w-full flex-wrap"
+				>
+					<ToggleGroup.Item value="on">{t('settings.hints.on')}</ToggleGroup.Item>
+					<ToggleGroup.Item value="off">{t('settings.hints.off')}</ToggleGroup.Item>
+				</ToggleGroup.Root>
+			</section>
+
+			<section>
 				<h3>{t('settings.interval')}</h3>
 				<ToggleGroup.Root
 					type="single"

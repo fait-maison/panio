@@ -9,6 +9,7 @@ export interface Settings {
 	keyPool: string[];
 	keyboardSize: KeyboardSize;
 	progressionNotation: ProgressionNotation;
+	showHints: boolean;
 }
 
 const DEFAULT_SETTINGS: Settings = {
@@ -16,7 +17,8 @@ const DEFAULT_SETTINGS: Settings = {
 	modePool: ['Major', 'Harmonic Minor'],
 	keyPool: KEYS,
 	keyboardSize: 'm',
-	progressionNotation: 'chord'
+	progressionNotation: 'chord',
+	showHints: true
 };
 
 function loadSettings(): Settings {
