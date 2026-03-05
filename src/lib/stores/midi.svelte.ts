@@ -27,6 +27,13 @@ function refreshStatus() {
 }
 
 function handleMessage(event: MIDIMessageEvent) {
+	// Auto-select: first device to send a message wins (transient, not persisted)
+	if (!_preferred && event.target) {
+		_preferred = (event.target as MIDIInput).id;
+		if (access) connectInputs(access);
+		refreshStatus();
+	}
+
 	const [status, note, velocity] = event.data as unknown as [number, number, number];
 	const command = status & 0xf0;
 

@@ -123,7 +123,7 @@ Session end (user closes / stops)
 
 ### 8.1 MIDI Input
 - Detect all connected MIDI devices on app load
-- Prompt user to select a device if multiple are found
+- Auto-select the first device that sends MIDI input (no prompt needed)
 - Display a device status indicator (connected / disconnected)
 - Fall back to on-screen keyboard if no MIDI device is detected
 - Stream note-on / note-off events into a reactive Svelte store

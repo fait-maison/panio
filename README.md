@@ -26,7 +26,8 @@ pnpm install
 pnpm dev
 ```
 
-On first launch, the app will prompt you to select your MIDI input device.
+The app auto-connects to the first MIDI device that sends input — just press a key.
+You can also pick a specific device from the settings panel.
 If no MIDI device is found, the on-screen keyboard is available as a fallback.
 
 ## How It Works (v1)
