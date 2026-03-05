@@ -149,9 +149,17 @@
 	.white.in-scale { background: var(--key-scale-white); }
 	.black.in-scale { background: var(--key-scale-black); }
 
-	/* Root — overrides scale tint */
-	.white.is-root { background: var(--key-root-white); }
-	.black.is-root { background: var(--key-root-black); }
+	/* Root — dot indicator on top of scale tint */
+	.white.is-root {
+		background:
+			radial-gradient(circle at 50% 91%, var(--red) 3px, transparent 4px),
+			var(--key-scale-white);
+	}
+	.black.is-root {
+		background:
+			radial-gradient(circle at 50% 82%, white 3px, transparent 4px),
+			var(--key-scale-black);
+	}
 
 	/* Chord focus: reset all layers, show only chord notes */
 	.keyboard.chord-active .white { background: var(--key-white); }
@@ -159,9 +167,17 @@
 	.keyboard.chord-active .white.in-chord { background: var(--key-chord-white); }
 	.keyboard.chord-active .black.in-chord { background: var(--key-chord-black); }
 
-	/* Chord root — reuses scale root color, overrides in-chord */
-	.keyboard.chord-active .white.is-chord-root { background: var(--key-root-white); }
-	.keyboard.chord-active .black.is-chord-root { background: var(--key-root-black); }
+	/* Chord root — dot indicator only, no background difference */
+	.keyboard.chord-active .white.is-chord-root {
+		background:
+			radial-gradient(circle at 50% 91%, var(--red) 3px, transparent 4px),
+			var(--key-chord-white);
+	}
+	.keyboard.chord-active .black.is-chord-root {
+		background:
+			radial-gradient(circle at 50% 82%, white 3px, transparent 4px),
+			var(--key-chord-black);
+	}
 
 	/* Pressed — overrides everything */
 	.white.pressed,
