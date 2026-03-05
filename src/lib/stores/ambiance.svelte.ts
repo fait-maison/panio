@@ -2,13 +2,13 @@ import { generateAmbiance, type Ambiance } from '$lib/music/generator';
 import { settings } from './settings.svelte';
 
 let _current = $state<Ambiance>(
-	generateAmbiance(settings.value.modePool, settings.value.keyPool, settings.value.difficulty)
+	generateAmbiance(settings.value.modePool, settings.value.keyPool, settings.value.difficultyPool)
 );
 
 export const ambiance = {
 	get current() { return _current; },
 	next() {
 		const s = settings.value;
-		_current = generateAmbiance(s.modePool, s.keyPool, s.difficulty, _current);
+		_current = generateAmbiance(s.modePool, s.keyPool, s.difficultyPool, _current);
 	}
 };

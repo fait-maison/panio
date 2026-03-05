@@ -12,7 +12,7 @@ export interface Settings {
 	keyboardSize: KeyboardSize;
 	progressionNotation: ProgressionNotation;
 	showHints: boolean;
-	difficulty: Difficulty;
+	difficultyPool: Difficulty[];
 }
 
 const DEFAULT_SETTINGS: Settings = {
@@ -22,7 +22,7 @@ const DEFAULT_SETTINGS: Settings = {
 	keyboardSize: 'm',
 	progressionNotation: 'chord',
 	showHints: true,
-	difficulty: 'simple'
+	difficultyPool: ['simple']
 };
 
 function loadSettings(): Settings {

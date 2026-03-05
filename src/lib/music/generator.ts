@@ -19,16 +19,18 @@ function pickRandom<T>(arr: T[], exclude?: T): T {
 export function generateAmbiance(
 	modePool: string[],
 	keyPool: string[],
-	difficulty: Difficulty,
+	difficultyPool: Difficulty[],
 	previous?: Ambiance
 ): Ambiance {
 	const availableModes = MODES.filter((m) => modePool.includes(m.name));
 	const resolvedModes = availableModes.length > 0 ? availableModes : MODES;
 	const resolvedKeys = keyPool.length > 0 ? keyPool : KEYS;
+	const resolvedDifficulties = difficultyPool.length > 0 ? difficultyPool : (['simple'] as Difficulty[]);
 
 	const mode = pickRandom(resolvedModes, previous?.mode);
 	const key = pickRandom(resolvedKeys, previous?.key);
 	const texture = pickRandom(TEXTURES, previous?.texture);
+	const difficulty = pickRandom(resolvedDifficulties);
 	const progression = pickProgression(mode.name, difficulty, previous?.progression);
 
 	return { mode, key, texture, progression };

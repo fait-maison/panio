@@ -46,7 +46,10 @@
 					class="w-full flex-wrap"
 				>
 					{#each KEYBOARD_SIZES as size}
-						<ToggleGroup.Item value={size.value}>{size.label}</ToggleGroup.Item>
+						<ToggleGroup.Item
+							value={size.value}
+							style={settings.value.keyboardSize === size.value ? 'pointer-events: none' : ''}
+						>{size.label}</ToggleGroup.Item>
 					{/each}
 				</ToggleGroup.Root>
 			</section>
@@ -60,23 +63,26 @@
 					variant="outline"
 					class="w-full flex-wrap"
 				>
-					<ToggleGroup.Item value="on">{t('settings.hints.on')}</ToggleGroup.Item>
-					<ToggleGroup.Item value="off">{t('settings.hints.off')}</ToggleGroup.Item>
+					<ToggleGroup.Item value="on" style={settings.value.showHints ? 'pointer-events: none' : ''}>{t('settings.hints.on')}</ToggleGroup.Item>
+					<ToggleGroup.Item value="off" style={!settings.value.showHints ? 'pointer-events: none' : ''}>{t('settings.hints.off')}</ToggleGroup.Item>
 				</ToggleGroup.Root>
 			</section>
 
 			<section>
 				<h3>{t('settings.difficulty')}</h3>
 				<ToggleGroup.Root
-					type="single"
-					value={settings.value.difficulty}
-					onValueChange={(v) => v && settings.update((s) => ({ ...s, difficulty: v as Difficulty }))}
+					type="multiple"
+					value={settings.value.difficultyPool}
+					onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, difficultyPool: v as Difficulty[] }))}
 					variant="outline"
 					class="w-full flex-wrap"
 				>
-					<ToggleGroup.Item value="simple">{t('settings.difficulty.simple')}</ToggleGroup.Item>
-					<ToggleGroup.Item value="rich">{t('settings.difficulty.rich')}</ToggleGroup.Item>
-					<ToggleGroup.Item value="complex">{t('settings.difficulty.complex')}</ToggleGroup.Item>
+					{#each (['simple', 'rich', 'complex'] as const) as d}
+						<ToggleGroup.Item
+							value={d}
+							style={settings.value.difficultyPool.length === 1 && settings.value.difficultyPool[0] === d ? 'pointer-events: none' : ''}
+						>{t('settings.difficulty.' + d)}</ToggleGroup.Item>
+					{/each}
 				</ToggleGroup.Root>
 			</section>
 
@@ -90,7 +96,10 @@
 					class="w-full flex-wrap"
 				>
 					{#each INTERVALS as interval}
-						<ToggleGroup.Item value={String(interval.value)}>{interval.label}</ToggleGroup.Item>
+						<ToggleGroup.Item
+							value={String(interval.value)}
+							style={settings.value.intervalMin === interval.value ? 'pointer-events: none' : ''}
+						>{interval.label}</ToggleGroup.Item>
 					{/each}
 				</ToggleGroup.Root>
 			</section>
@@ -104,8 +113,8 @@
 					variant="outline"
 					class="w-full flex-wrap"
 				>
-					<ToggleGroup.Item value="chord">{t('settings.notation.chord')}</ToggleGroup.Item>
-					<ToggleGroup.Item value="roman">{t('settings.notation.roman')}</ToggleGroup.Item>
+					<ToggleGroup.Item value="chord" style={settings.value.progressionNotation === 'chord' ? 'pointer-events: none' : ''}>{t('settings.notation.chord')}</ToggleGroup.Item>
+					<ToggleGroup.Item value="roman" style={settings.value.progressionNotation === 'roman' ? 'pointer-events: none' : ''}>{t('settings.notation.roman')}</ToggleGroup.Item>
 				</ToggleGroup.Root>
 			</section>
 
@@ -119,7 +128,10 @@
 					class="w-full flex-wrap"
 				>
 					{#each ALL_MODE_NAMES as mode}
-						<ToggleGroup.Item value={mode}>{t('mode.' + mode)}</ToggleGroup.Item>
+						<ToggleGroup.Item
+							value={mode}
+							style={settings.value.modePool.length === 1 && settings.value.modePool[0] === mode ? 'pointer-events: none' : ''}
+						>{t('mode.' + mode)}</ToggleGroup.Item>
 					{/each}
 				</ToggleGroup.Root>
 			</section>
@@ -134,7 +146,10 @@
 					class="w-full flex-wrap"
 				>
 					{#each KEYS as key}
-						<ToggleGroup.Item value={key}>{key}</ToggleGroup.Item>
+						<ToggleGroup.Item
+							value={key}
+							style={settings.value.keyPool.length === 1 && settings.value.keyPool[0] === key ? 'pointer-events: none' : ''}
+						>{key}</ToggleGroup.Item>
 					{/each}
 				</ToggleGroup.Root>
 			</section>
@@ -148,8 +163,8 @@
 					variant="outline"
 					class="w-full flex-wrap"
 				>
-					<ToggleGroup.Item value="fr">FR</ToggleGroup.Item>
-					<ToggleGroup.Item value="en">EN</ToggleGroup.Item>
+					<ToggleGroup.Item value="fr" style={locale.value === 'fr' ? 'pointer-events: none' : ''}>FR</ToggleGroup.Item>
+					<ToggleGroup.Item value="en" style={locale.value === 'en' ? 'pointer-events: none' : ''}>EN</ToggleGroup.Item>
 				</ToggleGroup.Root>
 			</section>
 		</div>
