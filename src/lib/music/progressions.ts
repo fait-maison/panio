@@ -10,21 +10,36 @@ const PROGRESSIONS: Record<string, Record<Difficulty, RomanProgression[]>> = {
 			['I', 'IV', 'V', 'I'],
 			['vi', 'IV', 'I', 'V'],
 			['I', 'vi', 'IV', 'V'],
-			['ii', 'V', 'I', 'IV']
+			['ii', 'V', 'I', 'IV'],
+			['I', 'vi', 'ii', 'V'],
+			['I', 'V', 'vi', 'iii'],
+			['iii', 'IV', 'I', 'V'],
+			['IV', 'I', 'V', 'vi'],
+			['I', 'IV', 'vi', 'V']
 		],
 		rich: [
 			['Imaj7', 'V7', 'vim7', 'IVmaj7'],
 			['Imaj7', 'IVmaj7', 'iim7', 'V7'],
 			['vim7', 'IVmaj7', 'Imaj7', 'V7'],
 			['iim7', 'V7', 'Imaj7', 'IVmaj7'],
-			['Imaj7', 'iiim7', 'IVmaj7', 'V7']
+			['Imaj7', 'iiim7', 'IVmaj7', 'V7'],
+			['Imaj7', 'vim7', 'iim7', 'V7'],
+			['Imaj7', 'V7', 'vim7', 'iiim7'],
+			['iiim7', 'IVmaj7', 'Imaj7', 'V7'],
+			['IVmaj7', 'Imaj7', 'V7', 'vim7'],
+			['Imaj7', 'IVmaj7', 'vim7', 'V7']
 		],
 		complex: [
 			['Imaj9', 'V9', 'vim9', 'IVmaj9'],
 			['Imaj9', 'IVmaj9', 'iim9', 'V9'],
 			['vim9', 'IVmaj9', 'Imaj9', 'V9'],
 			['iim9', 'V9', 'Imaj9', 'IVsus4'],
-			['Imaj9', 'iiim7', 'IVmaj9', 'V9']
+			['Imaj9', 'iiim7', 'IVmaj9', 'V9'],
+			['Imaj9', 'vim9', 'iim9', 'V9'],
+			['Imaj9', 'V9', 'vim9', 'iiim7'],
+			['iiim7', 'IVmaj9', 'Imaj9', 'V9'],
+			['IVmaj9', 'Imaj9', 'V9', 'vim9'],
+			['Imaj9', 'IVmaj9', 'vim9', 'V9']
 		]
 	},
 	Minor: {
@@ -56,21 +71,36 @@ const PROGRESSIONS: Record<string, Record<Difficulty, RomanProgression[]>> = {
 			['i', 'iv', 'V', 'i'],
 			['i', 'bVI', 'V', 'i'],
 			['i', 'ii°', 'V', 'i'],
-			['i', 'iv', 'bVI', 'V']
+			['i', 'iv', 'bVI', 'V'],
+			['i', 'vii°', 'V', 'i'],
+			['bVI', 'V', 'i', 'V'],
+			['i', 'iv', 'vii°', 'V'],
+			['i', 'bVI', 'iv', 'V'],
+			['i', 'III+', 'bVI', 'V']
 		],
 		rich: [
 			['im7', 'ivm7', 'V7', 'im7'],
 			['im7', 'V7', 'im7', 'V7'],
 			['im7', 'bVImaj7', 'V7', 'im7'],
 			['im7', 'ii°', 'V7', 'im7'],
-			['im7', 'ivm7', 'bVImaj7', 'V7']
+			['im7', 'ivm7', 'bVImaj7', 'V7'],
+			['im7', 'vii°', 'V7', 'im7'],
+			['bVImaj7', 'V7', 'im7', 'V7'],
+			['im7', 'ivm7', 'vii°', 'V7'],
+			['im7', 'bVImaj7', 'ivm7', 'V7'],
+			['im7', 'ii°', 'bVImaj7', 'V7']
 		],
 		complex: [
 			['im9', 'ivm9', 'V9', 'im9'],
 			['im9', 'V9', 'bVImaj9', 'im9'],
 			['im9', 'bVImaj9', 'V9', 'im9'],
 			['im9', 'ii°7', 'V9', 'im9'],
-			['im9', 'ivm9', 'bVImaj9', 'V9']
+			['im9', 'ivm9', 'bVImaj9', 'V9'],
+			['im9', 'vii°', 'V9', 'im9'],
+			['bVImaj9', 'V9', 'im9', 'V9'],
+			['im9', 'ivm9', 'vii°', 'V9'],
+			['im9', 'bVImaj9', 'ivm9', 'V9'],
+			['im9', 'ii°7', 'bVImaj9', 'V9']
 		]
 	},
 	Dorian: {
