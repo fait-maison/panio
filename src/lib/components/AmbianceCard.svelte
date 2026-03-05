@@ -113,6 +113,22 @@
 		min-width: 430px;
 	}
 
+	@media (max-width: 480px) {
+		:global(.ambiance-card) {
+			min-width: unset;
+			width: calc(100vw - 2rem);
+		}
+
+		.key { font-size: 1.25rem; }
+		.mode { font-size: 1.4rem; }
+		.separator { font-size: 1rem; }
+		.texture { font-size: 0.875rem; }
+
+		.card-content {
+			padding: var(--sp-6) var(--sp-4) var(--sp-4);
+		}
+	}
+
 	.card-content {
 		position: relative;
 		display: flex;
