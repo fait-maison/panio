@@ -1,6 +1,6 @@
 import { MODES, KEYS, type ModeInfo } from './modes';
 import { TEXTURES } from './textures';
-import type { RomanProgression } from './progressions';
+import type { RomanProgression, Difficulty } from './progressions';
 import { pickProgression } from './progressions';
 
 export interface Ambiance {
@@ -19,6 +19,7 @@ function pickRandom<T>(arr: T[], exclude?: T): T {
 export function generateAmbiance(
 	modePool: string[],
 	keyPool: string[],
+	difficulty: Difficulty,
 	previous?: Ambiance
 ): Ambiance {
 	const availableModes = MODES.filter((m) => modePool.includes(m.name));
@@ -28,7 +29,7 @@ export function generateAmbiance(
 	const mode = pickRandom(resolvedModes, previous?.mode);
 	const key = pickRandom(resolvedKeys, previous?.key);
 	const texture = pickRandom(TEXTURES, previous?.texture);
-	const progression = pickProgression(mode.name, previous?.progression);
+	const progression = pickProgression(mode.name, difficulty, previous?.progression);
 
 	return { mode, key, texture, progression };
 }

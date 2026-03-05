@@ -2,7 +2,7 @@
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import * as ToggleGroup from '$lib/components/ui/toggle-group/index.js';
 	import { settings } from '$lib/stores/settings.svelte';
-	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings.svelte';
+	import type { KeyboardSize, ProgressionNotation, Difficulty } from '$lib/stores/settings.svelte';
 	import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
 	import { t, locale, type Locale } from '$lib/i18n.svelte';
 
@@ -62,6 +62,21 @@
 				>
 					<ToggleGroup.Item value="on">{t('settings.hints.on')}</ToggleGroup.Item>
 					<ToggleGroup.Item value="off">{t('settings.hints.off')}</ToggleGroup.Item>
+				</ToggleGroup.Root>
+			</section>
+
+			<section>
+				<h3>{t('settings.difficulty')}</h3>
+				<ToggleGroup.Root
+					type="single"
+					value={settings.value.difficulty}
+					onValueChange={(v) => v && settings.update((s) => ({ ...s, difficulty: v as Difficulty }))}
+					variant="outline"
+					class="w-full flex-wrap"
+				>
+					<ToggleGroup.Item value="simple">{t('settings.difficulty.simple')}</ToggleGroup.Item>
+					<ToggleGroup.Item value="rich">{t('settings.difficulty.rich')}</ToggleGroup.Item>
+					<ToggleGroup.Item value="complex">{t('settings.difficulty.complex')}</ToggleGroup.Item>
 				</ToggleGroup.Root>
 			</section>
 
@@ -187,3 +202,4 @@
 		color: var(--text-muted);
 	}
 </style>
+

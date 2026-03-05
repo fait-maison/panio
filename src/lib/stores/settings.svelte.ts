@@ -1,5 +1,7 @@
 import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
+import type { Difficulty } from '$lib/music/progressions';
 
+export type { Difficulty };
 export type KeyboardSize = 's' | 'm' | 'l';
 export type ProgressionNotation = 'roman' | 'chord';
 
@@ -10,6 +12,7 @@ export interface Settings {
 	keyboardSize: KeyboardSize;
 	progressionNotation: ProgressionNotation;
 	showHints: boolean;
+	difficulty: Difficulty;
 }
 
 const DEFAULT_SETTINGS: Settings = {
@@ -18,7 +21,8 @@ const DEFAULT_SETTINGS: Settings = {
 	keyPool: KEYS,
 	keyboardSize: 'm',
 	progressionNotation: 'chord',
-	showHints: true
+	showHints: true,
+	difficulty: 'simple'
 };
 
 function loadSettings(): Settings {
