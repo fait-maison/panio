@@ -116,9 +116,19 @@ Settings stored in `localStorage` key `piano-settings`. On load, spread-merged w
 
 - **Commit style:** gitmoji + lowercase title + bullet body. No co-author line.
 - **Run `pnpm run check` after every code change** — don't ask, just do it.
-- **Update docs before committing** — DESIGN.md, README, PRD as relevant.
+- **Update docs before committing** — DESIGN.md, README.md, PRD.md, CLAUDE.md as relevant.
 - **No over-engineering** — YAGNI. No abstractions for one-time operations.
 - **i18n:** all user-facing strings go through `t()` from `$lib/i18n.svelte`.
+
+## Library Documentation
+
+Always use context7 to look up current documentation before:
+- Using a library API you're unsure about
+- Adding a new dependency or shadcn component
+- Debugging framework-specific behavior
+- Writing patterns involving Svelte runes, SvelteKit config, bits-ui, or tonal.js
+
+This ensures code stays aligned with current library versions, not outdated training data.
 
 ## Testing
 
