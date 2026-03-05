@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { Note } from 'tonal';
 	import { settings } from '$lib/stores/settings.svelte';
 	import { getScaleNotes } from '$lib/music/scale';
@@ -62,9 +63,26 @@
 	let { whites, blacks } = $derived(buildKeys(WHITE_W, BLACK_W));
 	let KEYBOARD_W = $derived(52 * (WHITE_W + GAP) - GAP);
 
+	let scrollContainer = $state<HTMLDivElement | null>(null);
+
+	$effect(() => {
+		// Re-run when scale changes (which means WHITE_W changed)
+		WHITE_W;
+		tick().then(() => {
+			if (!scrollContainer) return;
+			// Middle C is MIDI 60 — count white keys from MIDI_START to 60
+			let whitesBefore = 0;
+			for (let m = MIDI_START; m < 60; m++) {
+				if (!BLACK_KEY_POSITIONS.has(m % 12)) whitesBefore++;
+			}
+			const targetLeft = whitesBefore * (WHITE_W + GAP);
+			const center = targetLeft - scrollContainer.clientWidth / 2 + WHITE_W / 2;
+			scrollContainer.scrollLeft = Math.max(0, center);
+		});
+	});
 </script>
 
-<div class="keyboard-scroll">
+<div class="keyboard-scroll" bind:this={scrollContainer}>
 	<div class="keyboard"
 		class:chord-active={hoverNotes.size > 0}
 		style="width:{KEYBOARD_W}px; height:{WHITE_H}px; --white-w:{WHITE_W}px; --white-h:{WHITE_H}px; --black-w:{BLACK_W}px; --black-h:{BLACK_H}px;">
@@ -114,11 +132,11 @@
 		overflow-y: hidden;
 		padding-bottom: var(--sp-2);
 		display: flex;
-		justify-content: center;
 	}
 
 	.keyboard {
 		position: relative;
+		margin: 0 auto;
 	}
 
 	.key {
