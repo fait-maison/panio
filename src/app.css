@@ -50,8 +50,6 @@
   --key-black: #1A1A1A;
   --key-scale-white: #FECACA;   /* same as chord — red-200, brighter */
   --key-scale-black: #EF4444;   /* same as chord */
-  --key-root-white: #F87171;   /* red-400 — brighter on white */
-  --key-root-black: #B91C1C;   /* red-700 — darker than scale #EF4444 */
   --key-pressed: #1D4ED8;
   --key-chord-white: #FECACA;   /* red-200, brighter */
   --key-chord-black: #EF4444;   /* red-500 — bright on black keys */

@@ -140,7 +140,7 @@ Session end (user closes / stops)
 - Generator ensures each field differs from the previous ambiance (no immediate repeat on any dimension)
 
 ### 8.3 Interval Timer & Autoadvance
-- Default interval: 5 minutes (user-configurable in settings)
+- Default interval: 3 minutes (user-configurable in settings)
 - When interval ends, show the autoadvance card:
   - Countdown from 5 seconds with animated progress bar
   - "Snooze" button: dismiss card, restart full interval on same ambiance
@@ -150,7 +150,7 @@ Session end (user closes / stops)
 ### 8.4 On-Screen Keyboard
 - Full piano range, horizontally scrollable
 - Highlights keys in real time as MIDI input is received
-- Optionally highlights notes of the active mode (hint mode toggle, off by default)
+- Optionally highlights notes of the active mode (hint mode toggle, on by default)
 - Responsive: usable on desktop, tablet, and mobile
 
 ### 8.5 UI

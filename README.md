@@ -33,7 +33,7 @@ If no MIDI device is found, the on-screen keyboard is available as a fallback.
 
 1. App displays a random ambiance: **mode + key + texture hint** (e.g. "D Dorian · sparse · pedal tone")
 2. Play freely on your MIDI keyboard — on-screen keyboard highlights your notes in real time
-3. After your configured interval (default 5 min), a **"Next ambiance in 5s"** card appears
+3. After your configured interval (default 3 min), a **"Next ambiance in 5s"** card appears
 4. Let it count down to auto-switch, or hit **Snooze** to keep the current ambiance longer
 5. Repeat for the length of your session
 
@@ -55,11 +55,11 @@ All difficulty is user-controlled — no hidden progression.
 
 | Setting | Default | Description |
 |---|---|---|
-| Interval | 5 min | How long before the autoadvance card appears |
+| Interval | 3 min | How long before the autoadvance card appears |
 | Chord complexity | Simple | Which tiers to draw from: Simple / Rich / Complex (multi-select) |
 | Mode pool | All 8 modes | Which modes to include in random draws |
 | Key pool | All 12 keys | Which keys to include |
-| Hint mode | Off | Highlight the active mode's notes on the keyboard |
+| Hint mode | On | Highlight the active mode's notes on the keyboard |
 
 ## Project Structure
 
