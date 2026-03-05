@@ -51,4 +51,11 @@
 		gap: var(--sp-8);
 	}
 
+	@media (max-width: 480px) {
+		main {
+			padding: calc(48px + var(--sp-2)) var(--sp-2) 5rem;
+			gap: var(--sp-4);
+		}
+	}
+
 </style>
