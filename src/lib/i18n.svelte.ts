@@ -3,7 +3,8 @@ export type Locale = 'en' | 'fr';
 const translations = {
 	en: {
 		// app
-		'app.title': 'improv piano',
+		'app.title': 'Panio',
+		'nav.sandbox': 'Sandbox',
 		// settings panel
 		'settings.title': 'Settings',
 		'settings.close': 'Close',
@@ -68,7 +69,8 @@ const translations = {
 		'texture.restless · short motifs': 'restless · short motifs'
 	},
 	fr: {
-		'app.title': "piano d'impro",
+		'app.title': 'Panio',
+		'nav.sandbox': 'Sandbox',
 		'settings.title': 'Paramètres',
 		'settings.close': 'Fermer',
 		'settings.keyboardSize': 'Taille du clavier',
