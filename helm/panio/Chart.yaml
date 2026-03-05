@@ -1,0 +1,7 @@
+apiVersion: v2
+name: panio
+description: Panio · A training app for pianists who accompany theatrical improvisation. Compatible with MIDI keyboards
+type: application
+version: 0.0.1
+appVersion: "latest"
+icon: https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f331.svg
