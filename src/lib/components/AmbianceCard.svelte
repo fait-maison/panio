@@ -5,7 +5,8 @@
 	import { timer } from '$lib/stores/timer.svelte';
 	import { t } from '$lib/i18n.svelte';
 	import { settings } from '$lib/stores/settings.svelte';
-	import { formatProgression, getChordPitchClasses } from '$lib/music/progressions';
+	import { formatProgression, getChordPitchClasses, toChordSymbol } from '$lib/music/progressions';
+	import { Chord, Note } from 'tonal';
 
 	let {
 		ambiance,
@@ -15,7 +16,7 @@
 	}: {
 		ambiance: Ambiance;
 		timer: typeof timer;
-		onChordHover?: (notes: Set<number>) => void;
+		onChordHover?: (notes: Set<number>, root: number | null) => void;
 		onSkip?: () => void;
 	} = $props();
 
@@ -40,6 +41,14 @@
 		ambiance.progression.map((roman) =>
 			getChordPitchClasses(ambiance.key, ambiance.mode.tonalName, roman)
 		)
+	);
+
+	let chordRoots = $derived(
+		ambiance.progression.map((roman) => {
+			const symbol = toChordSymbol(ambiance.key, ambiance.mode.tonalName, roman);
+			const tonic = Chord.get(symbol).tonic;
+			return tonic ? Note.chroma(tonic) as number : null;
+		})
 	);
 </script>
 
@@ -70,8 +79,8 @@
 			class="progression"
 			role="group"
 			aria-label="suggested progression"
-			onmouseleave={() => onChordHover(new Set())}
-			onfocusout={() => onChordHover(new Set())}
+			onmouseleave={() => onChordHover(new Set(), null)}
+			onfocusout={() => onChordHover(new Set(), null)}
 		>
 			{#each chords as chord, i}
 				<span
@@ -79,8 +88,8 @@
 					class:tonic={i === 0}
 					role="button"
 					tabindex="0"
-					onmouseenter={() => onChordHover(chordNoteSets[i])}
-					onfocus={() => onChordHover(chordNoteSets[i])}
+					onmouseenter={() => onChordHover(chordNoteSets[i], chordRoots[i])}
+					onfocus={() => onChordHover(chordNoteSets[i], chordRoots[i])}
 				>{chord}</span>
 				{#if i < chords.length - 1}
 					<span class="arrow" aria-hidden="true">›</span>

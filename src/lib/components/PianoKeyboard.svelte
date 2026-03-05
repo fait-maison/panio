@@ -8,11 +8,13 @@
 	let {
 		ambiance,
 		pressedNotes = new Set(),
-		hoverNotes = new Set()
+		hoverNotes = new Set(),
+		hoverRootNote = null
 	}: {
 		ambiance: Ambiance;
 		pressedNotes?: Set<number>;
 		hoverNotes?: Set<number>;
+		hoverRootNote?: number | null;
 	} = $props();
 
 	let scaleNotes = $derived(getScaleNotes(ambiance));
@@ -72,6 +74,7 @@
 				class:in-scale={settings.value.showHints && scaleNotes.has(key.midi % 12)}
 				class:is-root={settings.value.showHints && key.midi % 12 === rootChroma}
 				class:in-chord={hoverNotes.has(key.midi % 12)}
+			class:is-chord-root={hoverNotes.size > 0 && key.midi % 12 === hoverRootNote}
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
 				role="button"
@@ -89,6 +92,7 @@
 				class:in-scale={settings.value.showHints && scaleNotes.has(key.midi % 12)}
 				class:is-root={settings.value.showHints && key.midi % 12 === rootChroma}
 				class:in-chord={hoverNotes.has(key.midi % 12)}
+			class:is-chord-root={hoverNotes.size > 0 && key.midi % 12 === hoverRootNote}
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
 				role="button"
@@ -154,6 +158,10 @@
 	.keyboard.chord-active .black { background: var(--key-black); }
 	.keyboard.chord-active .white.in-chord { background: var(--key-chord-white); }
 	.keyboard.chord-active .black.in-chord { background: var(--key-chord-black); }
+
+	/* Chord root — reuses scale root color, overrides in-chord */
+	.keyboard.chord-active .white.is-chord-root { background: var(--key-root-white); }
+	.keyboard.chord-active .black.is-chord-root { background: var(--key-root-black); }
 
 	/* Pressed — overrides everything */
 	.white.pressed,

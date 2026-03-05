@@ -16,8 +16,9 @@
 	import MidiStatus from '$lib/components/MidiStatus.svelte';
 
 	let hoveredChordNotes = $state<Set<number>>(new Set());
+	let hoveredChordRoot = $state<number | null>(null);
 	// Clear stale highlights when ambiance changes (e.g. after auto-advance)
-	$effect(() => { ambiance.current; hoveredChordNotes = new Set(); });
+	$effect(() => { ambiance.current; hoveredChordNotes = new Set(); hoveredChordRoot = null; });
 
 	onMount(() => midi.init());
 	onDestroy(() => midi.destroy());
@@ -28,13 +29,14 @@
 	<AmbianceCard
 		ambiance={ambiance.current}
 		{timer}
-		onChordHover={(notes) => { hoveredChordNotes = notes; }}
+		onChordHover={(notes, root) => { hoveredChordNotes = notes; hoveredChordRoot = root; }}
 		onSkip={skipAmbiance}
 	/>
 	<PianoKeyboard
 		ambiance={ambiance.current}
 		pressedNotes={midi.pressedNotes}
 		hoverNotes={hoveredChordNotes}
+		hoverRootNote={hoveredChordRoot}
 	/>
 </main>
 
