@@ -83,8 +83,8 @@ piano/
 
 ## Browser Requirements
 
-Web MIDI API requires a Chromium-based browser (Chrome, Edge, Arc).
-Firefox does not support Web MIDI natively — on-screen keyboard is the fallback.
+Web MIDI API is supported in all major browsers: Chrome, Edge, Arc, and Firefox (108+).
+Firefox will prompt for a "Access MIDI devices" site permission on first use.
 
 ## Roadmap
 

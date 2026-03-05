@@ -118,6 +118,10 @@
 		color: #16a34a;
 	}
 
+	.midi-status[data-status='denied'] .trigger {
+		color: var(--red);
+	}
+
 	/* Picker opens upward */
 	.picker {
 		position: absolute;

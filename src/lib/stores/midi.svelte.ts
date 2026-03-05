@@ -1,4 +1,4 @@
-export type MidiStatus = 'unsupported' | 'disconnected' | 'connected';
+export type MidiStatus = 'unsupported' | 'denied' | 'disconnected' | 'connected';
 
 export type MidiInput = { id: string; name: string; manufacturer: string };
 
@@ -43,13 +43,17 @@ function handleMessage(event: MIDIMessageEvent) {
 
 function connectInputs(midiAccess: MIDIAccess) {
 	midiAccess.inputs.forEach((input) => {
-		input.onmidimessage =
-			!_preferred || input.id === _preferred ? handleMessage : null;
+		input.removeEventListener('midimessage', handleMessage);
+		if (!_preferred || input.id === _preferred) {
+			input.addEventListener('midimessage', handleMessage);
+		}
 	});
-	midiAccess.onstatechange = () => {
-		connectInputs(midiAccess);
-		refreshStatus();
-	};
+}
+
+function onStateChange() {
+	if (!access) return;
+	connectInputs(access);
+	refreshStatus();
 }
 
 function getTargetOutputs(): MIDIOutput[] {
@@ -68,10 +72,11 @@ async function init() {
 	}
 	try {
 		access = await navigator.requestMIDIAccess();
+		access.addEventListener('statechange', onStateChange);
 		connectInputs(access);
 		refreshStatus();
-	} catch {
-		_status = 'unsupported';
+	} catch (err) {
+		_status = err instanceof DOMException && err.name === 'SecurityError' ? 'denied' : 'unsupported';
 	}
 }
 
@@ -102,8 +107,9 @@ function sendNoteOff(note: number) {
 
 function destroy() {
 	if (access) {
+		access.removeEventListener('statechange', onStateChange);
 		access.inputs.forEach((input) => {
-			input.onmidimessage = null;
+			input.removeEventListener('midimessage', handleMessage);
 		});
 	}
 }

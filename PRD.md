@@ -181,7 +181,7 @@ Session end (user closes / stops)
 |---|---|
 | MIDI input latency | < 10ms from key press to visual feedback |
 | Mobile usability | Fully usable on iOS Safari and Android Chrome |
-| Browser support | Chrome/Edge/Arc (Web MIDI API required); Firefox: on-screen keyboard only |
+| Browser support | Chrome/Edge/Arc/Firefox 108+ (Web MIDI API required; Firefox prompts for site permission) |
 | No external dependencies at runtime | tonal.js bundled, no CDN calls |
 
 ---
