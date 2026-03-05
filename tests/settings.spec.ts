@@ -7,7 +7,7 @@ async function getKeyboardWidth(page: Page): Promise<number> {
 }
 
 async function openSettings(page: Page) {
-  await page.locator('.gear-btn').click();
+  await page.getByRole('button', { name: 'Settings' }).click();
   await expect(page.locator('.sections')).toBeVisible();
 }
 
