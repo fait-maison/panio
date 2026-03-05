@@ -53,6 +53,8 @@
   --key-root-white: #CC2936;
   --key-root-black: #CC2936;
   --key-pressed: #1D4ED8;
+  --key-chord-white: #FCA5A5;   /* red-300 */
+  --key-chord-black: #7F1D1D;   /* red-900 */
   --font: 'Inter', system-ui, sans-serif;
 
   /* ── Custom tokens ── */

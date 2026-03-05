@@ -1,4 +1,4 @@
-import { Scale } from 'tonal';
+import { Scale, Chord, Note } from 'tonal';
 
 export type RomanProgression = string[];
 
@@ -91,6 +91,13 @@ export function toChordSymbol(key: string, tonalModeName: string, roman: string)
 
 	const quality = suffix === '°' ? 'dim' : suffix === '+' ? 'aug' : isMajor ? '' : 'm';
 	return root + quality;
+}
+
+export function getChordPitchClasses(key: string, tonalModeName: string, roman: string): Set<number> {
+	const symbol = toChordSymbol(key, tonalModeName, roman);
+	return new Set(
+		Chord.get(symbol).notes.map((n) => Note.chroma(n) as number)
+	);
 }
 
 export function formatProgression(

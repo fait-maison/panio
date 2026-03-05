@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { toChordSymbol, pickProgression, PROGRESSIONS } from './progressions';
+import { toChordSymbol, pickProgression, PROGRESSIONS, getChordPitchClasses } from './progressions';
 
 describe('toChordSymbol', () => {
 	it('D dorian i → Dm', () => {
@@ -51,6 +51,32 @@ describe('pickProgression', () => {
 			if (p2 !== p1) { differs = true; break; }
 		}
 		expect(differs).toBe(true);
+	});
+});
+
+describe('getChordPitchClasses', () => {
+	it('D dorian i → Dm → {D,F,A} = {2,5,9}', () => {
+		expect(getChordPitchClasses('D', 'dorian', 'i')).toEqual(new Set([2, 5, 9]));
+	});
+
+	it('D dorian IV → G → {G,B,D} = {7,11,2}', () => {
+		expect(getChordPitchClasses('D', 'dorian', 'IV')).toEqual(new Set([7, 11, 2]));
+	});
+
+	it('D dorian bVII → C → {C,E,G} = {0,4,7}', () => {
+		expect(getChordPitchClasses('D', 'dorian', 'bVII')).toEqual(new Set([0, 4, 7]));
+	});
+
+	it('B locrian i° → Bdim → {B,D,F} = {11,2,5}', () => {
+		expect(getChordPitchClasses('B', 'locrian', 'i°')).toEqual(new Set([11, 2, 5]));
+	});
+
+	it('D phrygian bII → Eb → {Eb,G,Bb} = {3,7,10}', () => {
+		expect(getChordPitchClasses('D', 'phrygian', 'bII')).toEqual(new Set([3, 7, 10]));
+	});
+
+	it('always returns a triad (exactly 3 members)', () => {
+		expect(getChordPitchClasses('D', 'dorian', 'i').size).toBe(3);
 	});
 });
 

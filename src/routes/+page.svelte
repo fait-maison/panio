@@ -10,6 +10,10 @@
 	import SettingsPanel from '$lib/components/SettingsPanel.svelte';
 	import MidiStatus from '$lib/components/MidiStatus.svelte';
 
+	let hoveredChordNotes: Set<number> = new Set();
+	// Clear stale highlights when ambiance changes (e.g. after auto-advance)
+	$: if ($ambianceStore) hoveredChordNotes = new Set();
+
 	onMount(() => {
 		midiStore.init();
 	});
@@ -21,8 +25,16 @@
 
 <main>
 	<h1 class="app-title">{$t('app.title')}</h1>
-	<AmbianceCard ambiance={$ambianceStore} timer={$timerStore} />
-	<PianoKeyboard ambiance={$ambianceStore} pressedNotes={$midiStore} />
+	<AmbianceCard
+		ambiance={$ambianceStore}
+		timer={$timerStore}
+		onChordHover={(notes) => { hoveredChordNotes = notes; }}
+	/>
+	<PianoKeyboard
+		ambiance={$ambianceStore}
+		pressedNotes={$midiStore}
+		hoverNotes={hoveredChordNotes}
+	/>
 </main>
 
 <AutoadvanceToast timer={$timerStore} onSnooze={() => timerStore.snooze()} />

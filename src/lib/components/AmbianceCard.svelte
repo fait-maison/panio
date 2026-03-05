@@ -5,10 +5,11 @@
 	import type { TimerStore } from '$lib/stores/timer';
 	import { t } from '$lib/i18n';
 	import { settingsStore } from '$lib/stores/settings';
-	import { formatProgression } from '$lib/music/progressions';
+	import { formatProgression, getChordPitchClasses } from '$lib/music/progressions';
 
 	export let ambiance: Ambiance;
 	export let timer: TimerStore;
+	export let onChordHover: (notes: Set<number>) => void = () => {};
 
 	$: progress = timer.state === 'counting'
 		? 100
@@ -21,6 +22,10 @@
 		ambiance.key,
 		ambiance.mode.tonalName,
 		$settingsStore.progressionNotation
+	);
+
+	$: chordNoteSets = ambiance.progression.map((roman) =>
+		getChordPitchClasses(ambiance.key, ambiance.mode.tonalName, roman)
 	);
 </script>
 
@@ -41,9 +46,22 @@
 			</Tooltip.Provider>
 			<div class="texture">{$t('texture.' + ambiance.texture)}</div>
 		<div class="progression-sep"></div>
-		<div class="progression" aria-label="suggested progression">
+		<div
+			class="progression"
+			role="group"
+			aria-label="suggested progression"
+			on:mouseleave={() => onChordHover(new Set())}
+			on:focusout={() => onChordHover(new Set())}
+		>
 			{#each chords as chord, i}
-				<span class="chord" class:tonic={i === 0}>{chord}</span>
+				<span
+					class="chord"
+					class:tonic={i === 0}
+					role="button"
+					tabindex="0"
+					on:mouseenter={() => onChordHover(chordNoteSets[i])}
+					on:focus={() => onChordHover(chordNoteSets[i])}
+				>{chord}</span>
 				{#if i < chords.length - 1}
 					<span class="arrow" aria-hidden="true">›</span>
 				{/if}
@@ -126,7 +144,7 @@
 		padding-bottom: var(--sp-1);
 	}
 
-	.chord { color: var(--text); }
+	.chord { color: var(--text); cursor: pointer; }
 	.chord.tonic { color: var(--red); }
 	.arrow { color: var(--text-muted); font-weight: 400; }
 

@@ -7,6 +7,7 @@
 
 	export let ambiance: Ambiance;
 	export let pressedNotes: Set<number> = new Set();
+	export let hoverNotes: Set<number> = new Set();
 
 	$: scaleNotes = getScaleNotes(ambiance);
 	$: rootChroma = Note.chroma(ambiance.key) as number;
@@ -56,12 +57,15 @@
 </script>
 
 <div class="keyboard-scroll">
-	<div class="keyboard" style="width:{KEYBOARD_W}px; height:{WHITE_H}px; --white-w:{WHITE_W}px; --white-h:{WHITE_H}px; --black-w:{BLACK_W}px; --black-h:{BLACK_H}px;">
+	<div class="keyboard"
+		class:chord-active={hoverNotes.size > 0}
+		style="width:{KEYBOARD_W}px; height:{WHITE_H}px; --white-w:{WHITE_W}px; --white-h:{WHITE_H}px; --black-w:{BLACK_W}px; --black-h:{BLACK_H}px;">
 		{#each whites as key (key.midi)}
 			<div
 				class="key white"
 				class:in-scale={scaleNotes.has(key.midi % 12)}
 				class:is-root={key.midi % 12 === rootChroma}
+				class:in-chord={hoverNotes.has(key.midi % 12)}
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
 				role="button"
@@ -78,6 +82,7 @@
 				class="key black"
 				class:in-scale={scaleNotes.has(key.midi % 12)}
 				class:is-root={key.midi % 12 === rootChroma}
+				class:in-chord={hoverNotes.has(key.midi % 12)}
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
 				role="button"
@@ -137,6 +142,12 @@
 	/* Root — overrides scale tint */
 	.white.is-root { background: var(--key-root-white); }
 	.black.is-root { background: var(--key-root-black); }
+
+	/* Chord focus: reset all layers, show only chord notes */
+	.keyboard.chord-active .white { background: var(--key-white); }
+	.keyboard.chord-active .black { background: var(--key-black); }
+	.keyboard.chord-active .white.in-chord { background: var(--key-chord-white); }
+	.keyboard.chord-active .black.in-chord { background: var(--key-chord-black); }
 
 	/* Pressed — overrides everything */
 	.white.pressed,
