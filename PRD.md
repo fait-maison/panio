@@ -1,7 +1,7 @@
 # Product Requirements Document — Piano Ear Training App
 
-**Version:** 0.4
-**Date:** 2026-03-04
+**Version:** 0.5
+**Date:** 2026-03-05
 **Status:** v1 implemented
 
 ---
@@ -130,10 +130,13 @@ Session end (user closes / stops)
 
 ### 8.2 Ambiance Generator
 - Draw from tonal.js for scale/mode data
-- Randomly pick: mode (from the 8 supported modes) + key (any of 12) + texture hint + chord progression
+- Randomly pick: mode (from pool) + key (from pool) + texture hint + chord progression at a random difficulty tier (from pool)
 - Texture hints are short descriptive strings, e.g.:
   `"sparse"`, `"pedal tone"`, `"flowing arpeggios"`, `"sustained chords"`, `"driving pulse"`, `"silence and space"`
-- Chord progressions are curated per-mode pools (5 progressions per mode, 4–5 chords each), loopable
+- Chord progressions are curated per-mode pools, loopable:
+  - Major and Harmonic Minor: **10 progressions per tier** (simple / rich / complex)
+  - All other modes: 5 progressions per tier
+  - Real-world-inspired sources: jazz turnarounds, Pachelbel canon, soul/Motown, Miserlou, flamenco jondo, etc.
 - Generator ensures each field differs from the previous ambiance (no immediate repeat on any dimension)
 
 ### 8.3 Interval Timer & Autoadvance
@@ -161,12 +164,14 @@ Session end (user closes / stops)
 ### 8.6 Settings
 - **Interval duration:** 15s / 1 / 3 / 5 / 10 minutes
 - **Keyboard size:** S / M / L (controls visual width of on-screen keyboard)
+- **Chord complexity (difficulty pool):** multi-select — Simple / Rich / Complex (default: Simple); generator picks randomly from selected tiers each ambiance
 - **Progression notation:** chord symbols (`Dm → G → C`) or Roman numerals (`i → IV → VII`)
 - **Mode pool:** which of the 8 modes to include in the random draw
 - **Key pool:** restrict to specific keys if desired (e.g. only C, F, G for beginners)
+- **Hint mode:** highlight active mode notes on keyboard
 - **Language:** EN / FR
 - All settings persisted to localStorage; spread-merge on load handles missing keys from older versions
-- Note: hint mode (scale highlights on keyboard) is implemented but not yet exposed in the settings panel
+- All toggle groups enforce minimum-one selection: last active item has `pointer-events: none` via CSS (`[data-lock-active] [data-state='on']`)
 
 ---
 
@@ -191,12 +196,13 @@ The user configures their session through the settings panel:
 |---|---|
 | Mode pool | Any subset of the 8 supported modes |
 | Key pool | Any subset of the 12 keys (or "all") |
+| Chord complexity | Any subset of Simple / Rich / Complex (multi-select; generator picks randomly each ambiance) |
 | Interval duration | 15s / 1 / 3 / 5 / 10 min |
 | Keyboard size | S / M / L |
 | Progression notation | Chord symbols or Roman numerals |
 
-A beginner might restrict to Major + Dorian + Aeolian in a few familiar keys.
-An advanced user opens the full pool including Phrygian, Lydian, Locrian, and Harmonic Minor.
+A beginner might restrict to Major + Dorian + Aeolian in a few familiar keys, Simple complexity only.
+An advanced user opens the full pool including Phrygian, Lydian, Locrian, and Harmonic Minor, with Rich + Complex enabled.
 The app never makes this choice for the user.
 
 ---
@@ -210,8 +216,11 @@ The app never makes this choice for the user.
 - Ambiance generator (mode + key + texture + chord progression)
 - Context card: mode, key, texture, chord progression row (tonic in red)
 - Interval timer + autoadvance card ("Next ambiance in 5s" + Snooze)
-- Settings panel: interval, keyboard size, progression notation, mode pool, key pool, language (EN/FR)
+- Settings panel: interval, keyboard size, progression notation, mode pool, key pool, language (EN/FR), hint mode
 - Design system: Tailwind v4 + shadcn-svelte (Sheet, ToggleGroup, Card, Sonner)
+- Chord complexity (difficulty): multi-select Simple / Rich / Complex; generator picks random tier per ambiance
+- Expanded progression pools: Major + Harmonic Minor → 10 progressions per tier (real-world inspired)
+- ToggleGroup UX: last active item locked via CSS (`data-lock-active` pattern)
 
 ### Phase 2 — Feedback Layer
 - MIDI evaluator: modal consistency (% notes in active mode), density

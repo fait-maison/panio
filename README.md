@@ -56,7 +56,8 @@ All difficulty is user-controlled — no hidden progression.
 | Setting | Default | Description |
 |---|---|---|
 | Interval | 5 min | How long before the autoadvance card appears |
-| Mode pool | All 7 modes | Which modes to include in random draws |
+| Chord complexity | Simple | Which tiers to draw from: Simple / Rich / Complex (multi-select) |
+| Mode pool | All 8 modes | Which modes to include in random draws |
 | Key pool | All 12 keys | Which keys to include |
 | Hint mode | Off | Highlight the active mode's notes on the keyboard |
 
