@@ -1,22 +1,27 @@
 <script lang="ts">
-	import type { TimerStore } from '$lib/stores/timer';
-	import { t } from '$lib/i18n';
+	import { timer } from '$lib/stores/timer.svelte';
+	import { t } from '$lib/i18n.svelte';
 
-	export let timer: TimerStore;
-	export let onSnooze: () => void;
+	let {
+		timer: timerProp,
+		onSnooze
+	}: {
+		timer: typeof timer;
+		onSnooze: () => void;
+	} = $props();
 
 	const COUNTDOWN_SECS = 5;
-	$: progress = ((COUNTDOWN_SECS - timer.secondsLeft) / COUNTDOWN_SECS) * 100;
+	let progress = $derived(((COUNTDOWN_SECS - timerProp.secondsLeft) / COUNTDOWN_SECS) * 100);
 </script>
 
-{#if timer.state === 'counting'}
+{#if timerProp.state === 'counting'}
 	<div class="toast" role="status" aria-live="polite">
 		<div class="toast-body">
 			<div class="toast-text">
-				<span class="label">{$t('toast.nextIn')}</span>
-				<span class="countdown">{timer.secondsLeft}s</span>
+				<span class="label">{t('toast.nextIn')}</span>
+				<span class="countdown">{timerProp.secondsLeft}s</span>
 			</div>
-			<button class="snooze" on:click={onSnooze}>{$t('toast.stay')}</button>
+			<button class="snooze" onclick={onSnooze}>{t('toast.stay')}</button>
 		</div>
 		<div class="progress-bar">
 			<div class="progress-fill" style="width: {progress}%"></div>

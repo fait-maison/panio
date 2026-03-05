@@ -2,30 +2,42 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
 	import type { Ambiance } from '$lib/music/generator';
-	import type { TimerStore } from '$lib/stores/timer';
-	import { t } from '$lib/i18n';
-	import { settingsStore } from '$lib/stores/settings';
+	import { timer } from '$lib/stores/timer.svelte';
+	import { t } from '$lib/i18n.svelte';
+	import { settings } from '$lib/stores/settings.svelte';
 	import { formatProgression, getChordPitchClasses } from '$lib/music/progressions';
 
-	export let ambiance: Ambiance;
-	export let timer: TimerStore;
-	export let onChordHover: (notes: Set<number>) => void = () => {};
+	let {
+		ambiance,
+		timer: timerProp,
+		onChordHover = () => {}
+	}: {
+		ambiance: Ambiance;
+		timer: typeof timer;
+		onChordHover?: (notes: Set<number>) => void;
+	} = $props();
 
-	$: progress = timer.state === 'counting'
-		? 100
-		: timer.totalSeconds > 0
-			? ((timer.totalSeconds - timer.secondsLeft) / timer.totalSeconds) * 100
-			: 0;
-
-	$: chords = formatProgression(
-		ambiance.progression,
-		ambiance.key,
-		ambiance.mode.tonalName,
-		$settingsStore.progressionNotation
+	let progress = $derived(
+		timerProp.state === 'counting'
+			? 100
+			: timerProp.totalSeconds > 0
+				? ((timerProp.totalSeconds - timerProp.secondsLeft) / timerProp.totalSeconds) * 100
+				: 0
 	);
 
-	$: chordNoteSets = ambiance.progression.map((roman) =>
-		getChordPitchClasses(ambiance.key, ambiance.mode.tonalName, roman)
+	let chords = $derived(
+		formatProgression(
+			ambiance.progression,
+			ambiance.key,
+			ambiance.mode.tonalName,
+			settings.value.progressionNotation
+		)
+	);
+
+	let chordNoteSets = $derived(
+		ambiance.progression.map((roman) =>
+			getChordPitchClasses(ambiance.key, ambiance.mode.tonalName, roman)
+		)
 	);
 </script>
 
@@ -37,21 +49,21 @@
 					<Tooltip.Trigger class="badge">
 						<span class="key">{ambiance.key}</span>
 						<span class="separator">·</span>
-						<span class="mode">{$t('mode.' + ambiance.mode.name).toUpperCase()}</span>
+						<span class="mode">{t('mode.' + ambiance.mode.name).toUpperCase()}</span>
 					</Tooltip.Trigger>
 					<Tooltip.Portal>
-						<Tooltip.Content>{$t('mood.' + ambiance.mode.mood)}</Tooltip.Content>
+						<Tooltip.Content>{t('mood.' + ambiance.mode.mood)}</Tooltip.Content>
 					</Tooltip.Portal>
 				</Tooltip.Root>
 			</Tooltip.Provider>
-			<div class="texture">{$t('texture.' + ambiance.texture)}</div>
+			<div class="texture">{t('texture.' + ambiance.texture)}</div>
 		<div class="progression-sep"></div>
 		<div
 			class="progression"
 			role="group"
 			aria-label="suggested progression"
-			on:mouseleave={() => onChordHover(new Set())}
-			on:focusout={() => onChordHover(new Set())}
+			onmouseleave={() => onChordHover(new Set())}
+			onfocusout={() => onChordHover(new Set())}
 		>
 			{#each chords as chord, i}
 				<span
@@ -59,8 +71,8 @@
 					class:tonic={i === 0}
 					role="button"
 					tabindex="0"
-					on:mouseenter={() => onChordHover(chordNoteSets[i])}
-					on:focus={() => onChordHover(chordNoteSets[i])}
+					onmouseenter={() => onChordHover(chordNoteSets[i])}
+					onfocus={() => onChordHover(chordNoteSets[i])}
 				>{chord}</span>
 				{#if i < chords.length - 1}
 					<span class="arrow" aria-hidden="true">›</span>

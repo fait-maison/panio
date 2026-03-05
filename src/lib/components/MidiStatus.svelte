@@ -1,32 +1,32 @@
 <script lang="ts">
-	import { midiStatus, midiDeviceName, midiInputList, midiPreferredDeviceId, midiStore } from '$lib/stores/midi';
-	import { t } from '$lib/i18n';
+	import { midi } from '$lib/stores/midi.svelte';
+	import { t } from '$lib/i18n.svelte';
 
-	let open = false;
+	let open = $state(false);
 </script>
 
 {#if open}
 	<!-- Transparent backdrop catches outside clicks -->
-	<div class="backdrop" on:click={() => (open = false)} role="presentation"></div>
+	<div class="backdrop" onclick={() => (open = false)} role="presentation"></div>
 {/if}
 
-<div class="midi-status" data-status={$midiStatus}>
-	<button class="trigger" on:click={() => (open = !open)} aria-expanded={open}>
+<div class="midi-status" data-status={midi.status}>
+	<button class="trigger" onclick={() => (open = !open)} aria-expanded={open}>
 		<span class="dot"></span>
 		<span class="label">
-			{$midiStatus === 'connected' ? $midiDeviceName : $t('midi.' + $midiStatus)}
+			{midi.status === 'connected' ? midi.deviceName : t('midi.' + midi.status)}
 		</span>
 		<span class="chevron" class:rotated={open}>›</span>
 	</button>
 
 	{#if open}
-		<ul class="picker" role="listbox" aria-label={$t('midi.selectDevice')}>
-			{#each $midiInputList as device (device.id)}
-				<li role="option" aria-selected={$midiPreferredDeviceId === device.id}>
+		<ul class="picker" role="listbox" aria-label={t('midi.selectDevice')}>
+			{#each midi.inputList as device (device.id)}
+				<li role="option" aria-selected={midi.preferredDeviceId === device.id}>
 					<button
 						class="device-option"
-						class:active={$midiPreferredDeviceId === device.id}
-						on:click={() => { midiStore.setPreferredDevice(device.id); open = false; }}
+						class:active={midi.preferredDeviceId === device.id}
+						onclick={() => { midi.setPreferredDevice(device.id); open = false; }}
 					>
 						<span class="device-name">{device.name}</span>
 						{#if device.manufacturer}
@@ -35,17 +35,17 @@
 					</button>
 				</li>
 			{/each}
-			{#if $midiInputList.length === 0}
-				<li class="no-devices">{$t('midi.noDevices')}</li>
+			{#if midi.inputList.length === 0}
+				<li class="no-devices">{t('midi.noDevices')}</li>
 			{/if}
-			{#if $midiPreferredDeviceId}
+			{#if midi.preferredDeviceId}
 				<li class="separator" role="separator"></li>
 				<li role="option" aria-selected={false}>
 					<button
 						class="device-option clear"
-						on:click={() => { midiStore.setPreferredDevice(null); open = false; }}
+						onclick={() => { midi.setPreferredDevice(null); open = false; }}
 					>
-						{$t('midi.clearDevice')}
+						{t('midi.clearDevice')}
 					</button>
 				</li>
 			{/if}

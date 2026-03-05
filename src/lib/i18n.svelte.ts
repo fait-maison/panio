@@ -1,5 +1,3 @@
-import { writable, derived } from 'svelte/store';
-
 export type Locale = 'en' | 'fr';
 
 const translations = {
@@ -119,12 +117,20 @@ function loadLocale(): Locale {
 	return (localStorage.getItem('piano-locale') as Locale) ?? 'fr';
 }
 
-export const localeStore = writable<Locale>(loadLocale());
-localeStore.subscribe((l) => {
-	if (typeof localStorage !== 'undefined') localStorage.setItem('piano-locale', l);
+let _locale = $state<Locale>(loadLocale());
+
+$effect.root(() => {
+	$effect(() => {
+		if (typeof localStorage !== 'undefined') localStorage.setItem('piano-locale', _locale);
+	});
 });
 
-export const t = derived(localeStore, ($locale) => (key: string): string => {
-	const dict = translations[$locale] as Record<string, string>;
+export const locale = {
+	get value() { return _locale; },
+	set(l: Locale) { _locale = l; }
+};
+
+export function t(key: string): string {
+	const dict = translations[_locale] as Record<string, string>;
 	return dict[key] ?? (translations.en as Record<string, string>)[key] ?? key;
-});
+}

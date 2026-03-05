@@ -1,4 +1,3 @@
-import { writable } from 'svelte/store';
 import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
 
 export type KeyboardSize = 's' | 'm' | 'l';
@@ -31,29 +30,18 @@ function loadSettings(): Settings {
 	}
 }
 
-function createSettingsStore() {
-	const { subscribe, set, update } = writable<Settings>(loadSettings());
+let _s = $state<Settings>(loadSettings());
 
-	function save(s: Settings) {
+$effect.root(() => {
+	$effect(() => {
 		if (typeof localStorage !== 'undefined') {
-			localStorage.setItem('piano-settings', JSON.stringify(s));
+			localStorage.setItem('piano-settings', JSON.stringify(_s));
 		}
-	}
+	});
+});
 
-	return {
-		subscribe,
-		set(s: Settings) {
-			save(s);
-			set(s);
-		},
-		update(fn: (s: Settings) => Settings) {
-			update((s) => {
-				const next = fn(s);
-				save(next);
-				return next;
-			});
-		}
-	};
-}
-
-export const settingsStore = createSettingsStore();
+export const settings = {
+	get value() { return _s; },
+	set(s: Settings) { _s = s; },
+	update(fn: (s: Settings) => Settings) { _s = fn(_s); }
+};

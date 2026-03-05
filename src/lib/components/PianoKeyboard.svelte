@@ -1,16 +1,22 @@
 <script lang="ts">
 	import { Note } from 'tonal';
-	import { settingsStore } from '$lib/stores/settings';
+	import { settings } from '$lib/stores/settings.svelte';
 	import { getScaleNotes } from '$lib/music/scale';
-	import { midiStore } from '$lib/stores/midi';
+	import { midi } from '$lib/stores/midi.svelte';
 	import type { Ambiance } from '$lib/music/generator';
 
-	export let ambiance: Ambiance;
-	export let pressedNotes: Set<number> = new Set();
-	export let hoverNotes: Set<number> = new Set();
+	let {
+		ambiance,
+		pressedNotes = new Set(),
+		hoverNotes = new Set()
+	}: {
+		ambiance: Ambiance;
+		pressedNotes?: Set<number>;
+		hoverNotes?: Set<number>;
+	} = $props();
 
-	$: scaleNotes = getScaleNotes(ambiance);
-	$: rootChroma = Note.chroma(ambiance.key) as number;
+	let scaleNotes = $derived(getScaleNotes(ambiance));
+	let rootChroma = $derived(Note.chroma(ambiance.key) as number);
 
 	// MIDI range: A0 = 21, C8 = 108
 	const MIDI_START = 21;
@@ -19,11 +25,11 @@
 
 	const SIZE_SCALES: Record<string, number> = { s: 0.65, m: 1.0, l: 1.4 };
 
-	$: scale = SIZE_SCALES[$settingsStore.keyboardSize] ?? 1.0;
-	$: WHITE_W = Math.round(28 * scale);
-	$: WHITE_H = Math.round(120 * scale);
-	$: BLACK_W = Math.round(16 * scale);
-	$: BLACK_H = Math.round(74 * scale);
+	let scale = $derived(SIZE_SCALES[settings.value.keyboardSize] ?? 1.0);
+	let WHITE_W = $derived(Math.round(28 * scale));
+	let WHITE_H = $derived(Math.round(120 * scale));
+	let BLACK_W = $derived(Math.round(16 * scale));
+	let BLACK_H = $derived(Math.round(74 * scale));
 
 	// Black key semitone positions within an octave (midi % 12): C#=1, D#=3, F#=6, G#=8, A#=10
 	const BLACK_KEY_POSITIONS = new Set([1, 3, 6, 8, 10]);
@@ -51,8 +57,8 @@
 		return { whites, blacks };
 	}
 
-	$: ({ whites, blacks } = buildKeys(WHITE_W, BLACK_W));
-	$: KEYBOARD_W = 52 * (WHITE_W + GAP) - GAP;
+	let { whites, blacks } = $derived(buildKeys(WHITE_W, BLACK_W));
+	let KEYBOARD_W = $derived(52 * (WHITE_W + GAP) - GAP);
 
 </script>
 
@@ -71,10 +77,10 @@
 				role="button"
 				tabindex="0"
 				aria-label={key.noteName}
-				on:pointerdown={() => midiStore.sendNoteOn(key.midi)}
-				on:pointerup={() => midiStore.sendNoteOff(key.midi)}
-				on:pointerleave={() => midiStore.sendNoteOff(key.midi)}
-				on:pointercancel={() => midiStore.sendNoteOff(key.midi)}
+				onpointerdown={() => midi.sendNoteOn(key.midi)}
+				onpointerup={() => midi.sendNoteOff(key.midi)}
+				onpointerleave={() => midi.sendNoteOff(key.midi)}
+				onpointercancel={() => midi.sendNoteOff(key.midi)}
 			></div>
 		{/each}
 		{#each blacks as key (key.midi)}
@@ -88,10 +94,10 @@
 				role="button"
 				tabindex="0"
 				aria-label={key.noteName}
-				on:pointerdown={() => midiStore.sendNoteOn(key.midi)}
-				on:pointerup={() => midiStore.sendNoteOff(key.midi)}
-				on:pointerleave={() => midiStore.sendNoteOff(key.midi)}
-				on:pointercancel={() => midiStore.sendNoteOff(key.midi)}
+				onpointerdown={() => midi.sendNoteOn(key.midi)}
+				onpointerup={() => midi.sendNoteOff(key.midi)}
+				onpointerleave={() => midi.sendNoteOff(key.midi)}
+				onpointercancel={() => midi.sendNoteOff(key.midi)}
 			></div>
 		{/each}
 	</div>

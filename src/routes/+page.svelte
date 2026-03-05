@@ -1,43 +1,38 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { ambianceStore } from '$lib/stores/ambiance';
-	import { timerStore } from '$lib/stores/timer';
-	import { midiStore } from '$lib/stores/midi';
-	import { t } from '$lib/i18n';
+	import { ambiance } from '$lib/stores/ambiance.svelte';
+	import { timer } from '$lib/stores/timer.svelte';
+	import { midi } from '$lib/stores/midi.svelte';
+	import { t } from '$lib/i18n.svelte';
 	import AmbianceCard from '$lib/components/AmbianceCard.svelte';
 	import PianoKeyboard from '$lib/components/PianoKeyboard.svelte';
 	import AutoadvanceToast from '$lib/components/AutoadvanceToast.svelte';
 	import SettingsPanel from '$lib/components/SettingsPanel.svelte';
 	import MidiStatus from '$lib/components/MidiStatus.svelte';
 
-	let hoveredChordNotes: Set<number> = new Set();
+	let hoveredChordNotes = $state<Set<number>>(new Set());
 	// Clear stale highlights when ambiance changes (e.g. after auto-advance)
-	$: if ($ambianceStore) hoveredChordNotes = new Set();
+	$effect(() => { ambiance.current; hoveredChordNotes = new Set(); });
 
-	onMount(() => {
-		midiStore.init();
-	});
-
-	onDestroy(() => {
-		midiStore.destroy();
-	});
+	onMount(() => midi.init());
+	onDestroy(() => midi.destroy());
 </script>
 
 <main>
-	<h1 class="app-title">{$t('app.title')}</h1>
+	<h1 class="app-title">{t('app.title')}</h1>
 	<AmbianceCard
-		ambiance={$ambianceStore}
-		timer={$timerStore}
+		ambiance={ambiance.current}
+		{timer}
 		onChordHover={(notes) => { hoveredChordNotes = notes; }}
 	/>
 	<PianoKeyboard
-		ambiance={$ambianceStore}
-		pressedNotes={$midiStore}
+		ambiance={ambiance.current}
+		pressedNotes={midi.pressedNotes}
 		hoverNotes={hoveredChordNotes}
 	/>
 </main>
 
-<AutoadvanceToast timer={$timerStore} onSnooze={() => timerStore.snooze()} />
+<AutoadvanceToast {timer} onSnooze={() => timer.snooze()} />
 <SettingsPanel />
 <MidiStatus />
 

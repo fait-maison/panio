@@ -1,10 +1,10 @@
 <script lang="ts">
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import * as ToggleGroup from '$lib/components/ui/toggle-group/index.js';
-	import { settingsStore } from '$lib/stores/settings';
-	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings';
+	import { settings } from '$lib/stores/settings.svelte';
+	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings.svelte';
 	import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
-	import { t, localeStore, type Locale } from '$lib/i18n';
+	import { t, locale, type Locale } from '$lib/i18n.svelte';
 
 	const INTERVALS: { value: number; label: string }[] = [
 		{ value: 0.25, label: '15s' },
@@ -21,7 +21,7 @@
 </script>
 
 <Sheet.Root>
-	<Sheet.Trigger class="gear-btn" aria-label={$t('settings.title')}>
+	<Sheet.Trigger class="gear-btn" aria-label={t('settings.title')}>
 		<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 			<circle cx="12" cy="12" r="3" />
 			<path
@@ -32,16 +32,16 @@
 
 	<Sheet.Content side="right" class="settings-sheet">
 		<Sheet.Header>
-			<Sheet.Title>{$t('settings.title')}</Sheet.Title>
+			<Sheet.Title>{t('settings.title')}</Sheet.Title>
 		</Sheet.Header>
 
 		<div class="sections">
 			<section>
-				<h3>{$t('settings.keyboardSize')}</h3>
+				<h3>{t('settings.keyboardSize')}</h3>
 				<ToggleGroup.Root
 					type="single"
-					value={$settingsStore.keyboardSize}
-					onValueChange={(v) => v && settingsStore.update((s) => ({ ...s, keyboardSize: v as KeyboardSize }))}
+					value={settings.value.keyboardSize}
+					onValueChange={(v) => v && settings.update((s) => ({ ...s, keyboardSize: v as KeyboardSize }))}
 					variant="outline"
 					class="w-full flex-wrap"
 				>
@@ -52,11 +52,11 @@
 			</section>
 
 			<section>
-				<h3>{$t('settings.interval')}</h3>
+				<h3>{t('settings.interval')}</h3>
 				<ToggleGroup.Root
 					type="single"
-					value={String($settingsStore.intervalMin)}
-					onValueChange={(v) => v && settingsStore.update((s) => ({ ...s, intervalMin: Number(v) }))}
+					value={String(settings.value.intervalMin)}
+					onValueChange={(v) => v && settings.update((s) => ({ ...s, intervalMin: Number(v) }))}
 					variant="outline"
 					class="w-full flex-wrap"
 				>
@@ -67,40 +67,40 @@
 			</section>
 
 			<section>
-				<h3>{$t('settings.progressionNotation')}</h3>
+				<h3>{t('settings.progressionNotation')}</h3>
 				<ToggleGroup.Root
 					type="single"
-					value={$settingsStore.progressionNotation}
-					onValueChange={(v) => v && settingsStore.update((s) => ({ ...s, progressionNotation: v as ProgressionNotation }))}
+					value={settings.value.progressionNotation}
+					onValueChange={(v) => v && settings.update((s) => ({ ...s, progressionNotation: v as ProgressionNotation }))}
 					variant="outline"
 					class="w-full flex-wrap"
 				>
-					<ToggleGroup.Item value="chord">{$t('settings.notation.chord')}</ToggleGroup.Item>
-					<ToggleGroup.Item value="roman">{$t('settings.notation.roman')}</ToggleGroup.Item>
+					<ToggleGroup.Item value="chord">{t('settings.notation.chord')}</ToggleGroup.Item>
+					<ToggleGroup.Item value="roman">{t('settings.notation.roman')}</ToggleGroup.Item>
 				</ToggleGroup.Root>
 			</section>
 
 			<section>
-				<h3>{$t('settings.modes')}</h3>
+				<h3>{t('settings.modes')}</h3>
 				<ToggleGroup.Root
 					type="multiple"
-					value={$settingsStore.modePool}
-					onValueChange={(v) => v.length > 0 && settingsStore.update((s) => ({ ...s, modePool: v }))}
+					value={settings.value.modePool}
+					onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, modePool: v }))}
 					variant="outline"
 					class="w-full flex-wrap"
 				>
 					{#each ALL_MODE_NAMES as mode}
-						<ToggleGroup.Item value={mode}>{$t('mode.' + mode)}</ToggleGroup.Item>
+						<ToggleGroup.Item value={mode}>{t('mode.' + mode)}</ToggleGroup.Item>
 					{/each}
 				</ToggleGroup.Root>
 			</section>
 
 			<section>
-				<h3>{$t('settings.keys')}</h3>
+				<h3>{t('settings.keys')}</h3>
 				<ToggleGroup.Root
 					type="multiple"
-					value={$settingsStore.keyPool}
-					onValueChange={(v) => v.length > 0 && settingsStore.update((s) => ({ ...s, keyPool: v }))}
+					value={settings.value.keyPool}
+					onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, keyPool: v }))}
 					variant="outline"
 					class="w-full flex-wrap"
 				>
@@ -111,11 +111,11 @@
 			</section>
 
 			<section>
-				<h3>{$t('settings.language')}</h3>
+				<h3>{t('settings.language')}</h3>
 				<ToggleGroup.Root
 					type="single"
-					value={$localeStore}
-					onValueChange={(v) => v && localeStore.set(v as Locale)}
+					value={locale.value}
+					onValueChange={(v) => v && locale.set(v as Locale)}
 					variant="outline"
 					class="w-full flex-wrap"
 				>
