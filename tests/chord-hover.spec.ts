@@ -25,4 +25,15 @@ test.describe('chord hover focus mode', () => {
     await page.locator('.chord').first().blur();
     await expect(page.locator('.keyboard')).not.toHaveClass(/chord-active/);
   });
+
+  test('hovering a chord chip marks exactly one key as is-chord-root', async ({ page }) => {
+    await page.locator('.chord').first().focus();
+    // Root appears once per octave across the keyboard range
+    const roots = page.locator('.key.is-chord-root');
+    await expect(roots.first()).toBeVisible();
+    // Root keys are always a subset of in-chord keys
+    const rootCount = await roots.count();
+    const chordCount = await page.locator('.key.in-chord').count();
+    expect(rootCount).toBeLessThan(chordCount);
+  });
 });

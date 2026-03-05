@@ -27,7 +27,12 @@ export function generateAmbiance(
 	const resolvedKeys = keyPool.length > 0 ? keyPool : KEYS;
 	const resolvedDifficulties = difficultyPool.length > 0 ? difficultyPool : (['simple'] as Difficulty[]);
 
-	const mode = pickRandom(resolvedModes, previous?.mode);
+	// Compare modes by name — $state wraps objects in Proxy, breaking reference equality
+	const prevModeName = previous?.mode.name;
+	const modeCandidates = prevModeName ? resolvedModes.filter((m) => m.name !== prevModeName) : resolvedModes;
+	const modePool2 = modeCandidates.length > 0 ? modeCandidates : resolvedModes;
+	const mode = modePool2[Math.floor(Math.random() * modePool2.length)];
+
 	const key = pickRandom(resolvedKeys, previous?.key);
 	const texture = pickRandom(TEXTURES, previous?.texture);
 	const difficulty = pickRandom(resolvedDifficulties);
