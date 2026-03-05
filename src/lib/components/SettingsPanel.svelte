@@ -1,11 +1,12 @@
 <script lang="ts">
-	import SettingsIcon from '@lucide/svelte/icons/settings';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import * as ToggleGroup from '$lib/components/ui/toggle-group/index.js';
 	import { settings } from '$lib/stores/settings.svelte';
 	import type { KeyboardSize, ProgressionNotation, Difficulty } from '$lib/stores/settings.svelte';
 	import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
 	import { t, locale, type Locale } from '$lib/i18n.svelte';
+
+	let { open = $bindable(false) }: { open?: boolean } = $props();
 
 	const INTERVALS: { value: number; label: string }[] = [
 		{ value: 0.25, label: '15s' },
@@ -21,11 +22,7 @@
 	];
 </script>
 
-<Sheet.Root>
-	<Sheet.Trigger class="gear-btn" aria-label={t('settings.title')}>
-		<SettingsIcon size={22} />
-	</Sheet.Trigger>
-
+<Sheet.Root bind:open>
 	<Sheet.Content side="right" class="settings-sheet">
 		<Sheet.Header>
 			<Sheet.Title>{t('settings.title')}</Sheet.Title>
@@ -161,28 +158,6 @@
 </Sheet.Root>
 
 <style>
-	/* Gear trigger — Sheet.Trigger is the button itself */
-	:global(.gear-btn) {
-		position: fixed;
-		top: var(--sp-4);
-		right: var(--sp-4);
-		background: var(--surface);
-		border: 1px solid var(--border-key);
-		border-radius: 50%;
-		width: 44px;
-		height: 44px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--text-muted);
-		z-index: var(--z-drawer);
-		transition: color var(--dur-base);
-	}
-
-	:global(.gear-btn:hover) {
-		color: var(--text);
-	}
-
 	/* Panel layout */
 	.sections {
 		display: flex;
