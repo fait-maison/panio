@@ -10,11 +10,13 @@
 	let {
 		ambiance,
 		timer: timerProp,
-		onChordHover = () => {}
+		onChordHover = () => {},
+		onSkip = () => {}
 	}: {
 		ambiance: Ambiance;
 		timer: typeof timer;
 		onChordHover?: (notes: Set<number>) => void;
+		onSkip?: () => void;
 	} = $props();
 
 	let progress = $derived(
@@ -44,6 +46,12 @@
 <Card.Root class="ambiance-card">
 	<Card.Content class="p-0">
 		<div class="card-content">
+		<button class="skip-btn" onclick={onSkip} aria-label="Next ambiance">
+			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<polygon points="5 4 15 12 5 20 5 4"/>
+				<line x1="19" y1="5" x2="19" y2="19"/>
+			</svg>
+		</button>
 			<Tooltip.Provider>
 				<Tooltip.Root>
 					<Tooltip.Trigger class="badge">
@@ -93,14 +101,36 @@
 		gap: 0;
 		padding: 0;
 		box-shadow: var(--shadow-card);
+		min-width: 430px;
 	}
 
 	.card-content {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: var(--sp-2);
 		padding: var(--sp-8) var(--sp-6) var(--sp-6);
+	}
+
+	.skip-btn {
+		position: absolute;
+		bottom: var(--sp-3);
+		right: var(--sp-3);
+		background: none;
+		border: none;
+		padding: var(--sp-1);
+		color: var(--text-muted);
+		cursor: pointer;
+		border-radius: var(--radius);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: color var(--dur-base);
+	}
+
+	.skip-btn:hover {
+		color: var(--text);
 	}
 
 	:global(.badge) {
@@ -148,7 +178,7 @@
 		display: flex;
 		align-items: center;
 		gap: var(--sp-2);
-		font-size: 0.8rem;
+		font-size: 1rem;
 		font-weight: 600;
 		letter-spacing: 0.06em;
 		white-space: nowrap;

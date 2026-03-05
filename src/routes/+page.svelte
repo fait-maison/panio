@@ -4,6 +4,11 @@
 	import { timer } from '$lib/stores/timer.svelte';
 	import { midi } from '$lib/stores/midi.svelte';
 	import { t } from '$lib/i18n.svelte';
+
+	function skipAmbiance() {
+		ambiance.next();
+		timer.restart();
+	}
 	import AmbianceCard from '$lib/components/AmbianceCard.svelte';
 	import PianoKeyboard from '$lib/components/PianoKeyboard.svelte';
 	import AutoadvanceToast from '$lib/components/AutoadvanceToast.svelte';
@@ -24,6 +29,7 @@
 		ambiance={ambiance.current}
 		{timer}
 		onChordHover={(notes) => { hoveredChordNotes = notes; }}
+		onSkip={skipAmbiance}
 	/>
 	<PianoKeyboard
 		ambiance={ambiance.current}
@@ -54,4 +60,5 @@
 		color: var(--text-muted);
 		margin: 0;
 	}
+
 </style>

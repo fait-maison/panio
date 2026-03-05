@@ -125,9 +125,9 @@
 		left: 0;
 		min-width: 200px;
 		max-width: 280px;
-		background: var(--background, #fff);
-		border: 1px solid var(--border-subtle, #eee);
-		border-radius: var(--radius, 6px);
+		background: var(--surface);
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius);
 		box-shadow: var(--shadow-card);
 		padding: var(--sp-1) 0;
 		list-style: none;
@@ -160,7 +160,7 @@
 	}
 
 	.device-option.active {
-		color: var(--foreground, #1a1a1a);
+		color: var(--text);
 		font-weight: 600;
 		padding-left: calc(var(--sp-2) + 6px + var(--sp-2));
 		position: relative;
@@ -172,7 +172,7 @@
 		width: 6px;
 		height: 6px;
 		border-radius: 50%;
-		background: var(--primary, #cc2936);
+		background: var(--red);
 		position: absolute;
 		left: var(--sp-2);
 		top: calc(var(--sp-2) + 4px);
@@ -200,7 +200,7 @@
 
 	.separator {
 		height: 1px;
-		background: var(--border-subtle, #eee);
+		background: var(--border-subtle);
 		margin: var(--sp-1) 0;
 	}
 
@@ -210,7 +210,7 @@
 	}
 
 	.device-option.clear:hover {
-		color: var(--primary, #cc2936);
+		color: var(--red);
 		background: oklch(96% 0 0);
 	}
 </style>
