@@ -4,6 +4,7 @@
 	import { settings } from '$lib/stores/settings.svelte';
 	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings.svelte';
 	import { t, locale, type Locale } from '$lib/i18n.svelte';
+	import { exercise } from '$lib/stores/exercise.svelte';
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 
@@ -33,14 +34,24 @@
 				<h3>{t('sidebar.exercises')}</h3>
 				<ul class="exercise-list">
 					{#each exercises as ex}
-						<li class="exercise-item" class:active={ex.active} class:disabled={!ex.active}>
-							<div class="exercise-info">
-								<span class="exercise-name">{t('exercise.' + ex.key)}</span>
-								<span class="exercise-desc">{t('exercise.' + ex.key + '.desc')}</span>
-							</div>
-							{#if !ex.active}
-								<span class="badge-soon">{t('badge.soon')}</span>
-							{/if}
+						<li
+							class="exercise-item"
+							class:active={ex.active && exercise.current === ex.key}
+							class:disabled={!ex.active}
+						>
+							<button
+								class="exercise-btn"
+								disabled={!ex.active}
+								onclick={() => { exercise.set(ex.key); open = false; }}
+							>
+								<div class="exercise-info">
+									<span class="exercise-name">{t('exercise.' + ex.key)}</span>
+									<span class="exercise-desc">{t('exercise.' + ex.key + '.desc')}</span>
+								</div>
+								{#if !ex.active}
+									<span class="badge-soon">{t('badge.soon')}</span>
+								{/if}
+							</button>
 						</li>
 					{/each}
 				</ul>
@@ -156,20 +167,34 @@
 	}
 
 	.exercise-item {
+		list-style: none;
+	}
+
+	.exercise-btn {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		width: 100%;
 		padding: var(--sp-2) var(--sp-3);
 		border-radius: 8px;
-		cursor: default;
+		border: none;
+		background: none;
+		cursor: pointer;
+		text-align: left;
+		transition: background var(--dur-base);
 	}
 
-	.exercise-item.active {
+	.exercise-btn:hover:not(:disabled) {
+		background: rgba(0, 0, 0, 0.04);
+	}
+
+	.exercise-item.active .exercise-btn {
 		background: rgba(0, 0, 0, 0.05);
 	}
 
-	.exercise-item.disabled {
+	.exercise-btn:disabled {
 		opacity: 0.5;
+		cursor: not-allowed;
 	}
 
 	.exercise-info {

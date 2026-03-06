@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { enterSandbox } from './helpers';
 
 // All tests in this file use a 15s interval — needs extended timeout
 test.describe('autoadvance toast', () => {
@@ -8,7 +9,7 @@ test.describe('autoadvance toast', () => {
       // 0.25 min = 15s interval
       localStorage.setItem('piano-settings', JSON.stringify({ intervalMin: 0.25 }));
     });
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await enterSandbox(page);
   });
 
   test('toast appears after interval expires', async ({ page }) => {
@@ -34,7 +35,6 @@ test.describe('autoadvance toast', () => {
     test.setTimeout(60_000);
     const modeBefore = await page.locator('.mode').textContent();
     await expect(page.locator('.toast')).toBeVisible({ timeout: 25_000 });
-    // Wait for 5s countdown to expire and new ambiance to load
     await expect(page.locator('.mode')).not.toHaveText(modeBefore ?? '', { timeout: 20_000 });
     await expect(page.locator('.toast')).not.toBeVisible();
   });

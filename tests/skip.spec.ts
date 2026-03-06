@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { enterSandbox } from './helpers';
 
 test.describe('skip button', () => {
   test.beforeEach(async ({ page }) => {
@@ -6,20 +7,18 @@ test.describe('skip button', () => {
       localStorage.setItem('piano-locale', 'en');
       localStorage.removeItem('piano-settings');
     });
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await enterSandbox(page);
   });
 
   test('changes the mode after skip', async ({ page }) => {
     const modeBefore = await page.locator('.mode').textContent();
     await page.getByRole('button', { name: 'Next ambiance' }).click();
-    // Generator always excludes the previous mode — guaranteed to change
     await expect(page.locator('.mode')).not.toHaveText(modeBefore ?? '');
   });
 
   test('changes the key after skip', async ({ page }) => {
     const keyBefore = await page.locator('.badge .key').textContent();
     await page.getByRole('button', { name: 'Next ambiance' }).click();
-    // Generator always excludes the previous key — guaranteed to change
     await expect(page.locator('.badge .key')).not.toHaveText(keyBefore ?? '');
   });
 

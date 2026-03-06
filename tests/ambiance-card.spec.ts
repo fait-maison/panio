@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { enterSandbox } from './helpers';
 
 test.describe('ambiance card', () => {
   test.beforeEach(async ({ page }) => {
@@ -6,7 +7,7 @@ test.describe('ambiance card', () => {
       localStorage.setItem('piano-locale', 'en');
       localStorage.removeItem('piano-settings');
     });
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await enterSandbox(page);
   });
 
   test('shows key, mode, texture and chord chips on load', async ({ page }) => {
