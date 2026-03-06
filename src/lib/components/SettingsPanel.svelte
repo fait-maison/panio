@@ -121,13 +121,11 @@
 				</ToggleGroup.Root>
 			</section>
 
-			<hr class="sep" />
-
-			<section class="midi-section">
-				<h3>MIDI</h3>
-				<MidiStatus />
-			</section>
 		</div>
+
+		<section class="midi-section">
+			<MidiStatus />
+		</section>
 	</Sheet.Content>
 </Sheet.Root>
 
@@ -140,6 +138,8 @@
 		padding: var(--sp-4);
 		overflow-x: hidden;
 		overflow-y: auto;
+		flex: 1 1 auto;
+		min-height: 0;
 	}
 
 	section {
@@ -228,14 +228,20 @@
 		border-radius: var(--radius-pill);
 	}
 
-	/* Override MidiStatus fixed positioning when inside sidebar */
-	.midi-section :global(.midi-status) {
-		position: relative;
+	/* Pin MIDI section to bottom of sidebar */
+	.midi-section {
+		margin-top: auto;
+		padding: var(--sp-4);
+		border-top: 1px solid var(--border-subtle);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
-	.midi-section :global(.picker) {
+	.midi-section :global(.midi-status) {
+		position: relative;
 		bottom: auto;
-		top: calc(100% + var(--sp-2));
+		left: auto;
 	}
 
 	:global([data-lock-active] [data-state='on']) {
