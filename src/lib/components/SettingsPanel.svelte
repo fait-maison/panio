@@ -2,33 +2,79 @@
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import * as ToggleGroup from '$lib/components/ui/toggle-group/index.js';
 	import { settings } from '$lib/stores/settings.svelte';
-	import type { KeyboardSize, ProgressionNotation, Difficulty } from '$lib/stores/settings.svelte';
-	import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
+	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings.svelte';
 	import { t, locale, type Locale } from '$lib/i18n.svelte';
+	import { exercise } from '$lib/stores/exercise.svelte';
+	import { EXERCISES } from '$lib/exercises';
+	import MidiStatus from '$lib/components/MidiStatus.svelte';
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 
-	const INTERVALS: { value: number; label: string }[] = [
-		{ value: 0.25, label: '15s' },
-		{ value: 1, label: '1 min' },
-		{ value: 3, label: '3 min' },
-		{ value: 5, label: '5 min' },
-		{ value: 10, label: '10 min' }
-	];
 	const KEYBOARD_SIZES: { value: KeyboardSize; label: string }[] = [
 		{ value: 's', label: 'S' },
 		{ value: 'm', label: 'M' },
 		{ value: 'l', label: 'L' }
 	];
+
 </script>
 
 <Sheet.Root bind:open>
-	<Sheet.Content side="right" class="settings-sheet">
+	<Sheet.Content side="left" class="sidebar-sheet">
 		<Sheet.Header>
-			<Sheet.Title>{t('settings.title')}</Sheet.Title>
+			<Sheet.Title class="sr-only">{t('nav.menu')}</Sheet.Title>
 		</Sheet.Header>
 
 		<div class="sections">
+			<!-- Exercise navigation -->
+			<section>
+				<h3>{t('sidebar.exercises')}</h3>
+				<ul class="exercise-list">
+					{#each EXERCISES as ex}
+						<li
+							class="exercise-item"
+							class:active={ex.active && exercise.current === ex.key}
+							class:disabled={!ex.active}
+						>
+							<button
+								class="exercise-btn"
+								disabled={!ex.active}
+								onclick={() => { exercise.set(ex.key); open = false; }}
+							>
+								<div class="exercise-info">
+									<span class="exercise-name">{t('exercise.' + ex.key)}</span>
+									<span class="exercise-desc">{t('exercise.' + ex.key + '.desc')}</span>
+								</div>
+								{#if !ex.active}
+									<span class="badge-soon">{t('badge.soon')}</span>
+								{/if}
+							</button>
+						</li>
+					{/each}
+				</ul>
+			</section>
+
+			<hr class="sep" />
+
+			<!-- Global settings -->
+			<section>
+				<h3>{t('sidebar.settings')}</h3>
+			</section>
+
+			<section>
+				<h3>{t('settings.language')}</h3>
+				<ToggleGroup.Root
+					type="single"
+					value={locale.value}
+					onValueChange={(v) => v && locale.set(v as Locale)}
+					variant="outline"
+					class="w-full flex-wrap"
+					data-lock-active
+				>
+					<ToggleGroup.Item value="fr">FR</ToggleGroup.Item>
+					<ToggleGroup.Item value="en">EN</ToggleGroup.Item>
+				</ToggleGroup.Root>
+			</section>
+
 			<section>
 				<h3>{t('settings.keyboardSize')}</h3>
 				<ToggleGroup.Root
@@ -61,38 +107,6 @@
 			</section>
 
 			<section>
-				<h3>{t('settings.difficulty')}</h3>
-				<ToggleGroup.Root
-					type="multiple"
-					value={settings.value.difficultyPool}
-					onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, difficultyPool: v as Difficulty[] }))}
-					variant="outline"
-					class="w-full flex-wrap"
-					data-lock-active={settings.value.difficultyPool.length === 1 ? '' : undefined}
-				>
-					{#each (['simple', 'rich', 'complex'] as const) as d}
-						<ToggleGroup.Item value={d}>{t('settings.difficulty.' + d)}</ToggleGroup.Item>
-					{/each}
-				</ToggleGroup.Root>
-			</section>
-
-			<section>
-				<h3>{t('settings.interval')}</h3>
-				<ToggleGroup.Root
-					type="single"
-					value={String(settings.value.intervalMin)}
-					onValueChange={(v) => v && settings.update((s) => ({ ...s, intervalMin: Number(v) }))}
-					variant="outline"
-					class="w-full flex-wrap"
-					data-lock-active
-				>
-					{#each INTERVALS as interval}
-						<ToggleGroup.Item value={String(interval.value)}>{interval.label}</ToggleGroup.Item>
-					{/each}
-				</ToggleGroup.Root>
-			</section>
-
-			<section>
 				<h3>{t('settings.progressionNotation')}</h3>
 				<ToggleGroup.Root
 					type="single"
@@ -107,51 +121,11 @@
 				</ToggleGroup.Root>
 			</section>
 
-			<section>
-				<h3>{t('settings.modes')}</h3>
-				<ToggleGroup.Root
-					type="multiple"
-					value={settings.value.modePool}
-					onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, modePool: v }))}
-					variant="outline"
-					class="w-full flex-wrap"
-					data-lock-active={settings.value.modePool.length === 1 ? '' : undefined}
-				>
-					{#each ALL_MODE_NAMES as mode}
-						<ToggleGroup.Item value={mode}>{t('mode.' + mode)}</ToggleGroup.Item>
-					{/each}
-				</ToggleGroup.Root>
-			</section>
+			<hr class="sep" />
 
-			<section>
-				<h3>{t('settings.keys')}</h3>
-				<ToggleGroup.Root
-					type="multiple"
-					value={settings.value.keyPool}
-					onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, keyPool: v }))}
-					variant="outline"
-					class="w-full flex-wrap"
-					data-lock-active={settings.value.keyPool.length === 1 ? '' : undefined}
-				>
-					{#each KEYS as key}
-						<ToggleGroup.Item value={key}>{key}</ToggleGroup.Item>
-					{/each}
-				</ToggleGroup.Root>
-			</section>
-
-			<section>
-				<h3>{t('settings.language')}</h3>
-				<ToggleGroup.Root
-					type="single"
-					value={locale.value}
-					onValueChange={(v) => v && locale.set(v as Locale)}
-					variant="outline"
-					class="w-full flex-wrap"
-					data-lock-active
-				>
-					<ToggleGroup.Item value="fr">FR</ToggleGroup.Item>
-					<ToggleGroup.Item value="en">EN</ToggleGroup.Item>
-				</ToggleGroup.Root>
+			<section class="midi-section">
+				<h3>MIDI</h3>
+				<MidiStatus />
 			</section>
 		</div>
 	</Sheet.Content>
@@ -181,8 +155,90 @@
 		color: var(--text-muted);
 	}
 
+	.sep {
+		border: none;
+		height: 1px;
+		background: var(--border-subtle);
+	}
+
+	/* Exercise list */
+	.exercise-list {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: var(--sp-1);
+	}
+
+	.exercise-item {
+		list-style: none;
+	}
+
+	.exercise-btn {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		padding: var(--sp-2) var(--sp-3);
+		border-radius: 8px;
+		border: none;
+		background: none;
+		cursor: pointer;
+		text-align: left;
+		transition: background var(--dur-base);
+	}
+
+	.exercise-btn:hover:not(:disabled) {
+		background: rgba(0, 0, 0, 0.04);
+	}
+
+	.exercise-item.active .exercise-btn {
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+	.exercise-btn:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.exercise-info {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.exercise-name {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	.exercise-desc {
+		font-size: 0.75rem;
+		color: var(--text-muted);
+	}
+
+	.badge-soon {
+		font-size: 0.65rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--text-muted);
+		background: rgba(0, 0, 0, 0.06);
+		padding: 2px 8px;
+		border-radius: var(--radius-pill);
+	}
+
+	/* Override MidiStatus fixed positioning when inside sidebar */
+	.midi-section :global(.midi-status) {
+		position: relative;
+	}
+
+	.midi-section :global(.picker) {
+		bottom: auto;
+		top: calc(100% + var(--sp-2));
+	}
+
 	:global([data-lock-active] [data-state='on']) {
 		pointer-events: none;
 	}
 </style>
-

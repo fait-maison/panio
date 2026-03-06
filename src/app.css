@@ -43,7 +43,7 @@
   --bg: #F7F4EF;
   --surface: #FFFFFF;
   --text: #1A1A1A;
-  --text-muted: #888888;
+  --text-muted: #8A8078;
   --red: #CC2936;
   --blue: #1D4ED8;
   --key-white: #FFFFFF;
@@ -54,6 +54,7 @@
   --key-chord-white: #FECACA;   /* red-200, brighter */
   --key-chord-black: #EF4444;   /* red-500 — bright on black keys */
   --font: 'Inter', system-ui, sans-serif;
+  --font-display: 'DM Serif Display', Georgia, serif;
 
   /* ── Custom tokens ── */
   /* spacing */
@@ -64,12 +65,16 @@
   --z-keys: 1;  --z-fab: 50;  --z-overlay: 60;  --z-drawer: 70;  --z-toast: 100;
 
   /* shadows */
-  --shadow-card:  0 2px 12px rgba(0, 0, 0, 0.06);
+  --shadow-card:  0 8px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-card-hover: 0 12px 48px rgba(0,0,0,0.14), 0 4px 12px rgba(0,0,0,0.06);
   --shadow-toast: 0 4px 24px rgba(0, 0, 0, 0.12);
 
+  /* card */
+  --radius-card: 14px;
+
   /* borders & overlays */
-  --border-key:    #ccc;              /* piano white key border */
-  --border-subtle: #eee;              /* progress bar track */
+  --border-key:    #E8E0D4;           /* piano white key border */
+  --border-subtle: #E8E0D4;           /* progress bar track */
   --backdrop:      rgba(0, 0, 0, 0.3);
 
   /* border-radius variants */
