@@ -38,8 +38,10 @@
 
 	onDestroy(() => {
 		midi.destroy();
-		wakeLock?.release();
-		document.removeEventListener('visibilitychange', onVisibilityChange);
+		if (typeof document !== 'undefined') {
+			wakeLock?.release();
+			document.removeEventListener('visibilitychange', onVisibilityChange);
+		}
 	});
 </script>
 
