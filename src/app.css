@@ -180,6 +180,11 @@
   }
 }
 
+/* ToggleGroup lock: prevent deselecting the last active item */
+:global([data-lock-active] [data-state='on']) {
+	pointer-events: none;
+}
+
 /* Soften toggle active state: light red bg + red text instead of solid red */
 [data-slot="toggle-group-item"][data-state="on"] {
   background: oklch(0.529 0.2 23 / 12%) !important;

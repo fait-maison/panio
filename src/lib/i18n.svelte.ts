@@ -4,7 +4,6 @@ const translations = {
 	en: {
 		// app
 		'app.title': 'Panio',
-		'nav.sandbox': 'Sandbox',
 		'nav.menu': 'Menu',
 		// sidebar
 		'sidebar.exercises': 'Exercises',
@@ -87,7 +86,6 @@ const translations = {
 	},
 	fr: {
 		'app.title': 'Panio',
-		'nav.sandbox': 'Sandbox',
 		'nav.menu': 'Menu',
 		'sidebar.exercises': 'Exercices',
 		'sidebar.settings': 'Paramètres',

@@ -157,15 +157,6 @@ This ensures code stays aligned with current library versions, not outdated trai
 - **bits-ui roles:** `type="single"` → `role="radio"`, `type="multiple"` → implicit `button`.
 - **Persistence tests** need their own `test.describe` with dedicated `addInitScript`.
 
-## Known Tech Debt
-
-- `mode-watcher` dep is unused (no dark mode) — remove and hard-code `theme="light"` in sonner.svelte
-- `@internationalized/date` devDep is never imported — safe to remove
-- `nav.sandbox` i18n key defined but never used
-- `data-lock-active` CSS rule duplicated in SettingsPanel + AmbianceCard — should be in app.css
-- `timer.svelte.ts` calls `startInterval()` at module load with no browser guard
-- Build-time deps (`tailwind-variants`, `tw-animate-css`, `tailwind-merge`, `clsx`) in `dependencies` instead of `devDependencies`
-
 ## App name
 
 **Panio** — intentional spelling, not a typo.

@@ -17,34 +17,16 @@ importers:
       bits-ui:
         specifier: ^2.16.3
         version: 2.16.3(@internationalized/date@3.12.0)(@sveltejs/kit@2.53.4(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.53.7)(vite@5.4.21(lightningcss@1.31.1)))(svelte@5.53.7)(typescript@5.9.3)(vite@5.4.21(lightningcss@1.31.1)))(svelte@5.53.7)
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      mode-watcher:
-        specifier: ^1.1.0
-        version: 1.1.0(svelte@5.53.7)
       soundfont-player:
         specifier: ^0.12.0
         version: 0.12.0
       svelte-sonner:
         specifier: ^1.0.7
         version: 1.0.8(svelte@5.53.7)
-      tailwind-merge:
-        specifier: ^3.4.0
-        version: 3.5.0
-      tailwind-variants:
-        specifier: ^3.2.2
-        version: 3.2.2(tailwind-merge@3.5.0)(tailwindcss@4.2.1)
       tonal:
         specifier: ^6.0.0
         version: 6.4.3
-      tw-animate-css:
-        specifier: ^1.4.0
-        version: 1.4.0
     devDependencies:
-      '@internationalized/date':
-        specifier: ^3.12.0
-        version: 3.12.0
       '@playwright/test':
         specifier: ^1.58.2
         version: 1.58.2
@@ -63,18 +45,30 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^4.0.18
         version: 4.0.18(vitest@4.0.18(jiti@2.6.1)(lightningcss@1.31.1))
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       svelte:
         specifier: ^5.53.7
         version: 5.53.7
       svelte-check:
         specifier: ^4.4.4
         version: 4.4.4(picomatch@4.0.3)(svelte@5.53.7)(typescript@5.9.3)
+      tailwind-merge:
+        specifier: ^3.5.0
+        version: 3.5.0
+      tailwind-variants:
+        specifier: ^3.2.2
+        version: 3.2.2(tailwind-merge@3.5.0)(tailwindcss@4.2.1)
       tailwindcss:
         specifier: ^4.2.1
         version: 4.2.1
       tslib:
         specifier: ^2.4.1
         version: 2.8.1
+      tw-animate-css:
+        specifier: ^1.4.0
+        version: 1.4.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -1113,11 +1107,6 @@ packages:
   midimessage@1.0.5:
     resolution: {integrity: sha512-MPJ2tDupFOfZB5/PLp8fri1IS4fd9hPj0Bio//FBhWRQ+TsJA7/49CF1aJyraDxa0Jq8zMHAwrwXl2GINvLvgw==}
 
-  mode-watcher@1.1.0:
-    resolution: {integrity: sha512-mUT9RRGPDYenk59qJauN1rhsIMKBmWA3xMF+uRwE8MW/tjhaDSCCARqkSuDTq8vr4/2KcAxIGVjACxTjdk5C3g==}
-    peerDependencies:
-      svelte: ^5.27.0
-
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
@@ -1175,16 +1164,6 @@ packages:
     resolution: {integrity: sha512-2oMpl67a3zCH9H79LeMcbDhXW/UmWG/y2zuqnF2jQq5uq9TbM9TVyXvA4+t+ne2IIkBdrLpAaRQAvo7YI/Yyeg==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
-
-  runed@0.23.4:
-    resolution: {integrity: sha512-9q8oUiBYeXIDLWNK5DfCWlkL0EW3oGbk845VdKlPeia28l751VpfesaB/+7pI6rnbx1I6rqoZ2fZxptOJLxILA==}
-    peerDependencies:
-      svelte: ^5.7.0
-
-  runed@0.25.0:
-    resolution: {integrity: sha512-7+ma4AG9FT2sWQEA0Egf6mb7PBT2vHyuHail1ie8ropfSjvZGtEAx8YTmUjv/APCsdRRxEVvArNjALk9zFSOrg==}
-    peerDependencies:
-      svelte: ^5.7.0
 
   runed@0.28.0:
     resolution: {integrity: sha512-k2xx7RuO9hWcdd9f+8JoBeqWtYrm5CALfgpkg2YDB80ds/QE4w0qqu34A7fqiAwiBBSBQOid7TLxwxVC27ymWQ==}
@@ -1260,12 +1239,6 @@ packages:
     engines: {node: '>=18', pnpm: '>=8.7.0'}
     peerDependencies:
       svelte: ^5.30.2
-
-  svelte-toolbelt@0.7.1:
-    resolution: {integrity: sha512-HcBOcR17Vx9bjaOceUvxkY3nGmbBmCBBbuWLLEWO6jtmWH8f/QoWmbyUfQZrpDINH39en1b8mptfPQT9VKQ1xQ==}
-    engines: {node: '>=18', pnpm: '>=8.7.0'}
-    peerDependencies:
-      svelte: ^5.0.0
 
   svelte@5.53.7:
     resolution: {integrity: sha512-uxck1KI7JWtlfP3H6HOWi/94soAl23jsGJkBzN2BAWcQng0+lTrRNhxActFqORgnO9BHVd1hKJhG+ljRuIUWfQ==}
@@ -2311,12 +2284,6 @@ snapshots:
 
   midimessage@1.0.5: {}
 
-  mode-watcher@1.1.0(svelte@5.53.7):
-    dependencies:
-      runed: 0.25.0(svelte@5.53.7)
-      svelte: 5.53.7
-      svelte-toolbelt: 0.7.1(svelte@5.53.7)
-
   mri@1.2.0: {}
 
   mrmime@2.0.1: {}
@@ -2383,16 +2350,6 @@ snapshots:
       '@rollup/rollup-win32-x64-gnu': 4.59.0
       '@rollup/rollup-win32-x64-msvc': 4.59.0
       fsevents: 2.3.3
-
-  runed@0.23.4(svelte@5.53.7):
-    dependencies:
-      esm-env: 1.2.2
-      svelte: 5.53.7
-
-  runed@0.25.0(svelte@5.53.7):
-    dependencies:
-      esm-env: 1.2.2
-      svelte: 5.53.7
 
   runed@0.28.0(svelte@5.53.7):
     dependencies:
@@ -2475,13 +2432,6 @@ snapshots:
       svelte: 5.53.7
     transitivePeerDependencies:
       - '@sveltejs/kit'
-
-  svelte-toolbelt@0.7.1(svelte@5.53.7):
-    dependencies:
-      clsx: 2.1.1
-      runed: 0.23.4(svelte@5.53.7)
-      style-to-object: 1.0.14
-      svelte: 5.53.7
 
   svelte@5.53.7:
     dependencies:

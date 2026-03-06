@@ -59,8 +59,8 @@ function snooze() {
 	startInterval();
 }
 
-// Auto-start on module load
-startInterval();
+// Auto-start on module load (guard for SSR)
+if (typeof window !== 'undefined') startInterval();
 
 // Restart when interval setting changes (untrack _t to avoid re-running every tick)
 $effect.root(() => {

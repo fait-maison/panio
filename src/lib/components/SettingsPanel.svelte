@@ -245,7 +245,4 @@
 		left: auto;
 	}
 
-	:global([data-lock-active] [data-state='on']) {
-		pointer-events: none;
-	}
 </style>

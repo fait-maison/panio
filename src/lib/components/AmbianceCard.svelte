@@ -412,10 +412,6 @@
 		font-weight: 500;
 	}
 
-	:global([data-lock-active] [data-state='on']) {
-		pointer-events: none;
-	}
-
 	.progress-bar {
 		height: var(--progress-h);
 		background: var(--border-subtle);
