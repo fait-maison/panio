@@ -5,6 +5,7 @@
 	import { midi } from '$lib/stores/midi.svelte';
 	import { exercise } from '$lib/stores/exercise.svelte';
 	import { t } from '$lib/i18n.svelte';
+	import { EXERCISES } from '$lib/exercises';
 
 	import AmbianceCard from '$lib/components/AmbianceCard.svelte';
 	import PianoKeyboard from '$lib/components/PianoKeyboard.svelte';
@@ -22,12 +23,6 @@
 	onMount(() => midi.init());
 	onDestroy(() => midi.destroy());
 
-	const exercises = [
-		{ key: 'sandbox', active: true },
-		{ key: 'scenes', active: false },
-		{ key: 'ear', active: false },
-		{ key: 'rhythm', active: false }
-	] as const;
 </script>
 
 {#if exercise.current === null}
@@ -38,7 +33,7 @@
 			<p>{t('landing.subtitle')}</p>
 		</div>
 		<div class="exercise-grid">
-			{#each exercises as ex}
+			{#each EXERCISES as ex}
 				<button
 					class="exercise-card"
 					class:disabled={!ex.active}
@@ -161,7 +156,7 @@
 		position: absolute;
 		top: var(--sp-3);
 		right: var(--sp-3);
-		font-size: 0.6rem;
+		font-size: 0.65rem;
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;

@@ -5,6 +5,7 @@
 	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings.svelte';
 	import { t, locale, type Locale } from '$lib/i18n.svelte';
 	import { exercise } from '$lib/stores/exercise.svelte';
+	import { EXERCISES } from '$lib/exercises';
 	import MidiStatus from '$lib/components/MidiStatus.svelte';
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();
@@ -15,12 +16,6 @@
 		{ value: 'l', label: 'L' }
 	];
 
-	const exercises = [
-		{ key: 'sandbox', active: true },
-		{ key: 'scenes', active: false },
-		{ key: 'ear', active: false },
-		{ key: 'rhythm', active: false }
-	] as const;
 </script>
 
 <Sheet.Root bind:open>
@@ -34,7 +29,7 @@
 			<section>
 				<h3>{t('sidebar.exercises')}</h3>
 				<ul class="exercise-list">
-					{#each exercises as ex}
+					{#each EXERCISES as ex}
 						<li
 							class="exercise-item"
 							class:active={ex.active && exercise.current === ex.key}
