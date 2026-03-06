@@ -65,4 +65,17 @@
 		background: var(--text);
 		border-radius: 1px;
 	}
+
+	@media (max-width: 480px) {
+		.navbar {
+			background: none;
+			height: auto;
+			padding: var(--sp-2) var(--sp-2);
+			pointer-events: none;
+		}
+
+		.hamburger, .logo {
+			pointer-events: auto;
+		}
+	}
 </style>

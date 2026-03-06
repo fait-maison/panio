@@ -5,6 +5,7 @@
 	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings.svelte';
 	import { t, locale, type Locale } from '$lib/i18n.svelte';
 	import { exercise } from '$lib/stores/exercise.svelte';
+	import MidiStatus from '$lib/components/MidiStatus.svelte';
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 
@@ -124,6 +125,13 @@
 					<ToggleGroup.Item value="roman">{t('settings.notation.roman')}</ToggleGroup.Item>
 				</ToggleGroup.Root>
 			</section>
+
+			<hr class="sep" />
+
+			<section class="midi-section">
+				<h3>MIDI</h3>
+				<MidiStatus />
+			</section>
 		</div>
 	</Sheet.Content>
 </Sheet.Root>
@@ -223,6 +231,16 @@
 		background: rgba(0, 0, 0, 0.06);
 		padding: 2px 8px;
 		border-radius: var(--radius-pill);
+	}
+
+	/* Override MidiStatus fixed positioning when inside sidebar */
+	.midi-section :global(.midi-status) {
+		position: relative;
+	}
+
+	.midi-section :global(.picker) {
+		bottom: auto;
+		top: calc(100% + var(--sp-2));
 	}
 
 	:global([data-lock-active] [data-state='on']) {

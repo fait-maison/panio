@@ -9,7 +9,6 @@
 	import AmbianceCard from '$lib/components/AmbianceCard.svelte';
 	import PianoKeyboard from '$lib/components/PianoKeyboard.svelte';
 	import AutoadvanceToast from '$lib/components/AutoadvanceToast.svelte';
-	import MidiStatus from '$lib/components/MidiStatus.svelte';
 
 	function skipAmbiance() {
 		ambiance.next();
@@ -77,7 +76,6 @@
 	<AutoadvanceToast {timer} onSnooze={() => timer.snooze()} />
 {/if}
 
-<MidiStatus />
 
 <style>
 	/* Landing page */
@@ -174,12 +172,20 @@
 	}
 
 	@media (max-width: 480px) {
+		.landing {
+			padding-top: var(--sp-2);
+		}
+
 		.hero h1 {
 			font-size: 1.8rem;
 		}
 
 		.exercise-grid {
 			grid-template-columns: 1fr;
+		}
+
+		.exercise {
+			padding-top: 0;
 		}
 	}
 
