@@ -31,7 +31,8 @@ pnpm run preview      # preview production build
 src/
 ├── routes/
 │   ├── +layout.svelte        # app shell: Navbar, Toaster, SettingsPanel
-│   └── +page.svelte          # main page: AmbianceCard + PianoKeyboard
+│   ├── +page.svelte          # landing page: exercise grid
+│   └── sandbox/+page.svelte  # sandbox exercise: AmbianceCard + PianoKeyboard
 ├── lib/
 │   ├── components/
 │   │   ├── Navbar.svelte           # top bar: Panio logo, nav items, gear

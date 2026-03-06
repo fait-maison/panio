@@ -1,79 +1,33 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
-	import { ambiance } from '$lib/stores/ambiance.svelte';
-	import { timer } from '$lib/stores/timer.svelte';
-	import { midi } from '$lib/stores/midi.svelte';
-	import { exercise } from '$lib/stores/exercise.svelte';
 	import { t } from '$lib/i18n.svelte';
 	import { EXERCISES } from '$lib/exercises';
-
-	import AmbianceCard from '$lib/components/AmbianceCard.svelte';
-	import PianoKeyboard from '$lib/components/PianoKeyboard.svelte';
-	import AutoadvanceToast from '$lib/components/AutoadvanceToast.svelte';
-
-	function skipAmbiance() {
-		ambiance.next();
-		timer.restart();
-	}
-
-	let hoveredChordNotes = $state<Set<number>>(new Set());
-	let hoveredChordRoot = $state<number | null>(null);
-	$effect(() => { ambiance.current; hoveredChordNotes = new Set(); hoveredChordRoot = null; });
-
-	onMount(() => midi.init());
-	onDestroy(() => midi.destroy());
-
 </script>
 
-{#if exercise.current === null}
-	<!-- Landing page -->
-	<main class="landing">
-		<div class="hero">
-			<h1>{t('landing.title')}</h1>
-			<p>{t('landing.subtitle')}</p>
-		</div>
-		<div class="exercise-grid">
-			{#each EXERCISES as ex}
-				<button
-					class="exercise-card"
-					class:disabled={!ex.active}
-					disabled={!ex.active}
-					onclick={() => exercise.set(ex.key)}
-				>
+<main class="landing">
+	<div class="hero">
+		<h1>{t('landing.title')}</h1>
+		<p>{t('landing.subtitle')}</p>
+	</div>
+	<div class="exercise-grid">
+		{#each EXERCISES as ex}
+			{#if ex.active}
+				<a href="/{ex.key}" class="exercise-card">
 					<span class="exercise-name">{t('exercise.' + ex.key)}</span>
 					<span class="exercise-desc">{t('exercise.' + ex.key + '.desc')}</span>
-					{#if !ex.active}
-						<span class="badge-soon">{t('badge.soon')}</span>
-					{/if}
-				</button>
-			{/each}
-		</div>
-	</main>
-{:else}
-	<!-- Exercise view (sandbox) -->
-	<main class="exercise">
-		<div class="content">
-			<AmbianceCard
-				ambiance={ambiance.current}
-				{timer}
-				onChordHover={(notes, root) => { hoveredChordNotes = notes; hoveredChordRoot = root; }}
-				onSkip={skipAmbiance}
-			/>
-		</div>
-		<PianoKeyboard
-			ambiance={ambiance.current}
-			pressedNotes={midi.pressedNotes}
-			hoverNotes={hoveredChordNotes}
-			hoverRootNote={hoveredChordRoot}
-		/>
-	</main>
-
-	<AutoadvanceToast {timer} onSnooze={() => timer.snooze()} />
-{/if}
+				</a>
+			{:else}
+				<div class="exercise-card disabled">
+					<span class="exercise-name">{t('exercise.' + ex.key)}</span>
+					<span class="exercise-desc">{t('exercise.' + ex.key + '.desc')}</span>
+					<span class="badge-soon">{t('badge.soon')}</span>
+				</div>
+			{/if}
+		{/each}
+	</div>
+</main>
 
 
 <style>
-	/* Landing page */
 	.landing {
 		display: flex;
 		flex-direction: column;
@@ -124,6 +78,8 @@
 		box-shadow: var(--shadow-card);
 		cursor: pointer;
 		text-align: left;
+		text-decoration: none;
+		color: inherit;
 		transition: box-shadow 0.25s ease, transform 0.25s ease;
 		position: relative;
 	}
@@ -166,22 +122,6 @@
 		border-radius: var(--radius-pill);
 	}
 
-	/* Exercise view */
-	.exercise {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		min-height: 100dvh;
-		padding-top: 52px;
-	}
-
-	.content {
-		flex: 1;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
 	@media (max-width: 480px), (max-height: 500px) and (orientation: landscape) {
 		.landing {
 			padding-top: var(--sp-2);
@@ -193,18 +133,6 @@
 
 		.exercise-grid {
 			grid-template-columns: 1fr;
-		}
-
-		.exercise {
-			padding-top: 0;
-			height: 100dvh;
-			overflow: hidden;
-		}
-
-		.content {
-			padding: var(--sp-2);
-			overflow-y: auto;
-			min-height: 0;
 		}
 	}
 </style>

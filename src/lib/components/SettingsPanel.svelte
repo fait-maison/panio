@@ -4,7 +4,8 @@
 	import { settings } from '$lib/stores/settings.svelte';
 	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings.svelte';
 	import { t, locale, type Locale } from '$lib/i18n.svelte';
-	import { exercise } from '$lib/stores/exercise.svelte';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { EXERCISES } from '$lib/exercises';
 	import MidiStatus from '$lib/components/MidiStatus.svelte';
 
@@ -32,13 +33,13 @@
 					{#each EXERCISES as ex}
 						<li
 							class="exercise-item"
-							class:active={ex.active && exercise.current === ex.key}
+							class:active={ex.active && $page.url.pathname === '/' + ex.key}
 							class:disabled={!ex.active}
 						>
 							<button
 								class="exercise-btn"
 								disabled={!ex.active}
-								onclick={() => { exercise.set(ex.key); open = false; }}
+								onclick={() => { goto('/' + ex.key); open = false; }}
 							>
 								<div class="exercise-info">
 									<span class="exercise-name">{t('exercise.' + ex.key)}</span>
