@@ -152,7 +152,7 @@
 		top: 0;
 		border-radius: 0 0 var(--radius-key) var(--radius-key);
 		cursor: pointer;
-		touch-action: none;
+		touch-action: pan-x;
 		user-select: none;
 	}
 
