@@ -20,6 +20,7 @@ pnpm run dev          # start dev server
 pnpm run build        # production build (adapter-static → build/)
 pnpm run check        # svelte-check (run after every code change)
 pnpm run test         # vitest unit tests
+pnpm run test:coverage # vitest with v8 coverage report
 pnpm run test:e2e     # playwright e2e tests
 pnpm run preview      # preview production build
 ```
@@ -55,7 +56,7 @@ src/
 └── app.html                    # HTML shell
 helm/panio/                     # Helm chart
 Dockerfile                      # multi-stage: node:20-alpine → nginx:alpine
-.github/workflows/              # CI: docker build + helm publish
+.github/workflows/              # CI: test → docker build → helm publish
 ```
 
 ## Design System
@@ -110,6 +111,7 @@ Settings stored in `localStorage` key `piano-settings`. On load, spread-merged w
 - **Adapter:** `adapter-static` with `fallback: 'index.html'` (SPA mode for nginx)
 - **Platform:** `linux/amd64` only (tailwindcss oxide crashes under QEMU arm64)
 - **CI trigger:** push to `main` → build image; push `v*.*.*` tag → build + publish Helm chart
+- **CI pipeline:** `test` (check + vitest + playwright) → `build` (docker) → `helm-release` (on tags)
 - **Helm chart:** `helm/panio/`
 
 ## Conventions
@@ -117,6 +119,7 @@ Settings stored in `localStorage` key `piano-settings`. On load, spread-merged w
 - **Commit style:** gitmoji + lowercase title + bullet body. No co-author line.
 - **Run `pnpm run check` after every code change** — don't ask, just do it.
 - **Update docs before committing** — DESIGN.md, README.md, PRD.md, CLAUDE.md as relevant.
+- **Run `/claude-md-management:revise-claude-md` before committing** when conventions, patterns, or project structure changed.
 - **No over-engineering** — YAGNI. No abstractions for one-time operations.
 - **i18n:** all user-facing strings go through `t()` from `$lib/i18n.svelte`.
 
@@ -136,6 +139,7 @@ This ensures code stays aligned with current library versions, not outdated trai
 
 - Config: `vitest.config.ts` (separate from `vite.config.ts`)
 - Music logic tests in `src/lib/music/*.test.ts`
+- Coverage: `pnpm run test:coverage` (v8 provider via `@vitest/coverage-v8`)
 
 ### E2E tests (Playwright)
 
