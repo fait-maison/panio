@@ -136,6 +136,12 @@
 		bottom: 0;
 	}
 
+	@media (max-height: 500px) and (orientation: landscape) {
+		.keyboard-scroll {
+			padding-bottom: 0;
+		}
+	}
+
 	.keyboard {
 		position: relative;
 		margin: 0 auto;

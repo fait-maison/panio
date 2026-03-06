@@ -171,24 +171,6 @@
 		border-radius: var(--radius-pill);
 	}
 
-	@media (max-width: 480px) {
-		.landing {
-			padding-top: var(--sp-2);
-		}
-
-		.hero h1 {
-			font-size: 1.8rem;
-		}
-
-		.exercise-grid {
-			grid-template-columns: 1fr;
-		}
-
-		.exercise {
-			padding-top: 0;
-		}
-	}
-
 	/* Exercise view */
 	.exercise {
 		display: flex;
@@ -205,9 +187,29 @@
 		justify-content: center;
 	}
 
-	@media (max-width: 480px) {
+	@media (max-width: 480px), (max-height: 500px) and (orientation: landscape) {
+		.landing {
+			padding-top: var(--sp-2);
+		}
+
+		.hero h1 {
+			font-size: 1.8rem;
+		}
+
+		.exercise-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.exercise {
+			padding-top: 0;
+			height: 100dvh;
+			overflow: hidden;
+		}
+
 		.content {
 			padding: var(--sp-2);
+			overflow-y: auto;
+			min-height: 0;
 		}
 	}
 </style>

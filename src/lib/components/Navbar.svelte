@@ -66,7 +66,7 @@
 		border-radius: 1px;
 	}
 
-	@media (max-width: 480px) {
+	@media (max-width: 480px), (max-height: 500px) and (orientation: landscape) {
 		.navbar {
 			background: none;
 			height: auto;
@@ -74,7 +74,11 @@
 			pointer-events: none;
 		}
 
-		.hamburger, .logo {
+		.logo {
+			display: none;
+		}
+
+		.hamburger {
 			pointer-events: auto;
 		}
 	}
