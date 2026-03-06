@@ -28,7 +28,7 @@
 	let settingsOpen = $state(false);
 	let sheetOpen = $state(false);
 
-	const MOBILE_MQ = '(max-width: 480px)';
+	const MOBILE_MQ = '(max-width: 860px)';
 
 	function toggleSettings() {
 		if (typeof window !== 'undefined' && window.matchMedia(MOBILE_MQ).matches) {
@@ -269,8 +269,10 @@
 		.card-content {
 			padding: var(--sp-6) var(--sp-4) var(--sp-4);
 		}
+	}
 
-		/* Hide in-card collapsible on mobile */
+	/* Hide in-card collapsible on mobile/tablet — use bottom sheet instead */
+	@media (max-width: 860px) {
 		.exercise-settings {
 			display: none;
 		}
