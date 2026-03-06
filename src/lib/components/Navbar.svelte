@@ -1,20 +1,16 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button/index.js';
-	import { Separator } from '$lib/components/ui/separator/index.js';
 	import { t } from '$lib/i18n.svelte';
-	import Settings from '@lucide/svelte/icons/settings';
 
-	let { onGearClick = () => {} }: { onGearClick?: () => void } = $props();
+	let { onMenuClick = () => {} }: { onMenuClick?: () => void } = $props();
 </script>
 
 <nav class="navbar">
-	<span class="logo">{t('app.title')}</span>
-	<div class="nav-items">
-		<span class="nav-item active">{t('nav.sandbox')}</span>
+	<div class="nav-left">
+		<button class="hamburger" onclick={onMenuClick} aria-label={t('nav.menu')}>
+			<span></span><span></span><span></span>
+		</button>
+		<span class="logo">{t('app.title')}</span>
 	</div>
-	<Button variant="ghost" size="icon" class="gear" onclick={onGearClick} aria-label={t('settings.title')}>
-		<Settings size={20} />
-	</Button>
 </nav>
 
 <style>
@@ -23,39 +19,50 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 48px;
+		height: 52px;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 		padding: 0 var(--sp-4);
-		background: var(--surface);
-		border-bottom: 1px solid var(--border-subtle);
+		background: var(--bg);
 		z-index: var(--z-drawer);
 	}
 
-	.logo {
-		font-size: 1.1rem;
-		font-weight: 800;
-		letter-spacing: 0.04em;
-		color: var(--text);
-	}
-
-	.nav-items {
+	.nav-left {
 		display: flex;
 		align-items: center;
-		gap: var(--sp-4);
+		gap: var(--sp-3);
 	}
 
-	.nav-item {
-		font-size: 0.8rem;
-		font-weight: 500;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--text-muted);
-	}
-
-	.nav-item.active {
+	.logo {
+		font-family: var(--font-display);
+		font-size: 1.3rem;
 		color: var(--text);
-		font-weight: 700;
+	}
+
+	.hamburger {
+		background: none;
+		border: none;
+		width: 40px;
+		height: 40px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 5px;
+		cursor: pointer;
+		border-radius: 8px;
+		transition: background var(--dur-base);
+	}
+
+	.hamburger:hover {
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+	.hamburger span {
+		display: block;
+		width: 18px;
+		height: 2px;
+		background: var(--text);
+		border-radius: 1px;
 	}
 </style>

@@ -4,11 +4,11 @@
 	import SettingsPanel from '$lib/components/SettingsPanel.svelte';
 	import '../app.css';
 
-	let settingsOpen = $state(false);
+	let sidebarOpen = $state(false);
 	let { children } = $props();
 </script>
 
-<Navbar onGearClick={() => (settingsOpen = !settingsOpen)} />
+<Navbar onMenuClick={() => (sidebarOpen = !sidebarOpen)} />
 <Toaster />
 {@render children()}
-<SettingsPanel bind:open={settingsOpen} />
+<SettingsPanel bind:open={sidebarOpen} />

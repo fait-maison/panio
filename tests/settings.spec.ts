@@ -7,7 +7,7 @@ async function getKeyboardWidth(page: Page): Promise<number> {
 }
 
 async function openSettings(page: Page) {
-  await page.getByRole('button', { name: 'Settings' }).click();
+  await page.getByRole('button', { name: 'Menu' }).click();
   await expect(page.locator('.sections')).toBeVisible();
 }
 
@@ -20,7 +20,7 @@ test.describe('settings panel', () => {
     await page.goto('/', { waitUntil: 'networkidle' });
   });
 
-  test('gear button opens the settings panel', async ({ page }) => {
+  test('hamburger button opens the settings panel', async ({ page }) => {
     await openSettings(page);
     await expect(page.getByText('Settings')).toBeVisible();
   });

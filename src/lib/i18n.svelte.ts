@@ -5,6 +5,7 @@ const translations = {
 		// app
 		'app.title': 'Panio',
 		'nav.sandbox': 'Sandbox',
+		'nav.menu': 'Menu',
 		// settings panel
 		'settings.title': 'Settings',
 		'settings.close': 'Close',
@@ -71,6 +72,7 @@ const translations = {
 	fr: {
 		'app.title': 'Panio',
 		'nav.sandbox': 'Sandbox',
+		'nav.menu': 'Menu',
 		'settings.title': 'Paramètres',
 		'settings.close': 'Fermer',
 		'settings.keyboardSize': 'Taille du clavier',
