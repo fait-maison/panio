@@ -55,7 +55,7 @@ src/
 ├── app.css                     # Tailwind + design tokens
 └── app.html                    # HTML shell
 helm/panio/                     # Helm chart
-Dockerfile                      # multi-stage: node:20-alpine → nginx:alpine
+Dockerfile                      # multi-stage: node:22-alpine → nginx:alpine
 .github/workflows/              # CI: test → docker build → helm publish
 ```
 
