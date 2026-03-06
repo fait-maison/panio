@@ -18,8 +18,29 @@
 	let hoveredChordRoot = $state<number | null>(null);
 	$effect(() => { ambiance.current; hoveredChordNotes = new Set(); hoveredChordRoot = null; });
 
-	onMount(() => midi.init());
-	onDestroy(() => midi.destroy());
+	let wakeLock: WakeLockSentinel | null = null;
+
+	async function requestWakeLock() {
+		if (!('wakeLock' in navigator)) return;
+		try { wakeLock = await navigator.wakeLock.request('screen'); }
+		catch { /* permission denied or low battery — silently skip */ }
+	}
+
+	function onVisibilityChange() {
+		if (document.visibilityState === 'visible') requestWakeLock();
+	}
+
+	onMount(() => {
+		midi.init();
+		requestWakeLock();
+		document.addEventListener('visibilitychange', onVisibilityChange);
+	});
+
+	onDestroy(() => {
+		midi.destroy();
+		wakeLock?.release();
+		document.removeEventListener('visibilitychange', onVisibilityChange);
+	});
 </script>
 
 <main class="exercise">
