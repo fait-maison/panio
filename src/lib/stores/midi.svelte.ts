@@ -1,3 +1,6 @@
+import { playNote } from '$lib/audio';
+import { settings } from '$lib/stores/settings.svelte';
+
 export type MidiStatus = 'unsupported' | 'denied' | 'disconnected' | 'connected';
 
 export type MidiInput = { id: string; name: string; manufacturer: string };
@@ -104,6 +107,7 @@ function sendNoteOn(note: number, velocity = 64) {
 	const next = new Set(_pressed);
 	next.add(note);
 	_pressed = next;
+	playNote(note, settings.value.volume);
 	getTargetOutputs().forEach((output) => output.send([0x90, note, velocity]));
 }
 

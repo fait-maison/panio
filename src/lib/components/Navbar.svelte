@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { t } from '$lib/i18n.svelte';
+	import { settings } from '$lib/stores/settings.svelte';
+	import Volume2 from '@lucide/svelte/icons/volume-2';
+	import VolumeOff from '@lucide/svelte/icons/volume-off';
 
 	let { onMenuClick = () => {} }: { onMenuClick?: () => void } = $props();
 </script>
@@ -10,6 +13,23 @@
 			<span></span><span></span><span></span>
 		</button>
 		<span class="logo">{t('app.title')}</span>
+	</div>
+	<div class="nav-right">
+		{#if settings.value.volume === 0}
+			<VolumeOff size={16} class="volume-icon" />
+		{:else}
+			<Volume2 size={16} class="volume-icon" />
+		{/if}
+		<input
+			type="range"
+			min="0"
+			max="1"
+			step="0.01"
+			value={settings.value.volume}
+			oninput={(e) => settings.update((s) => ({ ...s, volume: +e.currentTarget.value }))}
+			class="volume-slider"
+			aria-label="Volume"
+		/>
 	</div>
 </nav>
 
@@ -22,6 +42,7 @@
 		height: 52px;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 		padding: 0 var(--sp-4);
 		background: var(--bg);
 		z-index: var(--z-drawer);
@@ -33,10 +54,27 @@
 		gap: var(--sp-3);
 	}
 
+	.nav-right {
+		display: flex;
+		align-items: center;
+		gap: var(--sp-2);
+	}
+
 	.logo {
 		font-family: var(--font-display);
 		font-size: 1.3rem;
 		color: var(--text);
+	}
+
+	:global(.volume-icon) {
+		color: var(--text-muted);
+		flex-shrink: 0;
+	}
+
+	.volume-slider {
+		width: 80px;
+		accent-color: var(--red);
+		cursor: pointer;
 	}
 
 	.hamburger {
@@ -79,6 +117,10 @@
 		}
 
 		.hamburger {
+			pointer-events: auto;
+		}
+
+		.nav-right {
 			pointer-events: auto;
 		}
 	}
