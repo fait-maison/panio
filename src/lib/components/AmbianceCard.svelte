@@ -109,8 +109,18 @@
 		overflow: hidden;
 		gap: 0;
 		padding: 0;
+		border: none;
+		border-radius: var(--radius-card);
 		box-shadow: var(--shadow-card);
-		min-width: 430px;
+		min-width: 460px;
+		transition: box-shadow 0.25s ease, transform 0.25s ease;
+	}
+
+	@media (hover: hover) {
+		:global(.ambiance-card:hover) {
+			box-shadow: var(--shadow-card-hover);
+			transform: translateY(-2px);
+		}
 	}
 
 	@media (max-width: 480px) {
@@ -171,6 +181,7 @@
 	}
 
 	.key {
+		font-family: var(--font-display);
 		font-size: 1.5rem;
 		color: var(--red);
 	}
@@ -181,6 +192,7 @@
 	}
 
 	.mode {
+		font-family: var(--font-display);
 		font-size: 1.75rem;
 		color: var(--text);
 	}
