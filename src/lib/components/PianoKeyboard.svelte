@@ -206,13 +206,16 @@
 			var(--key-chord-black);
 	}
 
-	/* Pressed — overrides everything */
+	/* Pressed — overrides everything (including chord-active) */
 	.white.pressed,
-	.black.pressed {
+	.black.pressed,
+	.keyboard.chord-active .white.pressed,
+	.keyboard.chord-active .black.pressed {
 		background: var(--key-pressed);
 	}
 
-	.black.pressed {
+	.black.pressed,
+	.keyboard.chord-active .black.pressed {
 		box-shadow: 0 3px 6px rgba(29, 78, 216, 0.3);
 	}
 </style>
