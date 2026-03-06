@@ -55,6 +55,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		overflow-y: auto;
+		min-height: 0;
+		padding-bottom: var(--sp-8);
 	}
 
 	@media (max-width: 480px), (max-height: 500px) and (orientation: landscape) {

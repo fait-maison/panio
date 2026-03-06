@@ -134,6 +134,7 @@
 		display: flex;
 		position: sticky;
 		bottom: 0;
+		background: var(--bg);
 	}
 
 	@media (max-height: 500px) and (orientation: landscape) {

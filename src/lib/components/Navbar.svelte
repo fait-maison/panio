@@ -85,20 +85,23 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: 0 var(--sp-4);
-		background: var(--bg);
+		background: none;
 		z-index: var(--z-drawer);
+		pointer-events: none;
 	}
 
 	.nav-left {
 		display: flex;
 		align-items: center;
 		gap: var(--sp-3);
+		pointer-events: auto;
 	}
 
 	.nav-right {
 		display: flex;
 		align-items: center;
 		gap: var(--sp-1);
+		pointer-events: auto;
 	}
 
 	.logo {
@@ -196,22 +199,8 @@
 
 	@media (max-width: 480px), (max-height: 500px) and (orientation: landscape) {
 		.navbar {
-			background: none;
 			height: auto;
-			padding: var(--sp-2) var(--sp-2);
-			pointer-events: none;
-		}
-
-		.logo {
-			pointer-events: auto;
-		}
-
-		.hamburger {
-			pointer-events: auto;
-		}
-
-		.nav-right {
-			pointer-events: auto;
+			padding: var(--sp-2);
 		}
 
 		.fullscreen-btn {
