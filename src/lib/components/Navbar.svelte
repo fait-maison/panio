@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n.svelte';
 	import { settings } from '$lib/stores/settings.svelte';
+	import { Slider } from '$lib/components/ui/slider/index.js';
 	import Volume2 from '@lucide/svelte/icons/volume-2';
 	import Volume1 from '@lucide/svelte/icons/volume-1';
 	import VolumeOff from '@lucide/svelte/icons/volume-off';
@@ -51,15 +52,14 @@
 			</button>
 			{#if volumeOpen}
 				<div class="volume-popover">
-					<input
-						type="range"
-						min="0"
-						max="1"
-						step="0.01"
+					<Slider
+						type="single"
+						min={0}
+						max={1}
+						step={0.01}
 						value={settings.value.volume}
-						oninput={(e) => settings.update((s) => ({ ...s, volume: +e.currentTarget.value }))}
+						onValueChange={(v) => settings.update((s) => ({ ...s, volume: v }))}
 						class="volume-slider"
-						aria-label="Volume"
 					/>
 				</div>
 			{/if}
@@ -150,11 +150,16 @@
 		z-index: var(--z-drawer);
 	}
 
-	.volume-slider {
+	.volume-popover :global(.volume-slider) {
 		width: 100px;
-		accent-color: var(--red);
-		cursor: pointer;
-		display: block;
+	}
+
+	.volume-popover :global([data-slot='slider-range']) {
+		background: var(--red);
+	}
+
+	.volume-popover :global([data-slot='slider-thumb']) {
+		border-color: var(--red);
 	}
 
 	/* Fullscreen: hide on desktop where it's less useful */
