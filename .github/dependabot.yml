@@ -26,6 +26,10 @@ updates:
       playwright:
         patterns:
           - "@playwright/test"
+      shadcn:
+        patterns:
+          - "bits-ui"
+          - "svelte-sonner"
     ignore:
       - dependency-name: vite
         update-types:
