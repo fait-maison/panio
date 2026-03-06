@@ -71,7 +71,7 @@
 		<div class="card-content">
 		<div class="card-actions">
 			<button
-				class="action-btn desktop-only"
+				class="action-btn"
 				onclick={() => (settingsOpen = !settingsOpen)}
 				aria-label={t('settings.exercise')}
 				class:active={settingsOpen}
@@ -122,7 +122,7 @@
 		</div>
 
 		<!-- In-card exercise settings (desktop only) -->
-		<div class="exercise-settings desktop-only" class:open={settingsOpen}>
+		<div class="exercise-settings" class:open={settingsOpen}>
 			<div class="settings-inner">
 				<div class="settings-section">
 					<h4>{t('settings.interval')}</h4>
@@ -229,10 +229,6 @@
 
 		.card-content {
 			padding: var(--sp-6) var(--sp-4) var(--sp-4);
-		}
-
-		.desktop-only {
-			display: none;
 		}
 	}
 
