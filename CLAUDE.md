@@ -10,8 +10,9 @@ Train the reflex to translate a scene or emotion into music instantly — like l
 - **Tailwind v4** + **shadcn-svelte 1.x** (bits-ui 2.x) — design system
 - **tonal.js** — music theory (modes, scales, keys, chords)
 - **Web MIDI API** — native browser API, wrapped in a Svelte store
+- **soundfont-player** — on-screen keyboard audio playback (Web Audio API)
 - **pnpm** — package manager
-- No database, no backend API in v1
+- No database, no backend API
 
 ## Commands
 
@@ -51,7 +52,11 @@ src/
 │   │   ├── modes.ts            # mode definitions, mood map
 │   │   ├── scale.ts            # scale note calculations
 │   │   ├── progressions.ts     # chord progression pools by mode/difficulty
+│   │   ├── textures.ts         # texture definitions (14 textures)
 │   │   └── generator.ts        # ambiance generator
+│   ├── audio.ts                # soundfont-player wrapper (on-screen keyboard audio)
+│   ├── exercises.ts            # exercise definitions (sandbox, future exercises)
+│   ├── utils.ts                # utility functions (cn helper)
 │   └── i18n.svelte.ts          # i18n (en/fr), locale store
 ├── app.css                     # Tailwind + design tokens
 └── app.html                    # HTML shell
@@ -64,7 +69,7 @@ Dockerfile                      # multi-stage: node:22-alpine → nginx:alpine
 
 - Colors: oklch format in `src/app.css` `:root` block
 - Custom tokens: `--sp-*` spacing, `--z-*` z-index, `--shadow-*`, `--dur-*`
-- Piano tokens: `--border-key`, `--radius-key`, `--key-white`, `--key-black`, `--key-pressed`
+- Piano tokens: `--border-key`, `--radius-key`, `--radius-card`, `--key-white`, `--key-black`, `--key-pressed`, `--key-scale-white`, `--key-scale-black`, `--key-chord-white`, `--key-chord-black`
 - Accent red: `#CC2936` — scale tint, accents, progress bars
 - Accent blue: `#1D4ED8` — pressed keys
 - Font: Inter, bold sans-serif
@@ -72,7 +77,7 @@ Dockerfile                      # multi-stage: node:22-alpine → nginx:alpine
 
 ### shadcn components in use
 
-Sheet, ToggleGroup, Card, Sonner, Button, Separator, Tooltip, Toggle
+Sheet, ToggleGroup, Card, Sonner, Tooltip, Slider
 
 ### ToggleGroup lock pattern
 
@@ -119,7 +124,7 @@ Settings stored in `localStorage` key `piano-settings`. On load, spread-merged w
 
 - **Commit style:** gitmoji + lowercase title + bullet body. No co-author line.
 - **Run `pnpm run check` after every code change** — don't ask, just do it.
-- **Update docs before committing** — DESIGN.md, README.md, PRD.md, CLAUDE.md as relevant.
+- **Update docs before committing** — DESIGN.md, README.md, CLAUDE.md as relevant.
 - **Run `/claude-md-management:revise-claude-md` before committing** when conventions, patterns, or project structure changed.
 - **No over-engineering** — YAGNI. No abstractions for one-time operations.
 - **i18n:** all user-facing strings go through `t()` from `$lib/i18n.svelte`.
@@ -151,6 +156,15 @@ This ensures code stays aligned with current library versions, not outdated trai
 - **Use `locator.blur()`** to leave focus groups, not Tab.
 - **bits-ui roles:** `type="single"` → `role="radio"`, `type="multiple"` → implicit `button`.
 - **Persistence tests** need their own `test.describe` with dedicated `addInitScript`.
+
+## Known Tech Debt
+
+- `mode-watcher` dep is unused (no dark mode) — remove and hard-code `theme="light"` in sonner.svelte
+- `@internationalized/date` devDep is never imported — safe to remove
+- `nav.sandbox` i18n key defined but never used
+- `data-lock-active` CSS rule duplicated in SettingsPanel + AmbianceCard — should be in app.css
+- `timer.svelte.ts` calls `startInterval()` at module load with no browser guard
+- Build-time deps (`tailwind-variants`, `tw-animate-css`, `tailwind-merge`, `clsx`) in `dependencies` instead of `devDependencies`
 
 ## App name
 
