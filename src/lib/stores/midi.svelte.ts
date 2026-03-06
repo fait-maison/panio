@@ -18,7 +18,9 @@ let access: MIDIAccess | null = null;
 function refreshStatus() {
 	if (!access) return;
 	const inputs = [...access.inputs.values()];
-	_inputList = inputs.map((i) => ({ id: i.id, name: i.name ?? '', manufacturer: i.manufacturer ?? '' }));
+	// Filter out Chrome/ALSA virtual routing ports (Linux: "Output connection" artifacts)
+	const realInputs = inputs.filter((i) => (i.name ?? '') !== 'Output connection');
+	_inputList = realInputs.map((i) => ({ id: i.id, name: i.name ?? '', manufacturer: i.manufacturer ?? '' }));
 
 	const preferred = _preferred ? inputs.find((i) => i.id === _preferred) : undefined;
 	const active = preferred ?? null;
