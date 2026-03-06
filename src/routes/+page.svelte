@@ -24,12 +24,14 @@
 </script>
 
 <main>
-	<AmbianceCard
-		ambiance={ambiance.current}
-		{timer}
-		onChordHover={(notes, root) => { hoveredChordNotes = notes; hoveredChordRoot = root; }}
-		onSkip={skipAmbiance}
-	/>
+	<div class="content">
+		<AmbianceCard
+			ambiance={ambiance.current}
+			{timer}
+			onChordHover={(notes, root) => { hoveredChordNotes = notes; hoveredChordRoot = root; }}
+			onSkip={skipAmbiance}
+		/>
+	</div>
 	<PianoKeyboard
 		ambiance={ambiance.current}
 		pressedNotes={midi.pressedNotes}
@@ -47,14 +49,19 @@
 		flex-direction: column;
 		align-items: center;
 		min-height: 100dvh;
-		padding: calc(48px + var(--sp-4)) 0 6rem;
-		gap: var(--sp-8);
+		padding-top: 52px;
+	}
+
+	.content {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	@media (max-width: 480px) {
-		main {
-			padding: calc(48px + var(--sp-2)) var(--sp-2) 5rem;
-			gap: var(--sp-4);
+		.content {
+			padding: var(--sp-2);
 		}
 	}
 
