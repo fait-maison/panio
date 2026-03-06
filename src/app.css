@@ -179,3 +179,9 @@
     cursor: pointer;
   }
 }
+
+/* Soften toggle active state: light red bg + red text instead of solid red */
+[data-slot="toggle-group-item"][data-state="on"] {
+  background: oklch(0.529 0.2 23 / 12%) !important;
+  color: var(--primary) !important;
+}
