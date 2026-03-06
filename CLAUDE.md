@@ -122,6 +122,8 @@ Settings stored in `localStorage` key `piano-settings`. On load, spread-merged w
 - **Run `/claude-md-management:revise-claude-md` before committing** when conventions, patterns, or project structure changed.
 - **No over-engineering** — YAGNI. No abstractions for one-time operations.
 - **i18n:** all user-facing strings go through `t()` from `$lib/i18n.svelte`.
+- **Use skills** — always invoke applicable skills before starting work (brainstorming, TDD, debugging, feature-dev, etc.). If there's even a 1% chance a skill applies, use it.
+- **Use git worktrees** — for feature work that benefits from isolation, use the `using-git-worktrees` skill to create isolated worktrees instead of working directly on `main`.
 
 ## Library Documentation
 
