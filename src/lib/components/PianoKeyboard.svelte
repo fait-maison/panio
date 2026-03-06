@@ -130,8 +130,16 @@
 		width: 100%;
 		overflow-x: auto;
 		overflow-y: hidden;
-		padding-bottom: var(--sp-2);
+		padding-bottom: 48px;
 		display: flex;
+		position: sticky;
+		bottom: 0;
+	}
+
+	@media (max-height: 500px) and (orientation: landscape) {
+		.keyboard-scroll {
+			padding-bottom: 0;
+		}
 	}
 
 	.keyboard {
@@ -159,8 +167,9 @@
 	.black {
 		width: var(--black-w);
 		height: var(--black-h);
-		background: var(--key-black);
+		background: linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%);
 		z-index: 2;
+		box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
 	}
 
 	/* Scale tint */
@@ -201,5 +210,9 @@
 	.white.pressed,
 	.black.pressed {
 		background: var(--key-pressed);
+	}
+
+	.black.pressed {
+		box-shadow: 0 3px 6px rgba(29, 78, 216, 0.3);
 	}
 </style>

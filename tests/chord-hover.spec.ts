@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { enterSandbox } from './helpers';
 
 test.describe('chord hover focus mode', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/', { waitUntil: 'networkidle' });
+    await enterSandbox(page);
   });
 
   test('keyboard has no chord-active class on load', async ({ page }) => {
@@ -28,10 +29,8 @@ test.describe('chord hover focus mode', () => {
 
   test('hovering a chord chip marks exactly one key as is-chord-root', async ({ page }) => {
     await page.locator('.chord').first().focus();
-    // Root appears once per octave across the keyboard range
     const roots = page.locator('.key.is-chord-root');
     await expect(roots.first()).toBeVisible();
-    // Root keys are always a subset of in-chord keys
     const rootCount = await roots.count();
     const chordCount = await page.locator('.key.in-chord').count();
     expect(rootCount).toBeLessThan(chordCount);
