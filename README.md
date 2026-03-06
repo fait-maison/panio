@@ -1,5 +1,8 @@
 # Piano — Theatrical Improv Training App
 
+[![CI](https://github.com/fait-maison/panio/actions/workflows/docker-build.yml/badge.svg)](https://github.com/fait-maison/panio/actions/workflows/docker-build.yml)
+![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/aBMania/788bd59c89ce1bee55d7e7683513f777/raw/panio-coverage.json)
+
 A MIDI-driven practice tool for pianists who accompany theatrical improvisation. Connect a MIDI keyboard, get a random musical context (mode + key + texture), play freely, and let the app nudge you to a new ambiance every few minutes — like a silent musical scene partner.
 
 ## Goals
