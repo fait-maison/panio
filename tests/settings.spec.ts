@@ -22,7 +22,7 @@ test.describe('settings panel', () => {
 
   test('hamburger button opens the settings panel', async ({ page }) => {
     await openSettings(page);
-    await expect(page.getByText('Settings')).toBeVisible();
+    await expect(page.getByText('Settings', { exact: true }).first()).toBeVisible();
   });
 
   test('Escape closes the settings panel', async ({ page }) => {

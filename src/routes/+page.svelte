@@ -12,6 +12,7 @@
 	import AmbianceCard from '$lib/components/AmbianceCard.svelte';
 	import PianoKeyboard from '$lib/components/PianoKeyboard.svelte';
 	import AutoadvanceToast from '$lib/components/AutoadvanceToast.svelte';
+	import ExerciseSettingsFab from '$lib/components/ExerciseSettingsFab.svelte';
 	import MidiStatus from '$lib/components/MidiStatus.svelte';
 
 	let hoveredChordNotes = $state<Set<number>>(new Set());
@@ -41,6 +42,7 @@
 </main>
 
 <AutoadvanceToast {timer} onSnooze={() => timer.snooze()} />
+<ExerciseSettingsFab />
 <MidiStatus />
 
 <style>

@@ -18,6 +18,7 @@ const translations = {
 		'exercise.rhythm': 'Rhythm & Texture',
 		'exercise.rhythm.desc': 'Accompaniment patterns',
 		'badge.soon': 'Soon',
+		'settings.exercise': 'Exercise settings',
 		// settings panel
 		'settings.title': 'Settings',
 		'settings.close': 'Close',
@@ -96,6 +97,7 @@ const translations = {
 		'exercise.rhythm': 'Rythme & Texture',
 		'exercise.rhythm.desc': "Patterns d'accompagnement",
 		'badge.soon': 'Bientôt',
+		'settings.exercise': "Paramètres de l'exercice",
 		'settings.title': 'Paramètres',
 		'settings.close': 'Fermer',
 		'settings.keyboardSize': 'Taille du clavier',

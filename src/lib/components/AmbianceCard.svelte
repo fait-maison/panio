@@ -1,10 +1,14 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
+	import * as ToggleGroup from '$lib/components/ui/toggle-group/index.js';
+	import SlidersHorizontal from '@lucide/svelte/icons/sliders-horizontal';
 	import type { Ambiance } from '$lib/music/generator';
 	import { timer } from '$lib/stores/timer.svelte';
 	import { t } from '$lib/i18n.svelte';
 	import { settings } from '$lib/stores/settings.svelte';
+	import type { Difficulty } from '$lib/music/progressions';
+	import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
 	import { formatProgression, getChordPitchClasses, toChordSymbol } from '$lib/music/progressions';
 	import { Chord, Note } from 'tonal';
 
@@ -19,6 +23,8 @@
 		onChordHover?: (notes: Set<number>, root: number | null) => void;
 		onSkip?: () => void;
 	} = $props();
+
+	let settingsOpen = $state(false);
 
 	let progress = $derived(
 		timerProp.state === 'counting'
@@ -50,17 +56,35 @@
 			return tonic ? Note.chroma(tonic) as number : null;
 		})
 	);
+
+	const INTERVALS: { value: number; label: string }[] = [
+		{ value: 0.25, label: '15s' },
+		{ value: 1, label: '1 min' },
+		{ value: 3, label: '3 min' },
+		{ value: 5, label: '5 min' },
+		{ value: 10, label: '10 min' }
+	];
 </script>
 
 <Card.Root class="ambiance-card">
 	<Card.Content class="p-0">
 		<div class="card-content">
-		<button class="skip-btn" onclick={onSkip} aria-label="Next ambiance">
-			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-				<polygon points="5 4 15 12 5 20 5 4"/>
-				<line x1="19" y1="5" x2="19" y2="19"/>
-			</svg>
-		</button>
+		<div class="card-actions">
+			<button
+				class="action-btn desktop-only"
+				onclick={() => (settingsOpen = !settingsOpen)}
+				aria-label={t('settings.exercise')}
+				class:active={settingsOpen}
+			>
+				<SlidersHorizontal size={16} />
+			</button>
+			<button class="action-btn" onclick={onSkip} aria-label="Next ambiance">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<polygon points="5 4 15 12 5 20 5 4"/>
+					<line x1="19" y1="5" x2="19" y2="19"/>
+				</svg>
+			</button>
+		</div>
 			<Tooltip.Provider>
 				<Tooltip.Root>
 					<Tooltip.Trigger class="badge">
@@ -95,6 +119,75 @@
 					<span class="arrow" aria-hidden="true">›</span>
 				{/if}
 			{/each}
+		</div>
+
+		<!-- In-card exercise settings (desktop only) -->
+		<div class="exercise-settings desktop-only" class:open={settingsOpen}>
+			<div class="settings-inner">
+				<div class="settings-section">
+					<h4>{t('settings.interval')}</h4>
+					<ToggleGroup.Root
+						type="single"
+						value={String(settings.value.intervalMin)}
+						onValueChange={(v) => v && settings.update((s) => ({ ...s, intervalMin: Number(v) }))}
+						variant="outline"
+						class="w-full flex-wrap"
+						data-lock-active
+					>
+						{#each INTERVALS as interval}
+							<ToggleGroup.Item value={String(interval.value)}>{interval.label}</ToggleGroup.Item>
+						{/each}
+					</ToggleGroup.Root>
+				</div>
+
+				<div class="settings-section">
+					<h4>{t('settings.difficulty')}</h4>
+					<ToggleGroup.Root
+						type="multiple"
+						value={settings.value.difficultyPool}
+						onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, difficultyPool: v as Difficulty[] }))}
+						variant="outline"
+						class="w-full flex-wrap"
+						data-lock-active={settings.value.difficultyPool.length === 1 ? '' : undefined}
+					>
+						{#each (['simple', 'rich', 'complex'] as const) as d}
+							<ToggleGroup.Item value={d}>{t('settings.difficulty.' + d)}</ToggleGroup.Item>
+						{/each}
+					</ToggleGroup.Root>
+				</div>
+
+				<div class="settings-section">
+					<h4>{t('settings.modes')}</h4>
+					<ToggleGroup.Root
+						type="multiple"
+						value={settings.value.modePool}
+						onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, modePool: v }))}
+						variant="outline"
+						class="w-full flex-wrap"
+						data-lock-active={settings.value.modePool.length === 1 ? '' : undefined}
+					>
+						{#each ALL_MODE_NAMES as mode}
+							<ToggleGroup.Item value={mode}>{t('mode.' + mode)}</ToggleGroup.Item>
+						{/each}
+					</ToggleGroup.Root>
+				</div>
+
+				<div class="settings-section">
+					<h4>{t('settings.keys')}</h4>
+					<ToggleGroup.Root
+						type="multiple"
+						value={settings.value.keyPool}
+						onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, keyPool: v }))}
+						variant="outline"
+						class="w-full flex-wrap"
+						data-lock-active={settings.value.keyPool.length === 1 ? '' : undefined}
+					>
+						{#each KEYS as key}
+							<ToggleGroup.Item value={key}>{key}</ToggleGroup.Item>
+						{/each}
+					</ToggleGroup.Root>
+				</div>
+			</div>
 		</div>
 		</div>
 	</Card.Content>
@@ -137,6 +230,10 @@
 		.card-content {
 			padding: var(--sp-6) var(--sp-4) var(--sp-4);
 		}
+
+		.desktop-only {
+			display: none;
+		}
 	}
 
 	.card-content {
@@ -148,10 +245,15 @@
 		padding: var(--sp-8) var(--sp-6) var(--sp-6);
 	}
 
-	.skip-btn {
+	.card-actions {
 		position: absolute;
-		bottom: var(--sp-3);
+		top: var(--sp-3);
 		right: var(--sp-3);
+		display: flex;
+		gap: var(--sp-1);
+	}
+
+	.action-btn {
 		background: none;
 		border: none;
 		padding: var(--sp-1);
@@ -161,11 +263,16 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		transition: color var(--dur-base);
+		transition: color var(--dur-base), background var(--dur-base);
 	}
 
-	.skip-btn:hover {
+	.action-btn:hover {
 		color: var(--text);
+	}
+
+	.action-btn.active {
+		color: var(--red);
+		background: rgba(204, 41, 54, 0.08);
 	}
 
 	:global(.badge) {
@@ -226,6 +333,45 @@
 	.chord { color: var(--text); cursor: pointer; }
 	.chord.tonic { color: var(--red); }
 	.arrow { color: var(--text-muted); font-weight: 400; }
+
+	/* Exercise settings collapsible */
+	.exercise-settings {
+		width: 100%;
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease;
+	}
+
+	.exercise-settings.open {
+		max-height: 600px;
+	}
+
+	.settings-inner {
+		display: flex;
+		flex-direction: column;
+		gap: var(--sp-4);
+		padding: var(--sp-4) 0 0;
+		border-top: 1px solid var(--border-subtle);
+		margin-top: var(--sp-2);
+	}
+
+	.settings-section {
+		display: flex;
+		flex-direction: column;
+		gap: var(--sp-2);
+	}
+
+	.settings-section h4 {
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--text-muted);
+		font-weight: 500;
+	}
+
+	:global([data-lock-active] [data-state='on']) {
+		pointer-events: none;
+	}
 
 	.progress-bar {
 		height: var(--progress-h);
