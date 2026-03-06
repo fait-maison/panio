@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panio — Nav C: Landing Page</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F0E8;
+    --surface: #FFFDF9;
+    --text: #1A1A1A;
+    --text-muted: #8A8078;
+    --red: #CC2936;
+    --border: #E8E0D4;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --radius: 14px;
+  }
+
+  html, body { height: 100%; font-family: var(--font-body); background: var(--bg); color: var(--text); }
+
+  /* ── Navbar — minimal ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    background: var(--bg);
+    z-index: 100;
+  }
+  .logo { font-family: var(--font-display); font-size: 1.4rem; }
+  .gear {
+    background: none; border: none; width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted); cursor: pointer; border-radius: 8px;
+    transition: color 0.15s;
+  }
+  .gear:hover { color: var(--text); }
+
+  /* ── Landing layout ── */
+  main {
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh;
+    padding: 100px 24px 60px;
+    gap: 12px;
+  }
+
+  .hero {
+    text-align: center; margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: 2.4rem; margin-bottom: 8px;
+  }
+  .hero p {
+    font-size: 0.95rem; color: var(--text-muted); max-width: 420px;
+    line-height: 1.6;
+  }
+
+  /* ── Exercise grid ── */
+  .grid {
+    display: grid; grid-template-columns: repeat(2, 280px);
+    gap: 20px;
+    max-width: 600px;
+  }
+
+  .exercise-card {
+    background: var(--surface);
+    border: none; border-radius: var(--radius);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.03);
+    padding: 28px 24px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .exercise-card:hover {
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12), 0 3px 10px rgba(0,0,0,0.05);
+    transform: translateY(-3px);
+  }
+  .exercise-card.active {
+    box-shadow: 0 10px 40px rgba(204,41,54,0.12), 0 3px 10px rgba(0,0,0,0.05);
+  }
+  .exercise-card.active::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: var(--red);
+  }
+  .exercise-card.disabled { opacity: 0.5; cursor: default; }
+  .exercise-card.disabled:hover { transform: none; box-shadow: 0 4px 20px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.03); }
+
+  .card-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem; margin-bottom: 6px;
+  }
+  .card-desc {
+    font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;
+  }
+  .card-badge {
+    position: absolute; top: 16px; right: 16px;
+    font-size: 0.55rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted); background: rgba(0,0,0,0.06);
+    padding: 3px 8px; border-radius: 4px;
+  }
+
+  .style-tag {
+    position: fixed; bottom: 16px; right: 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 8px 16px; border-radius: 12px;
+    font-size: 0.75rem; color: var(--text-muted);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); z-index: 200;
+  }
+  .style-tag strong { color: var(--text); }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">Panio</span>
+  <button class="gear">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </button>
+</nav>
+
+<main>
+  <div class="hero">
+    <h1>What are we practicing?</h1>
+    <p>Pick an exercise and play. Your MIDI keyboard is ready.</p>
+  </div>
+
+  <div class="grid">
+    <div class="exercise-card active" onclick="alert('Opens Sandbox full-screen')">
+      <span class="card-icon">🎹</span>
+      <div class="card-title">Sandbox</div>
+      <div class="card-desc">Free play over random modes, keys, and textures. Build your improvisation vocabulary.</div>
+    </div>
+
+    <div class="exercise-card disabled">
+      <span class="card-badge">Coming soon</span>
+      <span class="card-icon">🎬</span>
+      <div class="card-title">Scene Prompt</div>
+      <div class="card-desc">React to a scene description with the right mood and energy. Like live film scoring.</div>
+    </div>
+
+    <div class="exercise-card disabled">
+      <span class="card-badge">Coming soon</span>
+      <span class="card-icon">👂</span>
+      <div class="card-title">Ear Training</div>
+      <div class="card-desc">Identify intervals, chords, and modes by ear. Strengthen your musical intuition.</div>
+    </div>
+
+    <div class="exercise-card disabled">
+      <span class="card-badge">Coming soon</span>
+      <span class="card-icon">🥁</span>
+      <div class="card-title">Rhythm & Texture</div>
+      <div class="card-desc">Practice accompaniment patterns — arpeggios, ostinatos, comping rhythms.</div>
+    </div>
+  </div>
+</main>
+
+<div class="style-tag">
+  <strong>Nav C — Landing Page</strong><br>
+  Card grid home &middot; click to enter full-screen exercise &middot; logo returns home<br>
+  Pro: clean separation &middot; Con: extra click to start playing
+</div>
+
+</body>
+</html>

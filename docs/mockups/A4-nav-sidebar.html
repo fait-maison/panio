@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panio — Nav B: Sidebar</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F0E8;
+    --surface: #FFFDF9;
+    --text: #1A1A1A;
+    --text-muted: #8A8078;
+    --red: #CC2936;
+    --red-light: #FECACA;
+    --blue: #1D4ED8;
+    --border: #E8E0D4;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --radius: 14px;
+  }
+
+  html, body { height: 100%; font-family: var(--font-body); background: var(--bg); color: var(--text); overflow: hidden; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 240px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    padding: 20px 0;
+    z-index: 100;
+  }
+  .sidebar-logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem; letter-spacing: 0.02em;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-section {
+    padding: 16px 12px 8px;
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; margin: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.85rem; font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer; transition: all 0.15s;
+    border: none; background: none; width: calc(100% - 16px);
+    text-align: left;
+  }
+  .sidebar-item:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+  .sidebar-item.active {
+    background: rgba(204,41,54,0.08); color: var(--red); font-weight: 600;
+  }
+  .sidebar-item .icon {
+    width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .sidebar-item .badge-soon {
+    margin-left: auto;
+    font-size: 0.55rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted); background: rgba(0,0,0,0.06);
+    padding: 2px 6px; border-radius: 4px;
+  }
+  .sidebar-bottom {
+    margin-top: auto; padding: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── Main content ── */
+  .main-area {
+    margin-left: 240px;
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh;
+    padding: 40px 16px 100px;
+    gap: 36px;
+    overflow-y: auto;
+  }
+
+  /* ── Gear button in sidebar ── */
+  .gear-sidebar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px;
+    border-radius: 10px; border: none; background: none;
+    font-family: var(--font-body);
+    font-size: 0.8rem; font-weight: 500;
+    color: var(--text-muted); cursor: pointer;
+    width: 100%; text-align: left;
+    transition: all 0.15s;
+  }
+  .gear-sidebar:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+
+  /* ── Card (same as final) ── */
+  .ambiance-card {
+    background: var(--surface); border: none; border-radius: var(--radius);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.04);
+    min-width: 460px; overflow: hidden; position: relative;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .ambiance-card:hover {
+    box-shadow: 0 12px 48px rgba(0,0,0,0.14), 0 4px 12px rgba(0,0,0,0.06);
+    transform: translateY(-2px);
+  }
+  .card-content {
+    padding: 40px 32px 28px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    position: relative;
+  }
+  .badge { display: flex; align-items: baseline; gap: 12px; }
+  .key-letter { font-family: var(--font-display); font-size: 2.2rem; color: var(--red); }
+  .separator { font-size: 1.4rem; color: var(--text-muted); }
+  .mode-name { font-family: var(--font-display); font-size: 2rem; }
+  .texture { font-size: 0.95rem; color: var(--text-muted); font-style: italic; }
+  .prog-sep { width: 80%; height: 1px; background: var(--border); margin: 8px 0; }
+  .progression { display: flex; align-items: center; gap: 10px; font-size: 1rem; font-weight: 600; }
+  .chord { color: var(--text); } .chord.tonic { color: var(--red); }
+  .arrow { color: var(--text-muted); }
+  .skip-btn { position: absolute; bottom: 12px; right: 12px; background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px; }
+  .progress-bar { height: 4px; background: #EEE8DD; }
+  .progress-fill { height: 100%; width: 65%; background: var(--red); }
+
+  /* ── Keyboard ── */
+  .keyboard-scroll { width: 100%; overflow-x: auto; display: flex; padding-bottom: 8px; }
+  .keyboard { position: relative; margin: 0 auto; width: 1520px; height: 130px; }
+  .key-el { position: absolute; top: 0; cursor: pointer; user-select: none; }
+  .white-key { width: 29px; height: 130px; background: #FFFDF9; border: 1px solid #ccc; border-radius: 0 0 4px 4px; z-index: 1; }
+  .white-key.in-scale { background: var(--red-light); }
+  .white-key.is-root { background: radial-gradient(circle at 50% 91%, var(--red) 3px, transparent 4px), var(--red-light); }
+  .white-key.pressed { background: var(--blue); border-color: var(--blue); }
+  .black-key { width: 17px; height: 80px; background: linear-gradient(180deg, #1A1A1A, #2A2A2A); border-radius: 0 0 3px 3px; z-index: 2; box-shadow: 0 3px 6px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2); }
+  .black-key.in-scale { background: #EF4444; }
+  .black-key.pressed { background: var(--blue); }
+
+  .style-tag {
+    position: fixed; bottom: 16px; right: 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 8px 16px; border-radius: 12px;
+    font-size: 0.75rem; color: var(--text-muted);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); z-index: 200;
+  }
+  .style-tag strong { color: var(--text); }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">Panio</div>
+  <div class="sidebar-section">Exercises</div>
+  <button class="sidebar-item active">
+    <span class="icon">🎹</span> Sandbox
+  </button>
+  <button class="sidebar-item">
+    <span class="icon">🎬</span> Scene Prompt
+    <span class="badge-soon">Soon</span>
+  </button>
+  <button class="sidebar-item">
+    <span class="icon">👂</span> Ear Training
+    <span class="badge-soon">Soon</span>
+  </button>
+  <button class="sidebar-item">
+    <span class="icon">🥁</span> Rhythm & Texture
+    <span class="badge-soon">Soon</span>
+  </button>
+  <div class="sidebar-bottom">
+    <button class="gear-sidebar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </button>
+  </div>
+</aside>
+
+<div class="main-area">
+  <div class="ambiance-card">
+    <div class="card-content">
+      <button class="skip-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg></button>
+      <div class="badge">
+        <span class="key-letter">D</span><span class="separator">&middot;</span><span class="mode-name">DORIAN</span>
+      </div>
+      <div class="texture">sparse &middot; pedal tone</div>
+      <div class="prog-sep"></div>
+      <div class="progression">
+        <span class="chord tonic">Dm7</span><span class="arrow">&rsaquo;</span>
+        <span class="chord">G7</span><span class="arrow">&rsaquo;</span>
+        <span class="chord">Am7</span><span class="arrow">&rsaquo;</span>
+        <span class="chord">Em7</span>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill"></div></div>
+  </div>
+  <div class="keyboard-scroll"><div class="keyboard" id="piano"></div></div>
+</div>
+
+<div class="style-tag">
+  <strong>Nav B — Sidebar</strong><br>
+  Persistent left panel &middot; room for descriptions &middot; settings at bottom<br>
+  Pro: scales well &middot; Con: eats horizontal space on tablet
+</div>
+
+<script>
+  const kb = document.getElementById('piano');
+  const BLACK = new Set([1,3,6,8,10]);
+  const SCALE = new Set([2,4,5,7,9,11,0]);
+  const ROOT = 2;
+  const PRESSED = new Set([62, 66, 69]);
+  let whiteIdx = 0, lastWhiteLeft = 0;
+  for (let midi = 21; midi <= 108; midi++) {
+    const pc = midi % 12;
+    const isBlack = BLACK.has(pc);
+    const div = document.createElement('div');
+    div.className = 'key-el ' + (isBlack ? 'black-key' : 'white-key');
+    if (!isBlack) {
+      const left = whiteIdx * 30;
+      div.style.left = left + 'px';
+      if (PRESSED.has(midi)) div.classList.add('pressed');
+      else if (pc === ROOT && SCALE.has(pc)) div.classList.add('is-root');
+      else if (SCALE.has(pc)) div.classList.add('in-scale');
+      lastWhiteLeft = left; whiteIdx++;
+    } else {
+      div.style.left = (lastWhiteLeft + 29 - 8) + 'px';
+      if (PRESSED.has(midi)) div.classList.add('pressed');
+      else if (SCALE.has(pc)) div.classList.add('in-scale');
+    }
+    kb.appendChild(div);
+  }
+  document.querySelector('.keyboard-scroll').scrollLeft = 520;
+</script>
+</body>
+</html>
