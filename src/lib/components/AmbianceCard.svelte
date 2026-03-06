@@ -318,9 +318,8 @@
 	}
 
 	:global(.badge) {
-		display: flex;
-		align-items: baseline;
-		gap: var(--sp-2);
+		display: inline;
+		text-align: center;
 		font-weight: 800;
 		letter-spacing: 0.04em;
 		background: none;
@@ -338,6 +337,7 @@
 	.separator {
 		font-size: 1.25rem;
 		color: var(--text-muted);
+		margin: 0 var(--sp-1);
 	}
 
 	.mode {

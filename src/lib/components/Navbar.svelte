@@ -203,7 +203,7 @@
 		}
 
 		.logo {
-			display: none;
+			pointer-events: auto;
 		}
 
 		.hamburger {

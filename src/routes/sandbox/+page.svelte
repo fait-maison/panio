@@ -65,7 +65,7 @@
 		}
 
 		.content {
-			padding: var(--sp-2);
+			padding: 48px var(--sp-2) var(--sp-2);
 			overflow-y: auto;
 			min-height: 0;
 		}
