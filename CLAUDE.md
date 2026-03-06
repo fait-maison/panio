@@ -95,6 +95,12 @@ Prevents deselecting the last item in a group:
 `$state` wraps objects in Proxy — never compare by reference (`!==`).
 Always compare by value property (e.g. `mode.name`).
 
+### SSR gotcha: `onDestroy` runs server-side
+
+`onMount` is browser-only, but `onDestroy` runs during SSR too.
+Guard any browser globals (`document`, `window`, `navigator`) in `onDestroy` with
+`if (typeof document !== 'undefined')`. Same applies to module-level side effects in stores.
+
 ### Stores
 
 All stores use Svelte 5 runes pattern (not legacy stores):
