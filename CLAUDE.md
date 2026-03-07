@@ -42,23 +42,24 @@ src/
 ├── lib/
 │   ├── components/
 │   │   ├── Navbar.svelte           # top bar: Panio logo, nav items, gear
-│   │   ├── AmbianceCard.svelte     # mode + key + texture + progression
+│   │   ├── AmbianceCard.svelte     # mood + mode + key + rhythm + progression
 │   │   ├── PianoKeyboard.svelte    # on-screen keyboard, MIDI highlighting
 │   │   ├── AutoadvanceToast.svelte # countdown toast (custom, not Sonner)
 │   │   ├── SettingsPanel.svelte    # Sheet-based settings UI
 │   │   ├── MidiStatus.svelte       # MIDI device indicator + picker
 │   │   └── ui/                     # shadcn-svelte components
 │   ├── stores/
-│   │   ├── ambiance.svelte.ts  # current mode + key + texture
+│   │   ├── ambiance.svelte.ts  # current mood + mode + key + rhythm
 │   │   ├── timer.svelte.ts     # interval countdown, autoadvance
 │   │   ├── settings.svelte.ts  # user prefs (localStorage)
 │   │   └── midi.svelte.ts      # Web MIDI API wrapper
 │   ├── music/
-│   │   ├── modes.ts            # mode definitions, mood map
+│   │   ├── modes.ts            # mode definitions
+│   │   ├── moods.ts            # 10 moods with compatible modes + rhythms
+│   │   ├── rhythms.ts          # 23 rhythmic pattern keys
 │   │   ├── scale.ts            # scale note calculations
 │   │   ├── progressions.ts     # chord progression pools, toChordSymbol/chordToRoman
-│   │   ├── textures.ts         # texture definitions (14 textures)
-│   │   └── generator.ts        # ambiance generator
+│   │   └── generator.ts        # mood-driven ambiance generator
 │   ├── audio.ts                # soundfont-player wrapper (on-screen keyboard audio)
 │   ├── exercises.ts            # exercise definitions (sandbox, future exercises)
 │   ├── utils.ts                # utility functions (cn helper)

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card/index.js';
-	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
 	import * as ToggleGroup from '$lib/components/ui/toggle-group/index.js';
 	import SlidersHorizontal from '@lucide/svelte/icons/sliders-horizontal';
 	import X from '@lucide/svelte/icons/x';
@@ -10,6 +9,7 @@
 	import { settings } from '$lib/stores/settings.svelte';
 	import type { Difficulty } from '$lib/music/progressions';
 	import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
+	import { ALL_MOOD_NAMES } from '$lib/music/moods';
 	import { formatProgression, getChordPitchClasses, toChordSymbol } from '$lib/music/progressions';
 	import { Chord, Note } from 'tonal';
 
@@ -108,19 +108,13 @@
 					</svg>
 				</button>
 			</div>
-			<Tooltip.Provider>
-				<Tooltip.Root>
-					<Tooltip.Trigger class="badge">
-						<span class="key">{ambiance.key}</span>
-						<span class="separator">·</span>
-						<span class="mode">{t('mode.' + ambiance.mode.name).toUpperCase()}</span>
-					</Tooltip.Trigger>
-					<Tooltip.Portal>
-						<Tooltip.Content>{t('mood.' + ambiance.mode.mood)}</Tooltip.Content>
-					</Tooltip.Portal>
-				</Tooltip.Root>
-			</Tooltip.Provider>
-			<div class="texture">{t('texture.' + ambiance.texture)}</div>
+			<div class="mood">{t('mood.' + ambiance.mood.name).toUpperCase()}</div>
+			<div class="badge">
+				<span class="key">{ambiance.key}</span>
+				<span class="separator">·</span>
+				<span class="mode">{t('mode.' + ambiance.mode.name).toUpperCase()}</span>
+			</div>
+			<div class="rhythm">{t('rhythm.' + ambiance.rhythm)}</div>
 			<div class="progression-sep"></div>
 			<div
 				class="progression"
@@ -199,6 +193,23 @@
 		>
 			{#each INTERVALS as interval}
 				<ToggleGroup.Item value={String(interval.value)}>{interval.label}</ToggleGroup.Item>
+			{/each}
+		</ToggleGroup.Root>
+	</div>
+
+	<div class="settings-section">
+		<h4>{t('settings.mood')}</h4>
+		<ToggleGroup.Root
+			type="multiple"
+			value={settings.value.moodPool}
+			onValueChange={(v: string[]) =>
+				v.length > 0 && settings.update((s) => ({ ...s, moodPool: v }))}
+			variant="outline"
+			class="w-full flex-wrap"
+			data-lock-active={settings.value.moodPool.length === 1 ? '' : undefined}
+		>
+			{#each ALL_MOOD_NAMES as mood}
+				<ToggleGroup.Item value={mood}>{t('mood.' + mood)}</ToggleGroup.Item>
 			{/each}
 		</ToggleGroup.Root>
 	</div>
@@ -292,12 +303,36 @@
 		.separator {
 			font-size: 1rem;
 		}
-		.texture {
+		.rhythm {
 			font-size: 0.875rem;
 		}
 
 		.card-content {
 			padding: var(--sp-6) var(--sp-4) var(--sp-4);
+		}
+	}
+
+	/* Landscape mobile: compact vertical spacing to prevent scrollbar */
+	@media (max-height: 500px) {
+		.card-content {
+			padding: var(--sp-3) var(--sp-4) var(--sp-3);
+			gap: var(--sp-1);
+		}
+
+		.mood {
+			font-size: 0.8rem;
+		}
+
+		.key {
+			font-size: 1.1rem;
+		}
+
+		.mode {
+			font-size: 1.3rem;
+		}
+
+		.rhythm {
+			font-size: 0.8rem;
 		}
 	}
 
@@ -349,15 +384,19 @@
 		background: rgba(204, 41, 54, 0.08);
 	}
 
-	:global(.badge) {
+	.mood {
+		font-size: 1rem;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		color: var(--text-muted);
+		text-transform: uppercase;
+	}
+
+	.badge {
 		display: inline;
 		text-align: center;
 		font-weight: 800;
 		letter-spacing: 0.04em;
-		background: none;
-		border: none;
-		padding: 0;
-		cursor: default;
 	}
 
 	.key {
@@ -378,11 +417,11 @@
 		color: var(--text);
 	}
 
-	.texture {
+	.rhythm {
 		font-size: 1rem;
-		color: var(--text-muted);
-		font-style: italic;
-		letter-spacing: 0.02em;
+		color: oklch(0.52 0.13 265);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
 	}
 
 	.progression-sep {

@@ -1,4 +1,5 @@
 import { KEYS } from '$lib/music/modes';
+import { ALL_MOOD_NAMES } from '$lib/music/moods';
 import type { Difficulty } from '$lib/music/progressions';
 
 export type { Difficulty };
@@ -7,6 +8,7 @@ export type ProgressionNotation = 'roman' | 'chord';
 
 export interface Settings {
 	intervalMin: number;
+	moodPool: string[];
 	modePool: string[];
 	keyPool: string[];
 	keyboardSize: KeyboardSize;
@@ -18,6 +20,7 @@ export interface Settings {
 
 const DEFAULT_SETTINGS: Settings = {
 	intervalMin: 3,
+	moodPool: ALL_MOOD_NAMES,
 	modePool: ['Major', 'Harmonic Minor'],
 	keyPool: KEYS,
 	keyboardSize: 'm',
