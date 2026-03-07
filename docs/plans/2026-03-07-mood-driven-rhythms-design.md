@@ -37,18 +37,18 @@ New file: `src/lib/music/rhythms.ts` (replaces `textures.ts`).
 
 10 mood categories, each with compatible modes and rhythms:
 
-| Mood | Compatible Modes | Compatible Rhythms |
-|------|-----------------|-------------------|
-| tense | Phrygian, Locrian, Harmonic Minor | ostinato, tango, tarantella, flamenco |
-| dark | Phrygian, Locrian, Minor | funeral-march, nocturne, minimalist, ostinato |
-| melancholic | Dorian, Minor, Harmonic Minor | ballad, nocturne, waltz, blues, barcarolle |
-| bright | Major, Lydian, Mixolydian | march, samba, polka, stride, fanfare |
-| romantic | Lydian, Dorian, Major | waltz, bossa, bolero, ballad, barcarolle |
-| heroic | Mixolydian, Major, Dorian | march, fanfare, ostinato, stride |
-| playful | Major, Mixolydian, Lydian | polka, shuffle, stride, reggae, samba, funk |
-| mysterious | Lydian, Phrygian, Locrian | rubato, minimalist, nocturne, barcarolle |
-| dramatic | Harmonic Minor, Phrygian, Minor | tango, flamenco, bolero, funeral-march |
-| pastoral | Major, Lydian, Mixolydian | waltz, lullaby, ballad, reggae |
+| Mood        | Compatible Modes                  | Compatible Rhythms                            |
+| ----------- | --------------------------------- | --------------------------------------------- |
+| tense       | Phrygian, Locrian, Harmonic Minor | ostinato, tango, tarantella, flamenco         |
+| dark        | Phrygian, Locrian, Minor          | funeral-march, nocturne, minimalist, ostinato |
+| melancholic | Dorian, Minor, Harmonic Minor     | ballad, nocturne, waltz, blues, barcarolle    |
+| bright      | Major, Lydian, Mixolydian         | march, samba, polka, stride, fanfare          |
+| romantic    | Lydian, Dorian, Major             | waltz, bossa, bolero, ballad, barcarolle      |
+| heroic      | Mixolydian, Major, Dorian         | march, fanfare, ostinato, stride              |
+| playful     | Major, Mixolydian, Lydian         | polka, shuffle, stride, reggae, samba, funk   |
+| mysterious  | Lydian, Phrygian, Locrian         | rubato, minimalist, nocturne, barcarolle      |
+| dramatic    | Harmonic Minor, Phrygian, Minor   | tango, flamenco, bolero, funeral-march        |
+| pastoral    | Major, Lydian, Mixolydian         | waltz, lullaby, ballad, reggae                |
 
 New file: `src/lib/music/moods.ts`.
 
@@ -56,11 +56,11 @@ New file: `src/lib/music/moods.ts`.
 
 ```ts
 export interface Ambiance {
-  mood: MoodInfo;
-  mode: ModeInfo;
-  key: string;
-  rhythm: string;
-  progression: RomanProgression;
+	mood: MoodInfo;
+	mode: ModeInfo;
+	key: string;
+	rhythm: string;
+	progression: RomanProgression;
 }
 ```
 
@@ -122,61 +122,61 @@ Remove all 14 `texture.*` keys. Add:
 
 ### Rhythm Translations
 
-| Key | EN | FR |
-|-----|----|----|
-| rhythm.waltz | waltz | valse |
-| rhythm.march | march | marche |
-| rhythm.bossa | bossa nova | bossa nova |
-| rhythm.shuffle | shuffle | shuffle |
-| rhythm.ballad | ballad | ballade |
-| rhythm.rubato | rubato | rubato |
-| rhythm.ostinato | ostinato | ostinato |
-| rhythm.tango | tango | tango |
-| rhythm.lullaby | lullaby | berceuse |
-| rhythm.stride | stride | stride |
-| rhythm.reggae | reggae | reggae |
-| rhythm.blues | blues | blues |
-| rhythm.funk | funk | funk |
-| rhythm.bolero | bolero | bolero |
-| rhythm.polka | polka | polka |
+| Key                  | EN            | FR             |
+| -------------------- | ------------- | -------------- |
+| rhythm.waltz         | waltz         | valse          |
+| rhythm.march         | march         | marche         |
+| rhythm.bossa         | bossa nova    | bossa nova     |
+| rhythm.shuffle       | shuffle       | shuffle        |
+| rhythm.ballad        | ballad        | ballade        |
+| rhythm.rubato        | rubato        | rubato         |
+| rhythm.ostinato      | ostinato      | ostinato       |
+| rhythm.tango         | tango         | tango          |
+| rhythm.lullaby       | lullaby       | berceuse       |
+| rhythm.stride        | stride        | stride         |
+| rhythm.reggae        | reggae        | reggae         |
+| rhythm.blues         | blues         | blues          |
+| rhythm.funk          | funk          | funk           |
+| rhythm.bolero        | bolero        | bolero         |
+| rhythm.polka         | polka         | polka          |
 | rhythm.funeral-march | funeral march | marche funebre |
-| rhythm.minimalist | minimalist | minimaliste |
-| rhythm.nocturne | nocturne | nocturne |
-| rhythm.fanfare | fanfare | fanfare |
-| rhythm.barcarolle | barcarolle | barcarolle |
-| rhythm.flamenco | flamenco | flamenco |
-| rhythm.tarantella | tarantella | tarentelle |
-| rhythm.samba | samba | samba |
+| rhythm.minimalist    | minimalist    | minimaliste    |
+| rhythm.nocturne      | nocturne      | nocturne       |
+| rhythm.fanfare       | fanfare       | fanfare        |
+| rhythm.barcarolle    | barcarolle    | barcarolle     |
+| rhythm.flamenco      | flamenco      | flamenco       |
+| rhythm.tarantella    | tarantella    | tarentelle     |
+| rhythm.samba         | samba         | samba          |
 
 ### Mood Translations
 
-| Key | EN | FR |
-|-----|----|----|
-| mood.tense | tense | tendu |
-| mood.dark | dark | sombre |
+| Key              | EN          | FR           |
+| ---------------- | ----------- | ------------ |
+| mood.tense       | tense       | tendu        |
+| mood.dark        | dark        | sombre       |
 | mood.melancholic | melancholic | melancolique |
-| mood.bright | bright | lumineux |
-| mood.romantic | romantic | romantique |
-| mood.heroic | heroic | heroique |
-| mood.playful | playful | enjoue |
-| mood.mysterious | mysterious | mysterieux |
-| mood.dramatic | dramatic | dramatique |
-| mood.pastoral | pastoral | pastoral |
+| mood.bright      | bright      | lumineux     |
+| mood.romantic    | romantic    | romantique   |
+| mood.heroic      | heroic      | heroique     |
+| mood.playful     | playful     | enjoue       |
+| mood.mysterious  | mysterious  | mysterieux   |
+| mood.dramatic    | dramatic    | dramatique   |
+| mood.pastoral    | pastoral    | pastoral     |
 
 ## Files Touched
 
-| File | Change |
-|------|--------|
-| `src/lib/music/textures.ts` | Delete |
-| `src/lib/music/rhythms.ts` | Create — 23-item RHYTHMS array |
-| `src/lib/music/moods.ts` | Create — 10 moods with mode/rhythm mappings |
-| `src/lib/music/generator.ts` | Mood-driven generation, texture -> rhythm |
+| File                                     | Change                                              |
+| ---------------------------------------- | --------------------------------------------------- |
+| `src/lib/music/textures.ts`              | Delete                                              |
+| `src/lib/music/rhythms.ts`               | Create — 23-item RHYTHMS array                      |
+| `src/lib/music/moods.ts`                 | Create — 10 moods with mode/rhythm mappings         |
+| `src/lib/music/generator.ts`             | Mood-driven generation, texture -> rhythm           |
 | `src/lib/components/AmbianceCard.svelte` | New mood line, texture -> rhythm, mood pool setting |
-| `src/lib/stores/settings.svelte.ts` | Add moodPool to Settings |
-| `src/lib/i18n.svelte.ts` | Remove textures, add rhythms + moods |
-| `src/lib/music/scale.test.ts` | Update fixtures (texture -> rhythm) |
-| `CLAUDE.md` | Update structure + patterns |
-| `DESIGN.md` | Update ambiance badge, add mood section |
+| `src/lib/stores/settings.svelte.ts`      | Add moodPool to Settings                            |
+| `src/lib/i18n.svelte.ts`                 | Remove textures, add rhythms + moods                |
+| `src/lib/music/scale.test.ts`            | Update fixtures (texture -> rhythm)                 |
+| `CLAUDE.md`                              | Update structure + patterns                         |
+| `DESIGN.md`                              | Update ambiance badge, add mood section             |
 
 ## What Does NOT Change
 
