@@ -18,8 +18,8 @@
 
 	let hoveredChordNotes = $state<Set<number>>(new Set());
 	let hoveredChordRoot = $state<number | null>(null);
-	// eslint-disable-next-line @typescript-eslint/no-unused-expressions -- read ambiance.current to track reactive dependency
 	$effect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions -- read ambiance.current to track reactive dependency
 		ambiance.current;
 		hoveredChordNotes = new Set();
 		hoveredChordRoot = null;
