@@ -286,6 +286,43 @@ export function getChordPitchClasses(key: string, tonalModeName: string, roman: 
 	);
 }
 
+const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'] as const;
+
+function chromaToNumeral(chroma: number, chromas: number[]): string | null {
+	const idx = chromas.indexOf(chroma);
+	if (idx >= 0) return NUMERALS[idx];
+	const aboveIdx = chromas.indexOf((chroma + 1) % 12);
+	if (aboveIdx >= 0) return 'b' + NUMERALS[aboveIdx];
+	const belowIdx = chromas.indexOf((chroma + 11) % 12);
+	if (belowIdx >= 0) return '#' + NUMERALS[belowIdx];
+	return null;
+}
+
+export function chordToRoman(chordLabel: string, key: string, tonalModeName: string): string {
+	const slashIdx = chordLabel.indexOf('/');
+	const baseLabel = slashIdx >= 0 ? chordLabel.slice(0, slashIdx) : chordLabel;
+	const chord = Chord.get(baseLabel);
+	if (!chord.tonic) return chordLabel;
+	const scale = Scale.get(`${key} ${tonalModeName}`);
+	if (!scale.notes.length) return chordLabel;
+	const chromas = scale.notes.map((n) => Note.chroma(n) as number);
+	const rootNumeral = chromaToNumeral(Note.chroma(chord.tonic) as number, chromas);
+	if (!rootNumeral) return chordLabel;
+	const isMinor = chord.quality === 'Minor' || chord.quality === 'Diminished';
+	const numeral = isMinor ? rootNumeral.toLowerCase() : rootNumeral;
+	let suffix = baseLabel.slice(chord.tonic.length);
+	if (suffix.startsWith('dim')) suffix = '°' + suffix.slice(3);
+	else if (suffix.startsWith('aug')) suffix = '+' + suffix.slice(3);
+	else if (suffix === 'm') suffix = '';
+	let result = numeral + suffix;
+	if (slashIdx >= 0) {
+		const bassNote = chordLabel.slice(slashIdx + 1);
+		const bassNumeral = chromaToNumeral(Note.chroma(bassNote) as number, chromas);
+		result += '/' + (bassNumeral ?? bassNote);
+	}
+	return result;
+}
+
 export function formatProgression(
 	progression: RomanProgression,
 	key: string,

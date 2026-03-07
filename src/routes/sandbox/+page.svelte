@@ -4,6 +4,8 @@
 	import { ambiance } from '$lib/stores/ambiance.svelte';
 	import { timer } from '$lib/stores/timer.svelte';
 	import { midi } from '$lib/stores/midi.svelte';
+	import { settings } from '$lib/stores/settings.svelte';
+	import { chordToRoman } from '$lib/music/progressions';
 	import { t } from '$lib/i18n.svelte';
 
 	import AmbianceCard from '$lib/components/AmbianceCard.svelte';
@@ -53,6 +55,14 @@
 		return () => { if (_fadeTimer) { clearTimeout(_fadeTimer); _fadeTimer = null; } };
 	});
 
+	let chordLabel = $derived(
+		displayedChord
+			? settings.value.progressionNotation === 'roman'
+				? chordToRoman(displayedChord.label, ambiance.current.key, ambiance.current.mode.tonalName)
+				: displayedChord.label
+			: null
+	);
+
 	let wakeLock: WakeLockSentinel | null = null;
 
 	async function requestWakeLock() {
@@ -90,9 +100,9 @@
 		/>
 	</div>
 	<div class="keyboard-wrapper">
-		{#if displayedChord}
+		{#if chordLabel}
 			<div class="chord-label" class:fading={!detectedChord}>
-				{displayedChord.label}
+				{chordLabel}
 			</div>
 		{/if}
 		<PianoKeyboard
