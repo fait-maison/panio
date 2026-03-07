@@ -9,34 +9,34 @@ updates:
     groups:
       svelte:
         patterns:
-          - "svelte"
-          - "svelte-check"
-          - "@sveltejs/*"
+          - 'svelte'
+          - 'svelte-check'
+          - '@sveltejs/*'
       tailwind:
         patterns:
-          - "tailwindcss"
-          - "@tailwindcss/*"
-          - "tailwind-merge"
-          - "tailwind-variants"
-          - "tw-animate-css"
+          - 'tailwindcss'
+          - '@tailwindcss/*'
+          - 'tailwind-merge'
+          - 'tailwind-variants'
+          - 'tw-animate-css'
       vitest:
         patterns:
-          - "vitest"
-          - "@vitest/*"
+          - 'vitest'
+          - '@vitest/*'
       playwright:
         patterns:
-          - "@playwright/test"
+          - '@playwright/test'
       shadcn:
         patterns:
-          - "bits-ui"
-          - "svelte-sonner"
+          - 'bits-ui'
+          - 'svelte-sonner'
     ignore:
       - dependency-name: vite
         update-types:
-          - "version-update:semver-major"
-      - dependency-name: "@sveltejs/*"
+          - 'version-update:semver-major'
+      - dependency-name: '@sveltejs/*'
         update-types:
-          - "version-update:semver-major"
+          - 'version-update:semver-major'
 
   - package-ecosystem: github-actions
     directory: /
@@ -46,7 +46,7 @@ updates:
     groups:
       actions:
         patterns:
-          - "*"
+          - '*'
 
   - package-ecosystem: docker
     directory: /
@@ -55,4 +55,4 @@ updates:
       day: monday
     ignore:
       - dependency-name: node
-        versions: ["21", "23", "25", "27"]
+        versions: ['21', '23', '25', '27']

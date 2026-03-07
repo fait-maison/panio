@@ -49,7 +49,13 @@ $effect.root(() => {
 });
 
 export const settings = {
-	get value() { return _s; },
-	set(s: Settings) { _s = s; },
-	update(fn: (s: Settings) => Settings) { _s = fn(_s); }
+	get value() {
+		return _s;
+	},
+	set(s: Settings) {
+		_s = s;
+	},
+	update(fn: (s: Settings) => Settings) {
+		_s = fn(_s);
+	}
 };

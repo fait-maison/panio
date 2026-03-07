@@ -1,275 +1,434 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panio — Final Design Direction</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Panio — Final Design Direction</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
 
-  :root {
-    --bg: #F5F0E8;
-    --surface: #FFFDF9;
-    --text: #1A1A1A;
-    --text-muted: #8A8078;
-    --red: #CC2936;
-    --red-light: #FECACA;
-    --blue: #1D4ED8;
-    --border: #E8E0D4;
-    --font-display: 'DM Serif Display', Georgia, serif;
-    --font-body: 'Inter', system-ui, sans-serif;
-    --radius: 14px;
-  }
+			:root {
+				--bg: #f5f0e8;
+				--surface: #fffdf9;
+				--text: #1a1a1a;
+				--text-muted: #8a8078;
+				--red: #cc2936;
+				--red-light: #fecaca;
+				--blue: #1d4ed8;
+				--border: #e8e0d4;
+				--font-display: 'DM Serif Display', Georgia, serif;
+				--font-body: 'Inter', system-ui, sans-serif;
+				--radius: 14px;
+			}
 
-  html, body { height: 100%; font-family: var(--font-body); background: var(--bg); color: var(--text); }
+			html,
+			body {
+				height: 100%;
+				font-family: var(--font-body);
+				background: var(--bg);
+				color: var(--text);
+			}
 
-  /* ── Navbar — blends into background ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; height: 56px;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 24px;
-    background: var(--bg);
-    z-index: 100;
-  }
-  .logo {
-    font-family: var(--font-display);
-    font-size: 1.4rem; letter-spacing: 0.02em;
-  }
-  .nav-item {
-    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--text-muted);
-    transition: color 0.15s;
-  }
-  .nav-item.active { color: var(--text); }
-  .gear {
-    background: none; border: none; border-radius: 8px;
-    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-    color: var(--text-muted); cursor: pointer; transition: color 0.15s;
-  }
-  .gear:hover { color: var(--text); }
+			/* ── Navbar — blends into background ── */
+			nav {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 56px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 24px;
+				background: var(--bg);
+				z-index: 100;
+			}
+			.logo {
+				font-family: var(--font-display);
+				font-size: 1.4rem;
+				letter-spacing: 0.02em;
+			}
+			.nav-item {
+				font-size: 0.75rem;
+				font-weight: 600;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				color: var(--text-muted);
+				transition: color 0.15s;
+			}
+			.nav-item.active {
+				color: var(--text);
+			}
+			.gear {
+				background: none;
+				border: none;
+				border-radius: 8px;
+				width: 40px;
+				height: 40px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: var(--text-muted);
+				cursor: pointer;
+				transition: color 0.15s;
+			}
+			.gear:hover {
+				color: var(--text);
+			}
 
-  /* ── Main layout ── */
-  main {
-    display: flex; flex-direction: column; align-items: center;
-    min-height: 100vh;
-    padding: 80px 16px 100px;
-    gap: 40px;
-  }
+			/* ── Main layout ── */
+			main {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				min-height: 100vh;
+				padding: 80px 16px 100px;
+				gap: 40px;
+			}
 
-  /* ── Ambiance Card — no border, lifted shadow, hover ── */
-  .ambiance-card {
-    background: var(--surface);
-    border: none;
-    border-radius: var(--radius);
-    box-shadow: 0 8px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.04);
-    min-width: 460px;
-    overflow: hidden;
-    position: relative;
-    transition: box-shadow 0.25s ease, transform 0.25s ease;
-  }
-  .ambiance-card:hover {
-    box-shadow: 0 12px 48px rgba(0,0,0,0.14), 0 4px 12px rgba(0,0,0,0.06);
-    transform: translateY(-2px);
-  }
-  .card-content {
-    padding: 40px 32px 28px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    position: relative;
-  }
-  .badge {
-    display: flex; align-items: baseline; gap: 12px;
-    font-weight: 800; letter-spacing: 0.04em;
-  }
-  .key-letter {
-    font-family: var(--font-display);
-    font-size: 2.2rem; color: var(--red);
-  }
-  .separator { font-size: 1.4rem; color: var(--text-muted); }
-  .mode-name {
-    font-family: var(--font-display);
-    font-size: 2rem; letter-spacing: 0.03em;
-  }
-  .texture {
-    font-size: 0.95rem; color: var(--text-muted); font-style: italic;
-    letter-spacing: 0.04em;
-  }
-  .prog-sep {
-    width: 80%; height: 1px; background: var(--border); margin: 8px 0;
-  }
-  .progression {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 1rem; font-weight: 600; letter-spacing: 0.06em;
-  }
-  .chord { color: var(--text); cursor: pointer; transition: color 0.15s; }
-  .chord:hover { color: var(--red); }
-  .chord.tonic { color: var(--red); }
-  .arrow { color: var(--text-muted); font-weight: 400; }
-  .skip-btn {
-    position: absolute; bottom: 12px; right: 12px;
-    background: none; border: none; color: var(--text-muted);
-    cursor: pointer; font-size: 1rem; padding: 4px;
-    transition: color 0.15s;
-  }
-  .skip-btn:hover { color: var(--text); }
-  .progress-bar { height: 4px; background: #EEE8DD; }
-  .progress-fill { height: 100%; width: 65%; background: var(--red); transition: width 0.1s linear; }
+			/* ── Ambiance Card — no border, lifted shadow, hover ── */
+			.ambiance-card {
+				background: var(--surface);
+				border: none;
+				border-radius: var(--radius);
+				box-shadow:
+					0 8px 40px rgba(0, 0, 0, 0.1),
+					0 2px 8px rgba(0, 0, 0, 0.04);
+				min-width: 460px;
+				overflow: hidden;
+				position: relative;
+				transition:
+					box-shadow 0.25s ease,
+					transform 0.25s ease;
+			}
+			.ambiance-card:hover {
+				box-shadow:
+					0 12px 48px rgba(0, 0, 0, 0.14),
+					0 4px 12px rgba(0, 0, 0, 0.06);
+				transform: translateY(-2px);
+			}
+			.card-content {
+				padding: 40px 32px 28px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 8px;
+				position: relative;
+			}
+			.badge {
+				display: flex;
+				align-items: baseline;
+				gap: 12px;
+				font-weight: 800;
+				letter-spacing: 0.04em;
+			}
+			.key-letter {
+				font-family: var(--font-display);
+				font-size: 2.2rem;
+				color: var(--red);
+			}
+			.separator {
+				font-size: 1.4rem;
+				color: var(--text-muted);
+			}
+			.mode-name {
+				font-family: var(--font-display);
+				font-size: 2rem;
+				letter-spacing: 0.03em;
+			}
+			.texture {
+				font-size: 0.95rem;
+				color: var(--text-muted);
+				font-style: italic;
+				letter-spacing: 0.04em;
+			}
+			.prog-sep {
+				width: 80%;
+				height: 1px;
+				background: var(--border);
+				margin: 8px 0;
+			}
+			.progression {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				font-size: 1rem;
+				font-weight: 600;
+				letter-spacing: 0.06em;
+			}
+			.chord {
+				color: var(--text);
+				cursor: pointer;
+				transition: color 0.15s;
+			}
+			.chord:hover {
+				color: var(--red);
+			}
+			.chord.tonic {
+				color: var(--red);
+			}
+			.arrow {
+				color: var(--text-muted);
+				font-weight: 400;
+			}
+			.skip-btn {
+				position: absolute;
+				bottom: 12px;
+				right: 12px;
+				background: none;
+				border: none;
+				color: var(--text-muted);
+				cursor: pointer;
+				font-size: 1rem;
+				padding: 4px;
+				transition: color 0.15s;
+			}
+			.skip-btn:hover {
+				color: var(--text);
+			}
+			.progress-bar {
+				height: 4px;
+				background: #eee8dd;
+			}
+			.progress-fill {
+				height: 100%;
+				width: 65%;
+				background: var(--red);
+				transition: width 0.1s linear;
+			}
 
-  /* ── Piano Keyboard — shadow under black keys ── */
-  .keyboard-scroll {
-    width: 100%; overflow-x: auto; display: flex;
-    padding-bottom: 8px;
-  }
-  .keyboard {
-    position: relative; margin: 0 auto;
-    width: 1520px; height: 130px;
-  }
-  .key-el {
-    position: absolute; top: 0;
-    border-radius: 0 0 4px 4px;
-    cursor: pointer; user-select: none;
-  }
-  .white-key {
-    width: 29px; height: 130px;
-    background: #FFFDF9;
-    border: 1px solid #ccc;
-    z-index: 1;
-  }
-  .white-key.in-scale { background: var(--red-light); }
-  .white-key.is-root {
-    background: radial-gradient(circle at 50% 91%, var(--red) 3px, transparent 4px), var(--red-light);
-  }
-  .white-key.pressed { background: var(--blue); border-color: var(--blue); }
-  .black-key {
-    width: 17px; height: 80px;
-    background: linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%);
-    border-radius: 0 0 3px 3px;
-    z-index: 2;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
-  }
-  .black-key.in-scale { background: #EF4444; }
-  .black-key.pressed { background: var(--blue); box-shadow: 0 3px 6px rgba(29,78,216,0.3); }
+			/* ── Piano Keyboard — shadow under black keys ── */
+			.keyboard-scroll {
+				width: 100%;
+				overflow-x: auto;
+				display: flex;
+				padding-bottom: 8px;
+			}
+			.keyboard {
+				position: relative;
+				margin: 0 auto;
+				width: 1520px;
+				height: 130px;
+			}
+			.key-el {
+				position: absolute;
+				top: 0;
+				border-radius: 0 0 4px 4px;
+				cursor: pointer;
+				user-select: none;
+			}
+			.white-key {
+				width: 29px;
+				height: 130px;
+				background: #fffdf9;
+				border: 1px solid #ccc;
+				z-index: 1;
+			}
+			.white-key.in-scale {
+				background: var(--red-light);
+			}
+			.white-key.is-root {
+				background:
+					radial-gradient(circle at 50% 91%, var(--red) 3px, transparent 4px), var(--red-light);
+			}
+			.white-key.pressed {
+				background: var(--blue);
+				border-color: var(--blue);
+			}
+			.black-key {
+				width: 17px;
+				height: 80px;
+				background: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 100%);
+				border-radius: 0 0 3px 3px;
+				z-index: 2;
+				box-shadow:
+					0 3px 6px rgba(0, 0, 0, 0.3),
+					0 1px 2px rgba(0, 0, 0, 0.2);
+			}
+			.black-key.in-scale {
+				background: #ef4444;
+			}
+			.black-key.pressed {
+				background: var(--blue);
+				box-shadow: 0 3px 6px rgba(29, 78, 216, 0.3);
+			}
 
-  /* ── Autoadvance Toast preview ── */
-  .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: var(--surface);
-    border-radius: var(--radius);
-    box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04);
-    padding: 16px 24px;
-    display: flex; align-items: center; gap: 16px;
-    z-index: 200;
-    min-width: 340px;
-  }
-  .toast-text {
-    flex: 1;
-    font-size: 0.85rem; font-weight: 600;
-  }
-  .toast-text span { color: var(--text-muted); font-weight: 400; }
-  .toast-btn {
-    font-family: var(--font-body);
-    font-size: 0.75rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    background: none; border: 1px solid var(--border);
-    border-radius: 8px; padding: 6px 14px;
-    color: var(--text-muted); cursor: pointer;
-    transition: all 0.15s;
-  }
-  .toast-btn:hover { border-color: var(--text); color: var(--text); }
-  .toast-progress {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    height: 3px; background: #EEE8DD;
-    border-radius: 0 0 var(--radius) var(--radius);
-    overflow: hidden;
-  }
-  .toast-progress-fill {
-    height: 100%; width: 60%; background: var(--red);
-    border-radius: 0 0 0 var(--radius);
-  }
-</style>
-</head>
-<body>
+			/* ── Autoadvance Toast preview ── */
+			.toast {
+				position: fixed;
+				bottom: 24px;
+				left: 50%;
+				transform: translateX(-50%);
+				background: var(--surface);
+				border-radius: var(--radius);
+				box-shadow:
+					0 8px 40px rgba(0, 0, 0, 0.12),
+					0 2px 8px rgba(0, 0, 0, 0.04);
+				padding: 16px 24px;
+				display: flex;
+				align-items: center;
+				gap: 16px;
+				z-index: 200;
+				min-width: 340px;
+			}
+			.toast-text {
+				flex: 1;
+				font-size: 0.85rem;
+				font-weight: 600;
+			}
+			.toast-text span {
+				color: var(--text-muted);
+				font-weight: 400;
+			}
+			.toast-btn {
+				font-family: var(--font-body);
+				font-size: 0.75rem;
+				font-weight: 600;
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				background: none;
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				padding: 6px 14px;
+				color: var(--text-muted);
+				cursor: pointer;
+				transition: all 0.15s;
+			}
+			.toast-btn:hover {
+				border-color: var(--text);
+				color: var(--text);
+			}
+			.toast-progress {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				height: 3px;
+				background: #eee8dd;
+				border-radius: 0 0 var(--radius) var(--radius);
+				overflow: hidden;
+			}
+			.toast-progress-fill {
+				height: 100%;
+				width: 60%;
+				background: var(--red);
+				border-radius: 0 0 0 var(--radius);
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			<span class="logo">Panio</span>
+			<div style="display: flex; gap: 20px">
+				<span class="nav-item active">Sandbox</span>
+			</div>
+			<button class="gear">
+				<svg
+					width="20"
+					height="20"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+				>
+					<circle cx="12" cy="12" r="3" />
+					<path
+						d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+					/>
+				</svg>
+			</button>
+		</nav>
 
-<nav>
-  <span class="logo">Panio</span>
-  <div style="display:flex;gap:20px;">
-    <span class="nav-item active">Sandbox</span>
-  </div>
-  <button class="gear">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-  </button>
-</nav>
+		<main>
+			<div class="ambiance-card">
+				<div class="card-content">
+					<button class="skip-btn" aria-label="Next ambiance">
+						<svg
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<polygon points="5 4 15 12 5 20 5 4" />
+							<line x1="19" y1="5" x2="19" y2="19" />
+						</svg>
+					</button>
+					<div class="badge">
+						<span class="key-letter">D</span>
+						<span class="separator">&middot;</span>
+						<span class="mode-name">DORIAN</span>
+					</div>
+					<div class="texture">sparse &middot; pedal tone</div>
+					<div class="prog-sep"></div>
+					<div class="progression">
+						<span class="chord tonic">Dm7</span>
+						<span class="arrow">&rsaquo;</span>
+						<span class="chord">G7</span>
+						<span class="arrow">&rsaquo;</span>
+						<span class="chord">Am7</span>
+						<span class="arrow">&rsaquo;</span>
+						<span class="chord">Em7</span>
+					</div>
+				</div>
+				<div class="progress-bar"><div class="progress-fill"></div></div>
+			</div>
 
-<main>
-  <div class="ambiance-card">
-    <div class="card-content">
-      <button class="skip-btn" aria-label="Next ambiance">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-      </button>
-      <div class="badge">
-        <span class="key-letter">D</span>
-        <span class="separator">&middot;</span>
-        <span class="mode-name">DORIAN</span>
-      </div>
-      <div class="texture">sparse &middot; pedal tone</div>
-      <div class="prog-sep"></div>
-      <div class="progression">
-        <span class="chord tonic">Dm7</span>
-        <span class="arrow">&rsaquo;</span>
-        <span class="chord">G7</span>
-        <span class="arrow">&rsaquo;</span>
-        <span class="chord">Am7</span>
-        <span class="arrow">&rsaquo;</span>
-        <span class="chord">Em7</span>
-      </div>
-    </div>
-    <div class="progress-bar"><div class="progress-fill"></div></div>
-  </div>
+			<div class="keyboard-scroll">
+				<div class="keyboard" id="piano"></div>
+			</div>
+		</main>
 
-  <div class="keyboard-scroll">
-    <div class="keyboard" id="piano"></div>
-  </div>
-</main>
+		<!-- Autoadvance toast preview -->
+		<div class="toast">
+			<div class="toast-text">
+				Next ambiance in <strong>3s</strong> <span>&middot; E Lydian</span>
+			</div>
+			<button class="toast-btn">Snooze</button>
+			<div class="toast-progress"><div class="toast-progress-fill"></div></div>
+		</div>
 
-<!-- Autoadvance toast preview -->
-<div class="toast">
-  <div class="toast-text">
-    Next ambiance in <strong>3s</strong> <span>&middot; E Lydian</span>
-  </div>
-  <button class="toast-btn">Snooze</button>
-  <div class="toast-progress"><div class="toast-progress-fill"></div></div>
-</div>
-
-<script>
-  const kb = document.getElementById('piano');
-  const BLACK = new Set([1,3,6,8,10]);
-  const SCALE = new Set([2,4,5,7,9,11,0]);
-  const ROOT = 2;
-  const PRESSED = new Set([62, 66, 69]);
-  let whiteIdx = 0, lastWhiteLeft = 0;
-  for (let midi = 21; midi <= 108; midi++) {
-    const pc = midi % 12;
-    const isBlack = BLACK.has(pc);
-    const div = document.createElement('div');
-    div.className = 'key-el ' + (isBlack ? 'black-key' : 'white-key');
-    if (!isBlack) {
-      const left = whiteIdx * 30;
-      div.style.left = left + 'px';
-      if (PRESSED.has(midi)) div.classList.add('pressed');
-      else if (pc === ROOT && SCALE.has(pc)) div.classList.add('is-root');
-      else if (SCALE.has(pc)) div.classList.add('in-scale');
-      lastWhiteLeft = left;
-      whiteIdx++;
-    } else {
-      div.style.left = (lastWhiteLeft + 29 - 8) + 'px';
-      if (PRESSED.has(midi)) div.classList.add('pressed');
-      else if (SCALE.has(pc)) div.classList.add('in-scale');
-    }
-    kb.appendChild(div);
-  }
-  const scroll = document.querySelector('.keyboard-scroll');
-  setTimeout(() => { scroll.scrollLeft = 520; }, 100);
-</script>
-
-</body>
+		<script>
+			const kb = document.getElementById('piano');
+			const BLACK = new Set([1, 3, 6, 8, 10]);
+			const SCALE = new Set([2, 4, 5, 7, 9, 11, 0]);
+			const ROOT = 2;
+			const PRESSED = new Set([62, 66, 69]);
+			let whiteIdx = 0,
+				lastWhiteLeft = 0;
+			for (let midi = 21; midi <= 108; midi++) {
+				const pc = midi % 12;
+				const isBlack = BLACK.has(pc);
+				const div = document.createElement('div');
+				div.className = 'key-el ' + (isBlack ? 'black-key' : 'white-key');
+				if (!isBlack) {
+					const left = whiteIdx * 30;
+					div.style.left = left + 'px';
+					if (PRESSED.has(midi)) div.classList.add('pressed');
+					else if (pc === ROOT && SCALE.has(pc)) div.classList.add('is-root');
+					else if (SCALE.has(pc)) div.classList.add('in-scale');
+					lastWhiteLeft = left;
+					whiteIdx++;
+				} else {
+					div.style.left = lastWhiteLeft + 29 - 8 + 'px';
+					if (PRESSED.has(midi)) div.classList.add('pressed');
+					else if (SCALE.has(pc)) div.classList.add('in-scale');
+				}
+				kb.appendChild(div);
+			}
+			const scroll = document.querySelector('.keyboard-scroll');
+			setTimeout(() => {
+				scroll.scrollLeft = 520;
+			}, 100);
+		</script>
+	</body>
 </html>

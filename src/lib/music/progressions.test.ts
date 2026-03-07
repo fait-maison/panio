@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { Note } from 'tonal';
-import { toChordSymbol, chordToRoman, pickProgression, PROGRESSIONS, getChordPitchClasses } from './progressions';
+import {
+	toChordSymbol,
+	chordToRoman,
+	pickProgression,
+	PROGRESSIONS,
+	getChordPitchClasses
+} from './progressions';
 
 describe('toChordSymbol', () => {
 	it('D dorian i → Dm', () => {
@@ -49,7 +55,10 @@ describe('pickProgression', () => {
 		let differs = false;
 		for (let i = 0; i < 50; i++) {
 			const p2 = pickProgression('Major', 'simple', p1);
-			if (p2 !== p1) { differs = true; break; }
+			if (p2 !== p1) {
+				differs = true;
+				break;
+			}
 		}
 		expect(differs).toBe(true);
 	});
@@ -61,7 +70,9 @@ describe('pickProgression', () => {
 
 	it('returns complex progressions with extended chord notation', () => {
 		const p = pickProgression('Major', 'complex');
-		expect(p.some((r) => r.includes('maj9') || r.includes('m9') || r.includes('9') || r.includes('sus4'))).toBe(true);
+		expect(
+			p.some((r) => r.includes('maj9') || r.includes('m9') || r.includes('9') || r.includes('sus4'))
+		).toBe(true);
 	});
 });
 
@@ -199,7 +210,7 @@ describe('chordToRoman ↔ toChordSymbol roundtrip', () => {
 		['C', 'major', 'V7'],
 		['C', 'major', 'Imaj7'],
 		['C', 'major', 'iim7'],
-		['C', 'major', 'IVsus4'],
+		['C', 'major', 'IVsus4']
 	];
 
 	for (const [key, mode, roman] of cases) {
@@ -212,8 +223,14 @@ describe('chordToRoman ↔ toChordSymbol roundtrip', () => {
 
 describe('PROGRESSIONS coverage', () => {
 	const REQUIRED_MODES = [
-		'Major', 'Dorian', 'Phrygian', 'Lydian',
-		'Mixolydian', 'Minor', 'Locrian', 'Harmonic Minor'
+		'Major',
+		'Dorian',
+		'Phrygian',
+		'Lydian',
+		'Mixolydian',
+		'Minor',
+		'Locrian',
+		'Harmonic Minor'
 	];
 
 	for (const mode of REQUIRED_MODES) {

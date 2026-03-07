@@ -1,18 +1,16 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
-  reporter: process.env.CI ? 'dot' : 'list',
-  use: {
-    baseURL: 'http://localhost:5173',
-    timeout: 5_000,
-  },
-  projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-  ],
-  webServer: {
-    command: 'pnpm dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-  },
+	testDir: './tests',
+	reporter: process.env.CI ? 'dot' : 'list',
+	use: {
+		baseURL: 'http://localhost:5173',
+		timeout: 5_000
+	},
+	projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+	webServer: {
+		command: 'pnpm dev',
+		url: 'http://localhost:5173',
+		reuseExistingServer: !process.env.CI
+	}
 });

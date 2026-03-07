@@ -82,9 +82,13 @@ Sheet, ToggleGroup, Card, Sonner, Tooltip, Slider
 ### ToggleGroup lock pattern
 
 Prevents deselecting the last item in a group:
+
 ```css
-:global([data-lock-active] [data-state='on']) { pointer-events: none; }
+:global([data-lock-active] [data-state='on']) {
+	pointer-events: none;
+}
 ```
+
 - Single-select: always add `data-lock-active` on Root
 - Multi-select: `data-lock-active={pool.length === 1 ? '' : undefined}`
 
@@ -104,11 +108,16 @@ Guard any browser globals (`document`, `window`, `navigator`) in `onDestroy` wit
 ### Stores
 
 All stores use Svelte 5 runes pattern (not legacy stores):
+
 ```ts
 let _value = $state<T>(initial);
 export const store = {
-    get value() { return _value; },
-    update(fn: (v: T) => T) { _value = fn(_value); }
+	get value() {
+		return _value;
+	},
+	update(fn: (v: T) => T) {
+		_value = fn(_value);
+	}
 };
 ```
 
@@ -140,6 +149,7 @@ Settings stored in `localStorage` key `piano-settings`. On load, spread-merged w
 ## Library Documentation
 
 Always use context7 to look up current documentation before:
+
 - Using a library API you're unsure about
 - Adding a new dependency or shadcn component
 - Debugging framework-specific behavior

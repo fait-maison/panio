@@ -16,7 +16,12 @@ export default tseslint.config(
 			globals: { ...globals.browser, ...globals.node },
 			parserOptions: {
 				projectService: {
-					allowDefaultProject: ['eslint.config.js', 'svelte.config.js', 'playwright.config.ts', 'vitest.config.ts']
+					allowDefaultProject: [
+						'eslint.config.js',
+						'svelte.config.js',
+						'playwright.config.ts',
+						'vitest.config.ts'
+					]
 				},
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- import.meta.dirname is string in Node ESM
 				tsconfigRootDir: import.meta.dirname

@@ -37,8 +37,18 @@
 	// Black key semitone positions within an octave (midi % 12): C#=1, D#=3, F#=6, G#=8, A#=10
 	const BLACK_KEY_POSITIONS = new Set([1, 3, 6, 8, 10]);
 
-	interface WhiteKey { midi: number; noteName: string; isBlack: false; left: number }
-	interface BlackKey { midi: number; noteName: string; isBlack: true;  left: number }
+	interface WhiteKey {
+		midi: number;
+		noteName: string;
+		isBlack: false;
+		left: number;
+	}
+	interface BlackKey {
+		midi: number;
+		noteName: string;
+		isBlack: true;
+		left: number;
+	}
 
 	function buildKeys(whiteW: number, blackW: number): { whites: WhiteKey[]; blacks: BlackKey[] } {
 		const whites: WhiteKey[] = [];
@@ -84,16 +94,18 @@
 </script>
 
 <div class="keyboard-scroll" bind:this={scrollContainer}>
-	<div class="keyboard"
+	<div
+		class="keyboard"
 		class:chord-active={hoverNotes.size > 0}
-		style="width:{KEYBOARD_W}px; height:{WHITE_H}px; --white-w:{WHITE_W}px; --white-h:{WHITE_H}px; --black-w:{BLACK_W}px; --black-h:{BLACK_H}px;">
+		style="width:{KEYBOARD_W}px; height:{WHITE_H}px; --white-w:{WHITE_W}px; --white-h:{WHITE_H}px; --black-w:{BLACK_W}px; --black-h:{BLACK_H}px;"
+	>
 		{#each whites as key (key.midi)}
 			<div
 				class="key white"
 				class:in-scale={settings.value.showHints && scaleNotes.has(key.midi % 12)}
 				class:is-root={settings.value.showHints && key.midi % 12 === rootChroma}
 				class:in-chord={hoverNotes.has(key.midi % 12)}
-			class:is-chord-root={hoverNotes.size > 0 && key.midi % 12 === hoverRootNote}
+				class:is-chord-root={hoverNotes.size > 0 && key.midi % 12 === hoverRootNote}
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
 				role="button"
@@ -111,7 +123,7 @@
 				class:in-scale={settings.value.showHints && scaleNotes.has(key.midi % 12)}
 				class:is-root={settings.value.showHints && key.midi % 12 === rootChroma}
 				class:in-chord={hoverNotes.has(key.midi % 12)}
-			class:is-chord-root={hoverNotes.size > 0 && key.midi % 12 === hoverRootNote}
+				class:is-chord-root={hoverNotes.size > 0 && key.midi % 12 === hoverRootNote}
 				class:pressed={pressedNotes.has(key.midi)}
 				style="left:{key.left}px"
 				role="button"
@@ -169,43 +181,53 @@
 	.black {
 		width: var(--black-w);
 		height: var(--black-h);
-		background: linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%);
+		background: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 100%);
 		z-index: 2;
-		box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+		box-shadow:
+			0 3px 6px rgba(0, 0, 0, 0.3),
+			0 1px 2px rgba(0, 0, 0, 0.2);
 	}
 
 	/* Scale tint */
-	.white.in-scale { background: var(--key-scale-white); }
-	.black.in-scale { background: var(--key-scale-black); }
+	.white.in-scale {
+		background: var(--key-scale-white);
+	}
+	.black.in-scale {
+		background: var(--key-scale-black);
+	}
 
 	/* Root — dot indicator on top of scale tint */
 	.white.is-root {
 		background:
-			radial-gradient(circle at 50% 91%, var(--red) 3px, transparent 4px),
-			var(--key-scale-white);
+			radial-gradient(circle at 50% 91%, var(--red) 3px, transparent 4px), var(--key-scale-white);
 	}
 	.black.is-root {
 		background:
-			radial-gradient(circle at 50% 82%, white 3px, transparent 4px),
-			var(--key-scale-black);
+			radial-gradient(circle at 50% 82%, white 3px, transparent 4px), var(--key-scale-black);
 	}
 
 	/* Chord focus: reset all layers, show only chord notes */
-	.keyboard.chord-active .white { background: var(--key-white); }
-	.keyboard.chord-active .black { background: var(--key-black); }
-	.keyboard.chord-active .white.in-chord { background: var(--key-chord-white); }
-	.keyboard.chord-active .black.in-chord { background: var(--key-chord-black); }
+	.keyboard.chord-active .white {
+		background: var(--key-white);
+	}
+	.keyboard.chord-active .black {
+		background: var(--key-black);
+	}
+	.keyboard.chord-active .white.in-chord {
+		background: var(--key-chord-white);
+	}
+	.keyboard.chord-active .black.in-chord {
+		background: var(--key-chord-black);
+	}
 
 	/* Chord root — dot indicator only, no background difference */
 	.keyboard.chord-active .white.is-chord-root {
 		background:
-			radial-gradient(circle at 50% 91%, var(--red) 3px, transparent 4px),
-			var(--key-chord-white);
+			radial-gradient(circle at 50% 91%, var(--red) 3px, transparent 4px), var(--key-chord-white);
 	}
 	.keyboard.chord-active .black.is-chord-root {
 		background:
-			radial-gradient(circle at 50% 82%, white 3px, transparent 4px),
-			var(--key-chord-black);
+			radial-gradient(circle at 50% 82%, white 3px, transparent 4px), var(--key-chord-black);
 	}
 
 	/* Pressed — overrides everything (including chord-active) */

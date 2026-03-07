@@ -19,26 +19,31 @@
 	let hoveredChordNotes = $state<Set<number>>(new Set());
 	let hoveredChordRoot = $state<number | null>(null);
 	// eslint-disable-next-line @typescript-eslint/no-unused-expressions -- read ambiance.current to track reactive dependency
-	$effect(() => { ambiance.current; hoveredChordNotes = new Set(); hoveredChordRoot = null; });
+	$effect(() => {
+		ambiance.current;
+		hoveredChordNotes = new Set();
+		hoveredChordRoot = null;
+	});
 
 	// Chord detection from currently held MIDI notes
 	// Sort by pitch so detection is consistent regardless of key press order
 	let detectedChord = $derived.by(() => {
 		const midiNotes = [...midi.pressedNotes];
 		if (midiNotes.length < 2) return null;
-		const noteNames = midiNotes.sort((a, b) => a - b).map(n => Note.fromMidi(n));
+		const noteNames = midiNotes.sort((a, b) => a - b).map((n) => Note.fromMidi(n));
 		const symbols = Chord.detect(noteNames);
 		if (!symbols.length) return null;
 		// Prefer Major/Minor over exotic qualities (e.g. CM/E over Em#5)
-		const best = symbols.find(s => {
-			const q = Chord.get(s).quality;
-			return q === 'Major' || q === 'Minor';
-		}) ?? symbols[0];
+		const best =
+			symbols.find((s) => {
+				const q = Chord.get(s).quality;
+				return q === 'Major' || q === 'Minor';
+			}) ?? symbols[0];
 		const chord = Chord.get(best);
 		// Format label to match app convention: C not CM, Dm not Dmin
 		const afterTonic = best.slice(chord.tonic?.length ?? 0);
 		const label = (chord.tonic ?? '') + afterTonic.replace(/^(M(?!aj|in)|\^)/, '');
-		return { label, root: chord.tonic ? (Note.chroma(chord.tonic)) : null };
+		return { label, root: chord.tonic ? Note.chroma(chord.tonic) : null };
 	});
 
 	// Fade-out: keep label visible ~1s after all keys released
@@ -47,12 +52,22 @@
 
 	$effect(() => {
 		if (detectedChord) {
-			if (_fadeTimer) { clearTimeout(_fadeTimer); _fadeTimer = null; }
+			if (_fadeTimer) {
+				clearTimeout(_fadeTimer);
+				_fadeTimer = null;
+			}
 			displayedChord = detectedChord;
 		} else {
-			_fadeTimer = setTimeout(() => { displayedChord = null; }, 1000);
+			_fadeTimer = setTimeout(() => {
+				displayedChord = null;
+			}, 1000);
 		}
-		return () => { if (_fadeTimer) { clearTimeout(_fadeTimer); _fadeTimer = null; } };
+		return () => {
+			if (_fadeTimer) {
+				clearTimeout(_fadeTimer);
+				_fadeTimer = null;
+			}
+		};
 	});
 
 	let chordLabel = $derived(
@@ -67,8 +82,11 @@
 
 	async function requestWakeLock() {
 		if (!('wakeLock' in navigator)) return;
-		try { wakeLock = await navigator.wakeLock.request('screen'); }
-		catch { /* permission denied or low battery — silently skip */ }
+		try {
+			wakeLock = await navigator.wakeLock.request('screen');
+		} catch {
+			/* permission denied or low battery — silently skip */
+		}
 	}
 
 	function onVisibilityChange() {
@@ -95,7 +113,10 @@
 		<AmbianceCard
 			ambiance={ambiance.current}
 			{timer}
-			onChordHover={(notes: Set<number>, root: number | null) => { hoveredChordNotes = notes; hoveredChordRoot = root; }}
+			onChordHover={(notes: Set<number>, root: number | null) => {
+				hoveredChordNotes = notes;
+				hoveredChordRoot = root;
+			}}
 			onSkip={skipAmbiance}
 		/>
 	</div>

@@ -6,7 +6,9 @@ let _current = $state<Ambiance>(
 );
 
 export const ambiance = {
-	get current() { return _current; },
+	get current() {
+		return _current;
+	},
 	next() {
 		const s = settings.value;
 		_current = generateAmbiance(s.modePool, s.keyPool, s.difficultyPool, _current);

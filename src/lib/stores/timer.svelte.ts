@@ -76,9 +76,15 @@ $effect.root(() => {
 });
 
 export const timer = {
-	get state()        { return _t.state; },
-	get secondsLeft()  { return _t.secondsLeft; },
-	get totalSeconds() { return _t.totalSeconds; },
+	get state() {
+		return _t.state;
+	},
+	get secondsLeft() {
+		return _t.secondsLeft;
+	},
+	get totalSeconds() {
+		return _t.totalSeconds;
+	},
 	snooze,
 	restart: startInterval
 };

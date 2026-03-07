@@ -7,7 +7,7 @@ export interface ModeInfo {
 
 export const MODES: ModeInfo[] = [
 	{
-			name: 'Major',
+		name: 'Major',
 		tonalName: 'major',
 		mood: 'Bright, safe',
 		description: 'bright and safe'

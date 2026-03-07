@@ -174,8 +174,12 @@ $effect.root(() => {
 });
 
 export const locale = {
-	get value() { return _locale; },
-	set(l: Locale) { _locale = l; }
+	get value() {
+		return _locale;
+	},
+	set(l: Locale) {
+		_locale = l;
+	}
 };
 
 export function t(key: string): string {

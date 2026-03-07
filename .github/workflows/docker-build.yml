@@ -177,8 +177,8 @@ jobs:
 
           sed -i "s/^version:.*/version: ${APP_VERSION}/" helm/panio/Chart.yaml
           sed -i "s/^appVersion:.*/appVersion: ${APP_VERSION}/" helm/panio/Chart.yaml
-          
-          
+
+
           CHART_VERSION=$(grep '^version:' helm/panio/Chart.yaml | awk '{print $2}')
           helm package helm/panio --destination /tmp/helm-pkg
           helm push /tmp/helm-pkg/panio-${CHART_VERSION}.tgz oci://ghcr.io/${{ github.repository_owner }}/helm

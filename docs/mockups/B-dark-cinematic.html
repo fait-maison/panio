@@ -1,262 +1,418 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panio — Style B: Dark Cinematic</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Panio — Style B: Dark Cinematic</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
 
-  :root {
-    --bg: #0C0C0F;
-    --surface: #18181B;
-    --surface-raised: #222226;
-    --text: #F0F0F2;
-    --text-muted: #6B6B76;
-    --red: #E63946;
-    --red-glow: rgba(230,57,70,0.15);
-    --red-dim: rgba(230,57,70,0.5);
-    --blue: #4F8AFF;
-    --border: #2A2A30;
-    --font: 'Inter', system-ui, sans-serif;
-    --radius: 16px;
-    --shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
+			:root {
+				--bg: #0c0c0f;
+				--surface: #18181b;
+				--surface-raised: #222226;
+				--text: #f0f0f2;
+				--text-muted: #6b6b76;
+				--red: #e63946;
+				--red-glow: rgba(230, 57, 70, 0.15);
+				--red-dim: rgba(230, 57, 70, 0.5);
+				--blue: #4f8aff;
+				--border: #2a2a30;
+				--font: 'Inter', system-ui, sans-serif;
+				--radius: 16px;
+				--shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+			}
 
-  html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text); }
+			html,
+			body {
+				height: 100%;
+				font-family: var(--font);
+				background: var(--bg);
+				color: var(--text);
+			}
 
-  /* Subtle animated grain */
-  body::before {
-    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
+			/* Subtle animated grain */
+			body::before {
+				content: '';
+				position: fixed;
+				inset: 0;
+				z-index: 0;
+				pointer-events: none;
+				opacity: 0.025;
+				background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+			}
 
-  /* ── Navbar ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; height: 52px;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 24px;
-    background: rgba(12,12,15,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    z-index: 100;
-  }
-  .logo {
-    font-size: 1.1rem; font-weight: 800; letter-spacing: 0.08em;
-    text-transform: uppercase;
-    background: linear-gradient(135deg, var(--text), var(--red));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .nav-item {
-    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--text-muted);
-  }
-  .nav-item.active { color: var(--red); }
-  .gear { background: none; border: 1px solid var(--border); border-radius: 10px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; transition: border-color 0.2s; }
-  .gear:hover { border-color: var(--red-dim); color: var(--text); }
+			/* ── Navbar ── */
+			nav {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 52px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 24px;
+				background: rgba(12, 12, 15, 0.85);
+				backdrop-filter: blur(12px);
+				border-bottom: 1px solid var(--border);
+				z-index: 100;
+			}
+			.logo {
+				font-size: 1.1rem;
+				font-weight: 800;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				background: linear-gradient(135deg, var(--text), var(--red));
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+			}
+			.nav-item {
+				font-size: 0.7rem;
+				font-weight: 600;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
+				color: var(--text-muted);
+			}
+			.nav-item.active {
+				color: var(--red);
+			}
+			.gear {
+				background: none;
+				border: 1px solid var(--border);
+				border-radius: 10px;
+				width: 36px;
+				height: 36px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: var(--text-muted);
+				cursor: pointer;
+				transition: border-color 0.2s;
+			}
+			.gear:hover {
+				border-color: var(--red-dim);
+				color: var(--text);
+			}
 
-  /* ── Main layout ── */
-  main {
-    position: relative; z-index: 1;
-    display: flex; flex-direction: column; align-items: center;
-    min-height: 100vh;
-    padding: 76px 16px 100px;
-    gap: 48px;
-  }
+			/* ── Main layout ── */
+			main {
+				position: relative;
+				z-index: 1;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				min-height: 100vh;
+				padding: 76px 16px 100px;
+				gap: 48px;
+			}
 
-  /* ── Ambiance Card ── */
-  .ambiance-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow), 0 0 60px var(--red-glow);
-    min-width: 480px;
-    overflow: hidden;
-    position: relative;
-  }
-  .card-content {
-    padding: 44px 36px 28px;
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-    position: relative;
-  }
-  .badge {
-    display: flex; align-items: baseline; gap: 14px;
-  }
-  .key-letter {
-    font-size: 3rem; font-weight: 900; color: var(--red);
-    text-shadow: 0 0 30px var(--red-glow);
-  }
-  .separator { font-size: 1.5rem; color: var(--text-muted); }
-  .mode-name {
-    font-size: 2.2rem; font-weight: 200; letter-spacing: 0.16em;
-    text-transform: uppercase; color: var(--text);
-  }
-  .texture {
-    font-size: 0.85rem; color: var(--text-muted); font-weight: 400;
-    letter-spacing: 0.08em; text-transform: lowercase;
-  }
-  .mood-tag {
-    display: inline-block; margin-top: 2px;
-    font-size: 0.65rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--red); opacity: 0.7;
-  }
-  .prog-sep {
-    width: 60px; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
-    margin: 10px 0;
-  }
-  .progression {
-    display: flex; align-items: center; gap: 12px;
-    font-size: 0.95rem; font-weight: 500; letter-spacing: 0.08em;
-  }
-  .chord {
-    color: var(--text-muted); cursor: pointer; transition: all 0.2s;
-    padding: 4px 8px; border-radius: 6px;
-  }
-  .chord:hover { color: var(--text); background: var(--surface-raised); }
-  .chord.tonic { color: var(--red); }
-  .arrow { color: var(--border); font-weight: 300; }
-  .skip-btn {
-    position: absolute; bottom: 12px; right: 14px;
-    background: var(--surface-raised); border: 1px solid var(--border);
-    border-radius: 8px; color: var(--text-muted);
-    cursor: pointer; padding: 6px; display: flex;
-    transition: all 0.2s;
-  }
-  .skip-btn:hover { color: var(--text); border-color: var(--red-dim); }
-  .progress-bar { height: 3px; background: var(--border); }
-  .progress-fill { height: 100%; width: 65%; background: linear-gradient(90deg, var(--red), var(--red-dim)); }
+			/* ── Ambiance Card ── */
+			.ambiance-card {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				box-shadow:
+					var(--shadow),
+					0 0 60px var(--red-glow);
+				min-width: 480px;
+				overflow: hidden;
+				position: relative;
+			}
+			.card-content {
+				padding: 44px 36px 28px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 10px;
+				position: relative;
+			}
+			.badge {
+				display: flex;
+				align-items: baseline;
+				gap: 14px;
+			}
+			.key-letter {
+				font-size: 3rem;
+				font-weight: 900;
+				color: var(--red);
+				text-shadow: 0 0 30px var(--red-glow);
+			}
+			.separator {
+				font-size: 1.5rem;
+				color: var(--text-muted);
+			}
+			.mode-name {
+				font-size: 2.2rem;
+				font-weight: 200;
+				letter-spacing: 0.16em;
+				text-transform: uppercase;
+				color: var(--text);
+			}
+			.texture {
+				font-size: 0.85rem;
+				color: var(--text-muted);
+				font-weight: 400;
+				letter-spacing: 0.08em;
+				text-transform: lowercase;
+			}
+			.mood-tag {
+				display: inline-block;
+				margin-top: 2px;
+				font-size: 0.65rem;
+				font-weight: 500;
+				text-transform: uppercase;
+				letter-spacing: 0.14em;
+				color: var(--red);
+				opacity: 0.7;
+			}
+			.prog-sep {
+				width: 60px;
+				height: 1px;
+				background: linear-gradient(90deg, transparent, var(--border), transparent);
+				margin: 10px 0;
+			}
+			.progression {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				font-size: 0.95rem;
+				font-weight: 500;
+				letter-spacing: 0.08em;
+			}
+			.chord {
+				color: var(--text-muted);
+				cursor: pointer;
+				transition: all 0.2s;
+				padding: 4px 8px;
+				border-radius: 6px;
+			}
+			.chord:hover {
+				color: var(--text);
+				background: var(--surface-raised);
+			}
+			.chord.tonic {
+				color: var(--red);
+			}
+			.arrow {
+				color: var(--border);
+				font-weight: 300;
+			}
+			.skip-btn {
+				position: absolute;
+				bottom: 12px;
+				right: 14px;
+				background: var(--surface-raised);
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				color: var(--text-muted);
+				cursor: pointer;
+				padding: 6px;
+				display: flex;
+				transition: all 0.2s;
+			}
+			.skip-btn:hover {
+				color: var(--text);
+				border-color: var(--red-dim);
+			}
+			.progress-bar {
+				height: 3px;
+				background: var(--border);
+			}
+			.progress-fill {
+				height: 100%;
+				width: 65%;
+				background: linear-gradient(90deg, var(--red), var(--red-dim));
+			}
 
-  /* ── Piano Keyboard ── */
-  .keyboard-scroll {
-    width: 100%; overflow-x: auto; display: flex;
-    padding-bottom: 8px;
-  }
-  .keyboard {
-    position: relative; margin: 0 auto;
-    width: 1520px; height: 130px;
-  }
-  .key-el {
-    position: absolute; top: 0;
-    border-radius: 0 0 5px 5px;
-    cursor: pointer; user-select: none;
-    transition: background 0.1s;
-  }
-  .white-key {
-    width: 29px; height: 130px;
-    background: #222226;
-    border: 1px solid #333338;
-    z-index: 1;
-  }
-  .white-key.in-scale { background: rgba(230,57,70,0.12); border-color: rgba(230,57,70,0.2); }
-  .white-key.is-root {
-    background: radial-gradient(circle at 50% 91%, var(--red) 3px, transparent 4px), rgba(230,57,70,0.12);
-    border-color: rgba(230,57,70,0.3);
-  }
-  .white-key.pressed { background: var(--blue); border-color: var(--blue); box-shadow: 0 0 12px rgba(79,138,255,0.3); }
-  .black-key {
-    width: 17px; height: 80px;
-    background: #0C0C0F;
-    border: 1px solid #222;
-    z-index: 2;
-  }
-  .black-key.in-scale { background: rgba(230,57,70,0.3); border-color: rgba(230,57,70,0.3); }
-  .black-key.pressed { background: var(--blue); box-shadow: 0 0 12px rgba(79,138,255,0.4); }
+			/* ── Piano Keyboard ── */
+			.keyboard-scroll {
+				width: 100%;
+				overflow-x: auto;
+				display: flex;
+				padding-bottom: 8px;
+			}
+			.keyboard {
+				position: relative;
+				margin: 0 auto;
+				width: 1520px;
+				height: 130px;
+			}
+			.key-el {
+				position: absolute;
+				top: 0;
+				border-radius: 0 0 5px 5px;
+				cursor: pointer;
+				user-select: none;
+				transition: background 0.1s;
+			}
+			.white-key {
+				width: 29px;
+				height: 130px;
+				background: #222226;
+				border: 1px solid #333338;
+				z-index: 1;
+			}
+			.white-key.in-scale {
+				background: rgba(230, 57, 70, 0.12);
+				border-color: rgba(230, 57, 70, 0.2);
+			}
+			.white-key.is-root {
+				background:
+					radial-gradient(circle at 50% 91%, var(--red) 3px, transparent 4px),
+					rgba(230, 57, 70, 0.12);
+				border-color: rgba(230, 57, 70, 0.3);
+			}
+			.white-key.pressed {
+				background: var(--blue);
+				border-color: var(--blue);
+				box-shadow: 0 0 12px rgba(79, 138, 255, 0.3);
+			}
+			.black-key {
+				width: 17px;
+				height: 80px;
+				background: #0c0c0f;
+				border: 1px solid #222;
+				z-index: 2;
+			}
+			.black-key.in-scale {
+				background: rgba(230, 57, 70, 0.3);
+				border-color: rgba(230, 57, 70, 0.3);
+			}
+			.black-key.pressed {
+				background: var(--blue);
+				box-shadow: 0 0 12px rgba(79, 138, 255, 0.4);
+			}
 
-  /* ── Style tag ── */
-  .style-tag {
-    position: fixed; bottom: 16px; left: 16px;
-    background: var(--surface); border: 1px solid var(--border);
-    padding: 8px 16px; border-radius: 12px;
-    font-size: 0.75rem; color: var(--text-muted);
-    box-shadow: var(--shadow);
-  }
-  .style-tag strong { color: var(--text); }
-</style>
-</head>
-<body>
+			/* ── Style tag ── */
+			.style-tag {
+				position: fixed;
+				bottom: 16px;
+				left: 16px;
+				background: var(--surface);
+				border: 1px solid var(--border);
+				padding: 8px 16px;
+				border-radius: 12px;
+				font-size: 0.75rem;
+				color: var(--text-muted);
+				box-shadow: var(--shadow);
+			}
+			.style-tag strong {
+				color: var(--text);
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			<span class="logo">Panio</span>
+			<div style="display: flex; gap: 20px">
+				<span class="nav-item active">Sandbox</span>
+			</div>
+			<button class="gear">
+				<svg
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+				>
+					<circle cx="12" cy="12" r="3" />
+					<path
+						d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+					/>
+				</svg>
+			</button>
+		</nav>
 
-<nav>
-  <span class="logo">Panio</span>
-  <div style="display:flex;gap:20px;">
-    <span class="nav-item active">Sandbox</span>
-  </div>
-  <button class="gear">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-  </button>
-</nav>
+		<main>
+			<div class="ambiance-card">
+				<div class="card-content">
+					<button class="skip-btn" aria-label="Next ambiance">
+						<svg
+							width="14"
+							height="14"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+						>
+							<polygon points="5 4 15 12 5 20 5 4" />
+							<line x1="19" y1="5" x2="19" y2="19" />
+						</svg>
+					</button>
+					<div class="badge">
+						<span class="key-letter">D</span>
+						<span class="separator">&middot;</span>
+						<span class="mode-name">Dorian</span>
+					</div>
+					<div class="texture">sparse &middot; pedal tone</div>
+					<span class="mood-tag">melancholic, bittersweet</span>
+					<div class="prog-sep"></div>
+					<div class="progression">
+						<span class="chord tonic">Dm7</span>
+						<span class="arrow">&rsaquo;</span>
+						<span class="chord">G7</span>
+						<span class="arrow">&rsaquo;</span>
+						<span class="chord">Am7</span>
+						<span class="arrow">&rsaquo;</span>
+						<span class="chord">Em7</span>
+					</div>
+				</div>
+				<div class="progress-bar"><div class="progress-fill"></div></div>
+			</div>
 
-<main>
-  <div class="ambiance-card">
-    <div class="card-content">
-      <button class="skip-btn" aria-label="Next ambiance">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-      </button>
-      <div class="badge">
-        <span class="key-letter">D</span>
-        <span class="separator">&middot;</span>
-        <span class="mode-name">Dorian</span>
-      </div>
-      <div class="texture">sparse &middot; pedal tone</div>
-      <span class="mood-tag">melancholic, bittersweet</span>
-      <div class="prog-sep"></div>
-      <div class="progression">
-        <span class="chord tonic">Dm7</span>
-        <span class="arrow">&rsaquo;</span>
-        <span class="chord">G7</span>
-        <span class="arrow">&rsaquo;</span>
-        <span class="chord">Am7</span>
-        <span class="arrow">&rsaquo;</span>
-        <span class="chord">Em7</span>
-      </div>
-    </div>
-    <div class="progress-bar"><div class="progress-fill"></div></div>
-  </div>
+			<div class="keyboard-scroll">
+				<div class="keyboard" id="piano"></div>
+			</div>
+		</main>
 
-  <div class="keyboard-scroll">
-    <div class="keyboard" id="piano"></div>
-  </div>
-</main>
+		<div class="style-tag">
+			<strong>Style B — Dark Cinematic</strong><br />
+			Film scoring vibe &middot; dark UI &middot; red glow accents &middot; glass navbar<br />
+			Feels like: a composer's workstation at night
+		</div>
 
-<div class="style-tag">
-  <strong>Style B — Dark Cinematic</strong><br>
-  Film scoring vibe &middot; dark UI &middot; red glow accents &middot; glass navbar<br>
-  Feels like: a composer's workstation at night
-</div>
-
-<script>
-  const kb = document.getElementById('piano');
-  const BLACK = new Set([1,3,6,8,10]);
-  const SCALE = new Set([2,4,5,7,9,11,0]);
-  const ROOT = 2;
-  const PRESSED = new Set([62, 66, 69]);
-  let whiteIdx = 0, lastWhiteLeft = 0;
-  for (let midi = 21; midi <= 108; midi++) {
-    const pc = midi % 12;
-    const isBlack = BLACK.has(pc);
-    const div = document.createElement('div');
-    div.className = 'key-el ' + (isBlack ? 'black-key' : 'white-key');
-    if (!isBlack) {
-      const left = whiteIdx * 30;
-      div.style.left = left + 'px';
-      if (PRESSED.has(midi)) div.classList.add('pressed');
-      else if (pc === ROOT && SCALE.has(pc)) div.classList.add('is-root');
-      else if (SCALE.has(pc)) div.classList.add('in-scale');
-      lastWhiteLeft = left;
-      whiteIdx++;
-    } else {
-      div.style.left = (lastWhiteLeft + 29 - 8) + 'px';
-      if (PRESSED.has(midi)) div.classList.add('pressed');
-      else if (SCALE.has(pc)) div.classList.add('in-scale');
-    }
-    kb.appendChild(div);
-  }
-  const scroll = document.querySelector('.keyboard-scroll');
-  setTimeout(() => { scroll.scrollLeft = 520; }, 100);
-</script>
-
-</body>
+		<script>
+			const kb = document.getElementById('piano');
+			const BLACK = new Set([1, 3, 6, 8, 10]);
+			const SCALE = new Set([2, 4, 5, 7, 9, 11, 0]);
+			const ROOT = 2;
+			const PRESSED = new Set([62, 66, 69]);
+			let whiteIdx = 0,
+				lastWhiteLeft = 0;
+			for (let midi = 21; midi <= 108; midi++) {
+				const pc = midi % 12;
+				const isBlack = BLACK.has(pc);
+				const div = document.createElement('div');
+				div.className = 'key-el ' + (isBlack ? 'black-key' : 'white-key');
+				if (!isBlack) {
+					const left = whiteIdx * 30;
+					div.style.left = left + 'px';
+					if (PRESSED.has(midi)) div.classList.add('pressed');
+					else if (pc === ROOT && SCALE.has(pc)) div.classList.add('is-root');
+					else if (SCALE.has(pc)) div.classList.add('in-scale');
+					lastWhiteLeft = left;
+					whiteIdx++;
+				} else {
+					div.style.left = lastWhiteLeft + 29 - 8 + 'px';
+					if (PRESSED.has(midi)) div.classList.add('pressed');
+					else if (SCALE.has(pc)) div.classList.add('in-scale');
+				}
+				kb.appendChild(div);
+			}
+			const scroll = document.querySelector('.keyboard-scroll');
+			setTimeout(() => {
+				scroll.scrollLeft = 520;
+			}, 100);
+		</script>
+	</body>
 </html>

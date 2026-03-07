@@ -249,7 +249,8 @@ export function toChordSymbol(key: string, tonalModeName: string, roman: string)
 	const numeralRaw = numeralMatch[1];
 	const rawSuffix = numeralMatch[2]; // e.g. '°', '°7', 'maj7', 'm7', '7', 'sus4', ''
 	const numeralUpper = numeralRaw.toUpperCase();
-	const isMajor = numeralRaw[0] === numeralRaw[0].toUpperCase() && numeralRaw[0] !== numeralRaw[0].toLowerCase();
+	const isMajor =
+		numeralRaw[0] === numeralRaw[0].toUpperCase() && numeralRaw[0] !== numeralRaw[0].toLowerCase();
 
 	const notes = Scale.get(`${key} ${tonalModeName}`).notes;
 	const root = notes[DEGREE_MAP[numeralUpper]];
@@ -279,11 +280,13 @@ export function toChordSymbol(key: string, tonalModeName: string, roman: string)
 	return root + baseQuality + extension;
 }
 
-export function getChordPitchClasses(key: string, tonalModeName: string, roman: string): Set<number> {
+export function getChordPitchClasses(
+	key: string,
+	tonalModeName: string,
+	roman: string
+): Set<number> {
 	const symbol = toChordSymbol(key, tonalModeName, roman);
-	return new Set(
-		Chord.get(symbol).notes.map((n) => Note.chroma(n))
-	);
+	return new Set(Chord.get(symbol).notes.map((n) => Note.chroma(n)));
 }
 
 const NUMERALS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'] as const;
