@@ -17,5 +17,5 @@ function getPlayer(): Promise<Player> {
 }
 
 export function playNote(midi: number, gain = 1): void {
-	getPlayer().then((player) => player.play(midi, undefined, { gain }));
+	void getPlayer().then((player) => player.play(midi, undefined, { gain }));
 }

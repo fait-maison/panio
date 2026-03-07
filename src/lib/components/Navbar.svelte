@@ -15,9 +15,9 @@
 
 	function toggleFullscreen() {
 		if (document.fullscreenElement) {
-			document.exitFullscreen();
+			void document.exitFullscreen();
 		} else {
-			document.documentElement.requestFullscreen();
+			void document.documentElement.requestFullscreen();
 		}
 	}
 
@@ -58,7 +58,7 @@
 						max={1}
 						step={0.01}
 						value={settings.value.volume}
-						onValueChange={(v) => settings.update((s) => ({ ...s, volume: v }))}
+						onValueChange={(v: number) => settings.update((s) => ({ ...s, volume: v }))}
 						class="volume-slider"
 					/>
 				</div>

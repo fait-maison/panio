@@ -19,7 +19,7 @@
 	} = $props();
 
 	let scaleNotes = $derived(getScaleNotes(ambiance));
-	let rootChroma = $derived(Note.chroma(ambiance.key) as number);
+	let rootChroma = $derived(Note.chroma(ambiance.key));
 
 	// MIDI range: A0 = 21, C8 = 108
 	const MIDI_START = 21;
@@ -67,8 +67,9 @@
 
 	$effect(() => {
 		// Re-run when scale changes (which means WHITE_W changed)
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions -- read WHITE_W to track reactive dependency
 		WHITE_W;
-		tick().then(() => {
+		void tick().then(() => {
 			if (!scrollContainer) return;
 			// Middle C is MIDI 60 — count white keys from MIDI_START to 60
 			let whitesBefore = 0;

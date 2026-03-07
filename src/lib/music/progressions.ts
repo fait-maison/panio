@@ -282,7 +282,7 @@ export function toChordSymbol(key: string, tonalModeName: string, roman: string)
 export function getChordPitchClasses(key: string, tonalModeName: string, roman: string): Set<number> {
 	const symbol = toChordSymbol(key, tonalModeName, roman);
 	return new Set(
-		Chord.get(symbol).notes.map((n) => Note.chroma(n) as number)
+		Chord.get(symbol).notes.map((n) => Note.chroma(n))
 	);
 }
 
@@ -305,8 +305,8 @@ export function chordToRoman(chordLabel: string, key: string, tonalModeName: str
 	if (!chord.tonic) return chordLabel;
 	const scale = Scale.get(`${key} ${tonalModeName}`);
 	if (!scale.notes.length) return chordLabel;
-	const chromas = scale.notes.map((n) => Note.chroma(n) as number);
-	const rootNumeral = chromaToNumeral(Note.chroma(chord.tonic) as number, chromas);
+	const chromas = scale.notes.map((n) => Note.chroma(n));
+	const rootNumeral = chromaToNumeral(Note.chroma(chord.tonic), chromas);
 	if (!rootNumeral) return chordLabel;
 	const isMinor = chord.quality === 'Minor' || chord.quality === 'Diminished';
 	const numeral = isMinor ? rootNumeral.toLowerCase() : rootNumeral;
@@ -317,7 +317,7 @@ export function chordToRoman(chordLabel: string, key: string, tonalModeName: str
 	let result = numeral + suffix;
 	if (slashIdx >= 0) {
 		const bassNote = chordLabel.slice(slashIdx + 1);
-		const bassNumeral = chromaToNumeral(Note.chroma(bassNote) as number, chromas);
+		const bassNumeral = chromaToNumeral(Note.chroma(bassNote), chromas);
 		result += '/' + (bassNumeral ?? bassNote);
 	}
 	return result;

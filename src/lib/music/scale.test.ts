@@ -5,22 +5,24 @@ import { MODES } from './modes';
 
 // Pitch-class integers for all white keys
 const WHITE_KEY_CHROMAS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'].map(
-	(n) => Note.chroma(n) as number
+	(n) => Note.chroma(n)
 );
 
 function mode(name: string) {
-	return MODES.find((m) => m.name === name)!;
+	const found = MODES.find((m) => m.name === name);
+	if (!found) throw new Error(`Mode "${name}" not found`);
+	return found;
 }
 
 function chroma(note: string) {
-	return Note.chroma(note) as number;
+	return Note.chroma(note);
 }
 
 describe('getScaleNotes', () => {
 	it('C Major contains all 7 white-key chromas', () => {
 		const notes = getScaleNotes({ mode: mode('Major'), key: 'C', texture: '', progression: [] });
 		for (const pc of WHITE_KEY_CHROMAS) {
-			expect(notes.has(pc), `expected chroma ${pc} in C Major`).toBe(true);
+			expect(notes.has(pc), `expected chroma ${String(pc)} in C Major`).toBe(true);
 		}
 		expect(notes.size).toBe(7);
 	});
@@ -28,7 +30,7 @@ describe('getScaleNotes', () => {
 	it('A Minor contains all 7 white-key chromas', () => {
 		const notes = getScaleNotes({ mode: mode('Minor'), key: 'A', texture: '', progression: [] });
 		for (const pc of WHITE_KEY_CHROMAS) {
-			expect(notes.has(pc), `expected chroma ${pc} in A Minor`).toBe(true);
+			expect(notes.has(pc), `expected chroma ${String(pc)} in A Minor`).toBe(true);
 		}
 		expect(notes.size).toBe(7);
 	});

@@ -1,13 +1,14 @@
 import js from '@eslint/js';
-import ts from 'typescript-eslint';
+import tseslint from 'typescript-eslint';
 import svelte from 'eslint-plugin-svelte';
 import prettier from 'eslint-config-prettier';
 import globals from 'globals';
 import svelteConfig from './svelte.config.js';
 
-export default ts.config(
+// eslint-disable-next-line @typescript-eslint/no-deprecated -- defineConfig not available in this eslint version
+export default tseslint.config(
 	js.configs.recommended,
-	...ts.configs.strictTypeChecked,
+	...tseslint.configs.strictTypeChecked,
 	...svelte.configs['flat/recommended'],
 	prettier,
 	{
@@ -15,8 +16,9 @@ export default ts.config(
 			globals: { ...globals.browser, ...globals.node },
 			parserOptions: {
 				projectService: {
-					allowDefaultProject: ['eslint.config.js', 'svelte.config.js']
+					allowDefaultProject: ['eslint.config.js', 'svelte.config.js', 'playwright.config.ts', 'vitest.config.ts']
 				},
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- import.meta.dirname is string in Node ESM
 				tsconfigRootDir: import.meta.dirname
 			}
 		},
@@ -32,7 +34,7 @@ export default ts.config(
 		languageOptions: {
 			parserOptions: {
 				extraFileExtensions: ['.svelte'],
-				parser: ts.parser,
+				parser: tseslint.parser,
 				svelteConfig
 			}
 		},

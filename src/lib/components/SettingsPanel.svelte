@@ -5,6 +5,7 @@
 	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings.svelte';
 	import { t, locale, type Locale } from '$lib/i18n.svelte';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
 	import { EXERCISES } from '$lib/exercises';
 	import MidiStatus from '$lib/components/MidiStatus.svelte';
@@ -39,7 +40,7 @@
 							<button
 								class="exercise-btn"
 								disabled={!ex.active}
-								onclick={() => { goto('/' + ex.key); open = false; }}
+								onclick={() => { void goto(resolve(`/${ex.key}` as '/')); open = false; }}
 							>
 								<div class="exercise-info">
 									<span class="exercise-name">{t('exercise.' + ex.key)}</span>
@@ -66,7 +67,7 @@
 				<ToggleGroup.Root
 					type="single"
 					value={locale.value}
-					onValueChange={(v) => v && locale.set(v as Locale)}
+					onValueChange={(v: string) => v && locale.set(v as Locale)}
 					variant="outline"
 					class="w-full flex-wrap"
 					data-lock-active
@@ -81,7 +82,7 @@
 				<ToggleGroup.Root
 					type="single"
 					value={settings.value.keyboardSize}
-					onValueChange={(v) => v && settings.update((s) => ({ ...s, keyboardSize: v as KeyboardSize }))}
+					onValueChange={(v: string) => v && settings.update((s) => ({ ...s, keyboardSize: v as KeyboardSize }))}
 					variant="outline"
 					class="w-full flex-wrap"
 					data-lock-active
@@ -97,7 +98,7 @@
 				<ToggleGroup.Root
 					type="single"
 					value={settings.value.showHints ? 'on' : 'off'}
-					onValueChange={(v) => v && settings.update((s) => ({ ...s, showHints: v === 'on' }))}
+					onValueChange={(v: string) => v && settings.update((s) => ({ ...s, showHints: v === 'on' }))}
 					variant="outline"
 					class="w-full flex-wrap"
 					data-lock-active
@@ -112,7 +113,7 @@
 				<ToggleGroup.Root
 					type="single"
 					value={settings.value.progressionNotation}
-					onValueChange={(v) => v && settings.update((s) => ({ ...s, progressionNotation: v as ProgressionNotation }))}
+					onValueChange={(v: string) => v && settings.update((s) => ({ ...s, progressionNotation: v as ProgressionNotation }))}
 					variant="outline"
 					class="w-full flex-wrap"
 					data-lock-active

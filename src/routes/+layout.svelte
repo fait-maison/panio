@@ -4,8 +4,10 @@
 	import SettingsPanel from '$lib/components/SettingsPanel.svelte';
 	import '../app.css';
 
+	import type { Snippet } from 'svelte';
+
 	let sidebarOpen = $state(false);
-	let { children } = $props();
+	let { children }: { children: Snippet } = $props();
 </script>
 
 <Navbar onMenuClick={() => (sidebarOpen = !sidebarOpen)} />

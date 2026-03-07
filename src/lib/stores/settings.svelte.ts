@@ -1,4 +1,4 @@
-import { ALL_MODE_NAMES, KEYS } from '$lib/music/modes';
+import { KEYS } from '$lib/music/modes';
 import type { Difficulty } from '$lib/music/progressions';
 
 export type { Difficulty };
@@ -32,7 +32,7 @@ function loadSettings(): Settings {
 	try {
 		const raw = localStorage.getItem('piano-settings');
 		if (!raw) return DEFAULT_SETTINGS;
-		return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
+		return { ...DEFAULT_SETTINGS, ...(JSON.parse(raw) as Partial<Settings>) };
 	} catch {
 		return DEFAULT_SETTINGS;
 	}
