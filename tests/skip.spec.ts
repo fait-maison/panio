@@ -10,10 +10,10 @@ test.describe('skip button', () => {
 		await enterSandbox(page);
 	});
 
-	test('changes the mode after skip', async ({ page }) => {
-		const modeBefore = await page.locator('.mode').textContent();
+	test('changes the mood after skip', async ({ page }) => {
+		const moodBefore = await page.locator('.mood').textContent();
 		await page.getByRole('button', { name: 'Next ambiance' }).click();
-		await expect(page.locator('.mode')).not.toHaveText(modeBefore ?? '');
+		await expect(page.locator('.mood')).not.toHaveText(moodBefore ?? '');
 	});
 
 	test('changes the key after skip', async ({ page }) => {
