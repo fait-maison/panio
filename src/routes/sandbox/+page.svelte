@@ -185,7 +185,7 @@
 		transition: opacity 0.6s ease;
 	}
 
-	@media (max-width: 480px), (max-height: 500px) and (orientation: landscape) {
+	@media (max-width: 480px) {
 		.exercise {
 			padding-top: 0;
 			height: 100dvh;
@@ -194,6 +194,20 @@
 
 		.content {
 			padding: 48px var(--sp-2) var(--sp-2);
+			overflow-y: auto;
+			min-height: 0;
+		}
+	}
+
+	@media (max-height: 500px) and (orientation: landscape) {
+		.exercise {
+			padding-top: 0;
+			height: 100dvh;
+			overflow: hidden;
+		}
+
+		.content {
+			padding: var(--sp-2);
 			overflow-y: auto;
 			min-height: 0;
 		}
