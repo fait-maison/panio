@@ -14,9 +14,7 @@ export default tseslint.config(
 		languageOptions: {
 			globals: { ...globals.browser, ...globals.node },
 			parserOptions: {
-				projectService: {
-					allowDefaultProject: ['svelte.config.js', 'vitest.config.ts']
-				},
+				projectService: true,
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- import.meta.dirname is string in Node ESM
 				tsconfigRootDir: import.meta.dirname
 			}
@@ -53,8 +51,8 @@ export default tseslint.config(
 			'coverage/',
 			'playwright-report/',
 			'test-results/',
-			'eslint.config.js',
-			'playwright.config.ts'
+			'*.config.js',
+			'*.config.ts'
 		]
 	}
 );
