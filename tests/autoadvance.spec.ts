@@ -31,11 +31,11 @@ test.describe('autoadvance toast', () => {
 		await expect(page.locator('.toast')).not.toBeVisible();
 	});
 
-	test('countdown reaches zero and mode changes', async ({ page }) => {
+	test('countdown reaches zero and mood changes', async ({ page }) => {
 		test.setTimeout(60_000);
-		const modeBefore = await page.locator('.mode').textContent();
+		const moodBefore = await page.locator('.mood').textContent();
 		await expect(page.locator('.toast')).toBeVisible({ timeout: 25_000 });
-		await expect(page.locator('.mode')).not.toHaveText(modeBefore ?? '', { timeout: 20_000 });
+		await expect(page.locator('.mood')).not.toHaveText(moodBefore ?? '', { timeout: 20_000 });
 		await expect(page.locator('.toast')).not.toBeVisible();
 	});
 });
