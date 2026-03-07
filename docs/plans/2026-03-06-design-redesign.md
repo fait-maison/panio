@@ -116,16 +116,16 @@ Applies only to the current exercise, persisted per-exercise in localStorage:
 
 Reference mockups in `docs/mockups/`:
 
-| File | What it shows |
-|------|--------------|
-| `A-final.html` | Full Warm Editorial style |
-| `A2-card-shadows.html` | Card shadow comparison (A/B/C) |
-| `A3-keyboard-styles.html` | Keyboard style comparison |
-| `A4-nav-landing.html` | Landing page card grid |
-| `A5-nav-hamburger.html` | Hamburger sidebar overlay |
-| `A6-settings-incard.html` | Exercise settings inside card |
-| `A6-settings-bottomsheet.html` | Exercise settings as bottom sheet (mobile) |
-| `A7-keyboard-sticky.html` | Final keyboard placement (sticky, 48px padding) |
+| File                           | What it shows                                   |
+| ------------------------------ | ----------------------------------------------- |
+| `A-final.html`                 | Full Warm Editorial style                       |
+| `A2-card-shadows.html`         | Card shadow comparison (A/B/C)                  |
+| `A3-keyboard-styles.html`      | Keyboard style comparison                       |
+| `A4-nav-landing.html`          | Landing page card grid                          |
+| `A5-nav-hamburger.html`        | Hamburger sidebar overlay                       |
+| `A6-settings-incard.html`      | Exercise settings inside card                   |
+| `A6-settings-bottomsheet.html` | Exercise settings as bottom sheet (mobile)      |
+| `A7-keyboard-sticky.html`      | Final keyboard placement (sticky, 48px padding) |
 
 ## Implementation Notes
 

@@ -17,7 +17,6 @@
 		{ value: 'm', label: 'M' },
 		{ value: 'l', label: 'L' }
 	];
-
 </script>
 
 <Sheet.Root bind:open>
@@ -40,7 +39,10 @@
 							<button
 								class="exercise-btn"
 								disabled={!ex.active}
-								onclick={() => { void goto(resolve(`/${ex.key}` as '/')); open = false; }}
+								onclick={() => {
+									void goto(resolve(`/${ex.key}` as '/'));
+									open = false;
+								}}
 							>
 								<div class="exercise-info">
 									<span class="exercise-name">{t('exercise.' + ex.key)}</span>
@@ -82,7 +84,8 @@
 				<ToggleGroup.Root
 					type="single"
 					value={settings.value.keyboardSize}
-					onValueChange={(v: string) => v && settings.update((s) => ({ ...s, keyboardSize: v as KeyboardSize }))}
+					onValueChange={(v: string) =>
+						v && settings.update((s) => ({ ...s, keyboardSize: v as KeyboardSize }))}
 					variant="outline"
 					class="w-full flex-wrap"
 					data-lock-active
@@ -98,7 +101,8 @@
 				<ToggleGroup.Root
 					type="single"
 					value={settings.value.showHints ? 'on' : 'off'}
-					onValueChange={(v: string) => v && settings.update((s) => ({ ...s, showHints: v === 'on' }))}
+					onValueChange={(v: string) =>
+						v && settings.update((s) => ({ ...s, showHints: v === 'on' }))}
 					variant="outline"
 					class="w-full flex-wrap"
 					data-lock-active
@@ -113,7 +117,8 @@
 				<ToggleGroup.Root
 					type="single"
 					value={settings.value.progressionNotation}
-					onValueChange={(v: string) => v && settings.update((s) => ({ ...s, progressionNotation: v as ProgressionNotation }))}
+					onValueChange={(v: string) =>
+						v && settings.update((s) => ({ ...s, progressionNotation: v as ProgressionNotation }))}
 					variant="outline"
 					class="w-full flex-wrap"
 					data-lock-active
@@ -122,7 +127,6 @@
 					<ToggleGroup.Item value="roman">{t('settings.notation.roman')}</ToggleGroup.Item>
 				</ToggleGroup.Root>
 			</section>
-
 		</div>
 
 		<section class="midi-section">
@@ -245,5 +249,4 @@
 		bottom: auto;
 		left: auto;
 	}
-
 </style>

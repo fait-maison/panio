@@ -27,7 +27,6 @@
 	</div>
 </main>
 
-
 <style>
 	.landing {
 		display: flex;
@@ -81,7 +80,9 @@
 		text-align: left;
 		text-decoration: none;
 		color: inherit;
-		transition: box-shadow 0.25s ease, transform 0.25s ease;
+		transition:
+			box-shadow 0.25s ease,
+			transform 0.25s ease;
 		position: relative;
 	}
 

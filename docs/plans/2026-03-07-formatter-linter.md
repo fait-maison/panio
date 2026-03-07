@@ -13,6 +13,7 @@
 ### Task 1: Install Prettier
 
 **Files:**
+
 - Create: `.prettierrc`
 - Create: `.prettierignore`
 - Modify: `package.json` (add scripts + devDependencies)
@@ -50,6 +51,7 @@ pnpm-lock.yaml
 **Step 4: Add scripts to `package.json`**
 
 Add to `"scripts"`:
+
 ```json
 "format": "prettier --write .",
 "format:check": "prettier --check ."
@@ -75,6 +77,7 @@ git commit -m "🔧 add prettier with svelte + tailwind plugins"
 ### Task 2: Install ESLint
 
 **Files:**
+
 - Create: `eslint.config.js`
 - Modify: `package.json` (add script + devDependencies)
 
@@ -134,6 +137,7 @@ export default ts.config(
 **Step 3: Add script to `package.json`**
 
 Add to `"scripts"`:
+
 ```json
 "lint": "eslint .",
 "lint:fix": "eslint --fix ."
@@ -146,6 +150,7 @@ pnpm run lint 2>&1 | head -80
 ```
 
 Expected: errors and warnings. Review them to determine if any rules need to be disabled or adjusted for this codebase. Common issues with strict-type-checked in Svelte:
+
 - `@typescript-eslint/no-unsafe-*` in templates — may need ignoring in svelte settings
 - `@typescript-eslint/no-unnecessary-condition` — reactive statements may trigger this
 - `@typescript-eslint/restrict-template-expressions` — template string interpolation
@@ -175,6 +180,7 @@ git commit -m "🔧 add eslint with strict typescript + svelte rules"
 ### Task 3: Fix ESLint errors in codebase
 
 **Files:**
+
 - Modify: any `.ts` / `.svelte` files flagged by ESLint
 
 **Step 1: Auto-fix what ESLint can handle**
@@ -186,6 +192,7 @@ pnpm run lint:fix
 **Step 2: Fix remaining manual errors**
 
 Review remaining errors and fix them. Typical fixes:
+
 - Add type annotations where required
 - Replace `any` with proper types
 - Add missing return types
@@ -218,6 +225,7 @@ git commit -m "🔧 fix eslint errors across codebase"
 ### Task 4: Format entire codebase
 
 **Files:**
+
 - Modify: all `.ts`, `.svelte`, `.css`, `.json`, `.md`, `.html` files
 
 **Step 1: Run Prettier on everything**
@@ -272,6 +280,7 @@ git commit -m "🔧 add .git-blame-ignore-revs for formatting commit"
 ### Task 5: Add pre-commit hook (husky + lint-staged)
 
 **Files:**
+
 - Modify: `package.json` (add lint-staged config + devDependencies)
 - Create: `.husky/pre-commit`
 
@@ -292,6 +301,7 @@ This creates `.husky/pre-commit` with `npm test` — we'll replace it.
 **Step 3: Set pre-commit hook content**
 
 Write `.husky/pre-commit`:
+
 ```bash
 pnpm exec lint-staged
 ```
@@ -299,6 +309,7 @@ pnpm exec lint-staged
 **Step 4: Add lint-staged config to `package.json`**
 
 Add top-level key:
+
 ```json
 "lint-staged": {
   "*.{ts,svelte}": ["eslint --fix", "prettier --write"],
@@ -309,6 +320,7 @@ Add top-level key:
 **Step 5: Test the hook**
 
 Make a trivial whitespace change to any file, stage it, and commit:
+
 ```bash
 echo "" >> src/lib/utils.ts
 git add src/lib/utils.ts
@@ -318,6 +330,7 @@ git commit -m "test: verify pre-commit hook"
 Expected: lint-staged runs Prettier + ESLint on the staged file. Commit succeeds.
 
 Then undo the test commit:
+
 ```bash
 git reset HEAD~1
 git checkout src/lib/utils.ts
@@ -335,6 +348,7 @@ git commit -m "🔧 add husky + lint-staged pre-commit hook"
 ### Task 6: Add CI lint job
 
 **Files:**
+
 - Modify: `.github/workflows/docker-build.yml`
 
 **Step 1: Add `lint` job before `test`**
@@ -342,41 +356,42 @@ git commit -m "🔧 add husky + lint-staged pre-commit hook"
 Add this job before the existing `test` job:
 
 ```yaml
-  lint:
-    runs-on: ubuntu-latest
+lint:
+  runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v6
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: 'pnpm'
+    - name: Setup Node
+      uses: actions/setup-node@v6
+      with:
+        node-version: 22
+        cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
 
-      - name: Format check
-        run: pnpm run format:check
+    - name: Format check
+      run: pnpm run format:check
 
-      - name: Lint
-        run: pnpm run lint
+    - name: Lint
+      run: pnpm run lint
 ```
 
 **Step 2: Add `needs: lint` to `test` job**
 
 Change `test` job to:
+
 ```yaml
-  test:
-    runs-on: ubuntu-latest
-    needs: lint
+test:
+  runs-on: ubuntu-latest
+  needs: lint
 ```
 
 **Step 3: Verify YAML is valid**
@@ -399,11 +414,13 @@ git commit -m "🔧 add lint job to CI pipeline"
 ### Task 7: Update docs
 
 **Files:**
+
 - Modify: `CLAUDE.md`
 
 **Step 1: Update CLAUDE.md**
 
 Add to Commands section:
+
 ```
 pnpm run lint         # eslint (strict typescript + svelte)
 pnpm run lint:fix     # eslint with auto-fix
@@ -412,6 +429,7 @@ pnpm run format:check # prettier (check only)
 ```
 
 Add to Conventions section:
+
 ```
 - **Formatting:** Prettier runs on commit via lint-staged. Run `pnpm run format` to format all files.
 - **Linting:** ESLint strict-type-checked. Run `pnpm run lint` to check, `pnpm run lint:fix` to auto-fix.

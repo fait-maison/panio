@@ -26,7 +26,10 @@
 					<button
 						class="device-option"
 						class:active={midi.preferredDeviceId === device.id}
-						onclick={() => { midi.setPreferredDevice(device.id); open = false; }}
+						onclick={() => {
+							midi.setPreferredDevice(device.id);
+							open = false;
+						}}
 					>
 						<span class="device-name">{device.name}</span>
 						{#if device.manufacturer}
@@ -43,7 +46,10 @@
 				<li role="option" aria-selected={false}>
 					<button
 						class="device-option clear"
-						onclick={() => { midi.setPreferredDevice(null); open = false; }}
+						onclick={() => {
+							midi.setPreferredDevice(null);
+							open = false;
+						}}
 					>
 						{t('midi.clearDevice')}
 					</button>

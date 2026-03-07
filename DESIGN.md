@@ -14,19 +14,19 @@ Canadian hockey parody — red, white, and blue. High contrast, no decoration.
 
 ## Color Palette
 
-| Token | Value | Usage |
-|---|---|---|
-| `--bg` | `#F7F4EF` | App background (warm off-white / cream) |
-| `--surface` | `#FFFFFF` | Cards, panels |
-| `--text` | `#1A1A1A` | Primary text |
-| `--text-muted` | `#888888` | Secondary labels (texture hint, mood label) |
-| `--red` | `#CC2936` | Brand red — scale highlight tint, accents |
-| `--blue` | `#1D4ED8` | Brand blue — active/pressed key fill |
-| `--key-white` | `#FFFFFF` | White piano keys (default) |
-| `--key-black` | `#1A1A1A` | Black piano keys (default) |
+| Token               | Value     | Usage                                             |
+| ------------------- | --------- | ------------------------------------------------- |
+| `--bg`              | `#F7F4EF` | App background (warm off-white / cream)           |
+| `--surface`         | `#FFFFFF` | Cards, panels                                     |
+| `--text`            | `#1A1A1A` | Primary text                                      |
+| `--text-muted`      | `#888888` | Secondary labels (texture hint, mood label)       |
+| `--red`             | `#CC2936` | Brand red — scale highlight tint, accents         |
+| `--blue`            | `#1D4ED8` | Brand blue — active/pressed key fill              |
+| `--key-white`       | `#FFFFFF` | White piano keys (default)                        |
+| `--key-black`       | `#1A1A1A` | Black piano keys (default)                        |
 | `--key-scale-white` | `#F7CCCE` | White key in active scale (red tint ~20% opacity) |
-| `--key-scale-black` | `#6B1A1E` | Black key in active scale (darkened red tint) |
-| `--key-pressed` | `#1D4ED8` | Any key currently pressed (blue fill) |
+| `--key-scale-black` | `#6B1A1E` | Black key in active scale (darkened red tint)     |
+| `--key-pressed`     | `#1D4ED8` | Any key currently pressed (blue fill)             |
 
 ---
 
@@ -35,13 +35,13 @@ Canadian hockey parody — red, white, and blue. High contrast, no decoration.
 **Font:** Inter (Google Fonts, self-hosted or CDN)
 **Style:** Bold sans-serif throughout. All caps for mode name. Sentence case for details.
 
-| Element | Size | Weight | Style |
-|---|---|---|---|
-| Mode name | 2.5rem | 800 | Uppercase |
-| Key | 1.5rem | 700 | Uppercase |
-| Texture / mood | 1rem | 400 | Sentence case, muted color |
-| Timer / labels | 0.875rem | 500 | Uppercase, letter-spaced |
-| Button text | 0.875rem | 700 | Uppercase |
+| Element        | Size     | Weight | Style                      |
+| -------------- | -------- | ------ | -------------------------- |
+| Mode name      | 2.5rem   | 800    | Uppercase                  |
+| Key            | 1.5rem   | 700    | Uppercase                  |
+| Texture / mood | 1rem     | 400    | Sentence case, muted color |
+| Timer / labels | 0.875rem | 500    | Uppercase, letter-spaced   |
+| Button text    | 0.875rem | 700    | Uppercase                  |
 
 ---
 
@@ -127,13 +127,13 @@ Slides up from the bottom when the interval ends. Does not cover the keyboard.
 
 ## Motion & Transitions
 
-| Event | Animation |
-|---|---|
-| Ambiance change | Badge fades out → new badge fades in (200ms each) |
-| Toast appears | Slides up from bottom (250ms ease-out) |
-| Toast dismisses | Slides back down (200ms ease-in) |
-| Key press | Instant color change (0ms — no delay on MIDI input) |
-| Key release | Instant return to scale tint or default |
+| Event           | Animation                                           |
+| --------------- | --------------------------------------------------- |
+| Ambiance change | Badge fades out → new badge fades in (200ms each)   |
+| Toast appears   | Slides up from bottom (250ms ease-out)              |
+| Toast dismisses | Slides back down (200ms ease-in)                    |
+| Key press       | Instant color change (0ms — no delay on MIDI input) |
+| Key release     | Instant return to scale tint or default             |
 
 No bouncing, no excessive animation. Everything is quick and functional.
 
@@ -141,8 +141,8 @@ No bouncing, no excessive animation. Everything is quick and functional.
 
 ## Responsive Breakpoints
 
-| Breakpoint | Behavior |
-|---|---|
-| Desktop (> 1024px) | Full keyboard visible (A0–C8), badge centered above |
-| Tablet (600–1024px) | Keyboard scrollable, badge above, comfortable touch targets |
-| Mobile (< 600px) | Keyboard scrollable (2–3 octaves visible), badge compact (1 line) |
+| Breakpoint          | Behavior                                                          |
+| ------------------- | ----------------------------------------------------------------- |
+| Desktop (> 1024px)  | Full keyboard visible (A0–C8), badge centered above               |
+| Tablet (600–1024px) | Keyboard scrollable, badge above, comfortable touch targets       |
+| Mobile (< 600px)    | Keyboard scrollable (2–3 octaves visible), badge compact (1 line) |

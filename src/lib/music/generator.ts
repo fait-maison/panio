@@ -25,11 +25,14 @@ export function generateAmbiance(
 	const availableModes = MODES.filter((m) => modePool.includes(m.name));
 	const resolvedModes = availableModes.length > 0 ? availableModes : MODES;
 	const resolvedKeys = keyPool.length > 0 ? keyPool : KEYS;
-	const resolvedDifficulties = difficultyPool.length > 0 ? difficultyPool : (['simple'] as Difficulty[]);
+	const resolvedDifficulties =
+		difficultyPool.length > 0 ? difficultyPool : (['simple'] as Difficulty[]);
 
 	// Compare modes by name — $state wraps objects in Proxy, breaking reference equality
 	const prevModeName = previous?.mode.name;
-	const modeCandidates = prevModeName ? resolvedModes.filter((m) => m.name !== prevModeName) : resolvedModes;
+	const modeCandidates = prevModeName
+		? resolvedModes.filter((m) => m.name !== prevModeName)
+		: resolvedModes;
 	const modePool2 = modeCandidates.length > 0 ? modeCandidates : resolvedModes;
 	const mode = modePool2[Math.floor(Math.random() * modePool2.length)];
 

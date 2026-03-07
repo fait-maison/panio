@@ -4,9 +4,7 @@ import { getScaleNotes } from './scale';
 import { MODES } from './modes';
 
 // Pitch-class integers for all white keys
-const WHITE_KEY_CHROMAS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'].map(
-	(n) => Note.chroma(n)
-);
+const WHITE_KEY_CHROMAS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'].map((n) => Note.chroma(n));
 
 function mode(name: string) {
 	const found = MODES.find((m) => m.name === name);
@@ -36,7 +34,12 @@ describe('getScaleNotes', () => {
 	});
 
 	it('A Harmonic Minor raises the 7th (G# chroma 8), drops G (chroma 7)', () => {
-		const notes = getScaleNotes({ mode: mode('Harmonic Minor'), key: 'A', texture: '', progression: [] });
+		const notes = getScaleNotes({
+			mode: mode('Harmonic Minor'),
+			key: 'A',
+			texture: '',
+			progression: []
+		});
 		expect(notes.has(chroma('G#'))).toBe(true);
 		expect(notes.has(chroma('G'))).toBe(false);
 		expect(notes.size).toBe(7);
@@ -44,8 +47,8 @@ describe('getScaleNotes', () => {
 
 	it('C Dorian includes Eb/D# (chroma 3) and Bb/A# (chroma 10), excludes E (4) and B (11)', () => {
 		const notes = getScaleNotes({ mode: mode('Dorian'), key: 'C', texture: '', progression: [] });
-		expect(notes.has(chroma('Eb'))).toBe(true);  // enharmonic with D#
-		expect(notes.has(chroma('D#'))).toBe(true);  // same chroma, different spelling
+		expect(notes.has(chroma('Eb'))).toBe(true); // enharmonic with D#
+		expect(notes.has(chroma('D#'))).toBe(true); // same chroma, different spelling
 		expect(notes.has(chroma('Bb'))).toBe(true);
 		expect(notes.has(chroma('E'))).toBe(false);
 		expect(notes.has(chroma('B'))).toBe(false);

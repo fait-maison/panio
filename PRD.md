@@ -35,6 +35,7 @@ There is no tool that trains this directly. Most ear training apps focus on jazz
 ## 4. Users
 
 ### Primary user (v1)
+
 - Single user (the developer / owner)
 - Intermediate piano + theory level: knows modes, diatonic chords, chord colors
 - Performs live as pianist for theatrical improvisation groups
@@ -43,6 +44,7 @@ There is no tool that trains this directly. Most ear training apps focus on jazz
 - Goal: build the reflex to translate a scene or emotion into music instantly
 
 ### Future users (v2+)
+
 - Other theatrical improv pianists or film/game composers
 - Multiple accounts with individual progress tracking
 
@@ -56,6 +58,7 @@ The app is a silent companion: it sets the musical context, gets out of the way,
 and nudges the user to switch after a configurable interval.
 
 **Flow:**
+
 1. App displays the current ambiance context: mode, key, texture hint, and a suggested chord progression
 2. User plays freely on their MIDI keyboard for the full interval duration
 3. On-screen keyboard highlights keys in real time (visual feedback only)
@@ -68,6 +71,7 @@ and nudges the user to switch after a configurable interval.
 No evaluation, no scoring, no audio from the app. Pure exploration.
 
 ### v2+ — Additional Exercise Types
+
 - **Scene Prompt**: app shows a mood word or scene description, user plays for it
 - **Melodic Ear Training**: app plays a phrase from the active mode, user reproduces it
 - **Rhythm & Texture**: app plays an ostinato pattern, user locks it in
@@ -78,16 +82,16 @@ No evaluation, no scoring, no audio from the app. Pure exploration.
 
 Modes are framed by their emotional color, not their harmonic function.
 
-| Mode | Emotional color | Cinematic use |
-|---|---|---|
-| Ionian (Major) | Bright, resolved, safe | Happy endings, daylight scenes |
-| Dorian | Melancholic, reflective, bittersweet | Introspective moments, nostalgia |
-| Phrygian | Dark, mysterious, threatening | Horror, tension, foreign menace |
-| Lydian | Magical, ethereal, wonder | Fantasy, dreams, discovery |
-| Mixolydian | Heroic, confident, open | Adventure, triumph (without full resolution) |
-| Aeolian (Natural Minor) | Sad, dramatic, longing | Loss, tragedy, romance |
-| Locrian | Dissonant, unstable, dread | Extreme tension, psychological horror |
-| Harmonic Minor | Dramatic, exotic, tense | Eastern/flamenco flavour, climactic scenes |
+| Mode                    | Emotional color                      | Cinematic use                                |
+| ----------------------- | ------------------------------------ | -------------------------------------------- |
+| Ionian (Major)          | Bright, resolved, safe               | Happy endings, daylight scenes               |
+| Dorian                  | Melancholic, reflective, bittersweet | Introspective moments, nostalgia             |
+| Phrygian                | Dark, mysterious, threatening        | Horror, tension, foreign menace              |
+| Lydian                  | Magical, ethereal, wonder            | Fantasy, dreams, discovery                   |
+| Mixolydian              | Heroic, confident, open              | Adventure, triumph (without full resolution) |
+| Aeolian (Natural Minor) | Sad, dramatic, longing               | Loss, tragedy, romance                       |
+| Locrian                 | Dissonant, unstable, dread           | Extreme tension, psychological horror        |
+| Harmonic Minor          | Dramatic, exotic, tense              | Eastern/flamenco flavour, climactic scenes   |
 
 ---
 
@@ -122,6 +126,7 @@ Session end (user closes / stops)
 ## 8. Functional Requirements
 
 ### 8.1 MIDI Input
+
 - Detect all connected MIDI devices on app load
 - Auto-select the first device that sends MIDI input (no prompt needed)
 - Display a device status indicator (connected / disconnected)
@@ -129,6 +134,7 @@ Session end (user closes / stops)
 - Stream note-on / note-off events into a reactive Svelte store
 
 ### 8.2 Ambiance Generator
+
 - Draw from tonal.js for scale/mode data
 - Randomly pick: mode (from pool) + key (from pool) + texture hint + chord progression at a random difficulty tier (from pool)
 - Texture hints are short descriptive strings, e.g.:
@@ -140,6 +146,7 @@ Session end (user closes / stops)
 - Generator ensures each field differs from the previous ambiance (no immediate repeat on any dimension)
 
 ### 8.3 Interval Timer & Autoadvance
+
 - Default interval: 3 minutes (user-configurable in settings)
 - When interval ends, show the autoadvance card:
   - Countdown from 5 seconds with animated progress bar
@@ -148,12 +155,14 @@ Session end (user closes / stops)
 - Countdown card is non-blocking — user can keep playing during it
 
 ### 8.4 On-Screen Keyboard
+
 - Full piano range, horizontally scrollable
 - Highlights keys in real time as MIDI input is received
 - Optionally highlights notes of the active mode (hint mode toggle, on by default)
 - Responsive: usable on desktop, tablet, and mobile
 
 ### 8.5 UI
+
 - Context card: prominently shows mode name, key, texture hint, and suggested chord progression
   - Tonic chord highlighted in red; remaining chords in default text color; arrows muted
   - Progression row scrolls horizontally on narrow screens (no overflow clipping)
@@ -162,6 +171,7 @@ Session end (user closes / stops)
 - Language toggle: EN / FR (stored in localStorage)
 
 ### 8.6 Settings
+
 - **Interval duration:** 15s / 1 / 3 / 5 / 10 minutes
 - **Keyboard size:** S / M / L (controls visual width of on-screen keyboard)
 - **Chord complexity (difficulty pool):** multi-select — Simple / Rich / Complex (default: Simple); generator picks randomly from selected tiers each ambiance
@@ -177,12 +187,12 @@ Session end (user closes / stops)
 
 ## 9. Non-Functional Requirements
 
-| Requirement | Target |
-|---|---|
-| MIDI input latency | < 10ms from key press to visual feedback |
-| Mobile usability | Fully usable on iOS Safari and Android Chrome |
-| Browser support | Chrome/Edge/Arc/Firefox 108+ (Web MIDI API required; Firefox prompts for site permission) |
-| No external dependencies at runtime | tonal.js bundled, no CDN calls |
+| Requirement                         | Target                                                                                    |
+| ----------------------------------- | ----------------------------------------------------------------------------------------- |
+| MIDI input latency                  | < 10ms from key press to visual feedback                                                  |
+| Mobile usability                    | Fully usable on iOS Safari and Android Chrome                                             |
+| Browser support                     | Chrome/Edge/Arc/Firefox 108+ (Web MIDI API required; Firefox prompts for site permission) |
+| No external dependencies at runtime | tonal.js bundled, no CDN calls                                                            |
 
 ---
 
@@ -192,14 +202,14 @@ Difficulty is **entirely user-controlled** — there is no hidden progression or
 
 The user configures their session through the settings panel:
 
-| Setting | Options |
-|---|---|
-| Mode pool | Any subset of the 8 supported modes |
-| Key pool | Any subset of the 12 keys (or "all") |
-| Chord complexity | Any subset of Simple / Rich / Complex (multi-select; generator picks randomly each ambiance) |
-| Interval duration | 15s / 1 / 3 / 5 / 10 min |
-| Keyboard size | S / M / L |
-| Progression notation | Chord symbols or Roman numerals |
+| Setting              | Options                                                                                      |
+| -------------------- | -------------------------------------------------------------------------------------------- |
+| Mode pool            | Any subset of the 8 supported modes                                                          |
+| Key pool             | Any subset of the 12 keys (or "all")                                                         |
+| Chord complexity     | Any subset of Simple / Rich / Complex (multi-select; generator picks randomly each ambiance) |
+| Interval duration    | 15s / 1 / 3 / 5 / 10 min                                                                     |
+| Keyboard size        | S / M / L                                                                                    |
+| Progression notation | Chord symbols or Roman numerals                                                              |
 
 A beginner might restrict to Major + Dorian + Aeolian in a few familiar keys, Simple complexity only.
 An advanced user opens the full pool including Phrygian, Lydian, Locrian, and Harmonic Minor, with Rich + Complex enabled.
@@ -210,6 +220,7 @@ The app never makes this choice for the user.
 ## 11. Phased Roadmap
 
 ### Phase 1 — v1 ✅ complete
+
 - SvelteKit scaffold + tonal.js (no Tone.js, no Drizzle)
 - MIDI input store (Web MIDI API) + MIDI device picker with localStorage persistence
 - On-screen keyboard with real-time MIDI highlighting and scale note tinting
@@ -223,21 +234,25 @@ The app never makes this choice for the user.
 - ToggleGroup UX: last active item locked via CSS (`data-lock-active` pattern)
 
 ### Phase 2 — Feedback Layer
+
 - MIDI evaluator: modal consistency (% notes in active mode), density
 - Feedback card shown after each ambiance window (non-blocking summary)
 - Optional self-rating after each round
 
 ### Phase 3 — More Exercise Types
+
 - Scene Prompt (mood word / scene description)
 - Melodic Ear Training (phrase reproduction)
 - Rhythm & Texture (ostinato reproduction)
 
 ### Phase 4 — Persistence & Progress
+
 - SQLite + Drizzle ORM
 - SvelteKit API routes for session save / progress fetch
 - Progress dashboard: history, modal consistency trends
 
 ### Phase 5 — Polish
+
 - Mobile layout optimization
 - MIDI device picker / onboarding flow
 - Offline caching (service worker)

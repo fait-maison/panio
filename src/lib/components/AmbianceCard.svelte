@@ -83,22 +83,31 @@
 <Card.Root class="ambiance-card">
 	<Card.Content class="p-0">
 		<div class="card-content">
-		<div class="card-actions">
-			<button
-				class="action-btn"
-				onclick={toggleSettings}
-				aria-label={t('settings.exercise')}
-				class:active={isSettingsActive}
-			>
-				<SlidersHorizontal size={16} />
-			</button>
-			<button class="action-btn" onclick={onSkip} aria-label="Next ambiance">
-				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-					<polygon points="5 4 15 12 5 20 5 4"/>
-					<line x1="19" y1="5" x2="19" y2="19"/>
-				</svg>
-			</button>
-		</div>
+			<div class="card-actions">
+				<button
+					class="action-btn"
+					onclick={toggleSettings}
+					aria-label={t('settings.exercise')}
+					class:active={isSettingsActive}
+				>
+					<SlidersHorizontal size={16} />
+				</button>
+				<button class="action-btn" onclick={onSkip} aria-label="Next ambiance">
+					<svg
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<polygon points="5 4 15 12 5 20 5 4" />
+						<line x1="19" y1="5" x2="19" y2="19" />
+					</svg>
+				</button>
+			</div>
 			<Tooltip.Provider>
 				<Tooltip.Root>
 					<Tooltip.Trigger class="badge">
@@ -112,35 +121,35 @@
 				</Tooltip.Root>
 			</Tooltip.Provider>
 			<div class="texture">{t('texture.' + ambiance.texture)}</div>
-		<div class="progression-sep"></div>
-		<div
-			class="progression"
-			role="group"
-			aria-label="suggested progression"
-			onmouseleave={() => onChordHover(new Set(), null)}
-			onfocusout={() => onChordHover(new Set(), null)}
-		>
-			{#each chords as chord, i}
-				<span
-					class="chord"
-					class:tonic={i === 0}
-					role="button"
-					tabindex="0"
-					onmouseenter={() => onChordHover(chordNoteSets[i], chordRoots[i])}
-					onfocus={() => onChordHover(chordNoteSets[i], chordRoots[i])}
-				>{chord}</span>
-				{#if i < chords.length - 1}
-					<span class="arrow" aria-hidden="true">›</span>
-				{/if}
-			{/each}
-		</div>
-
-		<!-- In-card exercise settings (desktop collapsible) -->
-		<div class="exercise-settings" class:open={settingsOpen}>
-			<div class="settings-inner">
-				{@render settingsContent()}
+			<div class="progression-sep"></div>
+			<div
+				class="progression"
+				role="group"
+				aria-label="suggested progression"
+				onmouseleave={() => onChordHover(new Set(), null)}
+				onfocusout={() => onChordHover(new Set(), null)}
+			>
+				{#each chords as chord, i}
+					<span
+						class="chord"
+						class:tonic={i === 0}
+						role="button"
+						tabindex="0"
+						onmouseenter={() => onChordHover(chordNoteSets[i], chordRoots[i])}
+						onfocus={() => onChordHover(chordNoteSets[i], chordRoots[i])}>{chord}</span
+					>
+					{#if i < chords.length - 1}
+						<span class="arrow" aria-hidden="true">›</span>
+					{/if}
+				{/each}
 			</div>
-		</div>
+
+			<!-- In-card exercise settings (desktop collapsible) -->
+			<div class="exercise-settings" class:open={settingsOpen}>
+				<div class="settings-inner">
+					{@render settingsContent()}
+				</div>
+			</div>
 		</div>
 	</Card.Content>
 	<div class="progress-bar">
@@ -151,14 +160,22 @@
 <!-- Mobile bottom sheet -->
 {#if sheetOpen}
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class="backdrop" onclick={() => (sheetOpen = false)} onkeydown={(e) => e.key === 'Escape' && (sheetOpen = false)}></div>
+	<div
+		class="backdrop"
+		onclick={() => (sheetOpen = false)}
+		onkeydown={(e) => e.key === 'Escape' && (sheetOpen = false)}
+	></div>
 {/if}
 <div class="bottom-sheet" class:open={sheetOpen}>
 	<div class="sheet-header">
 		<div class="drag-handle"></div>
 		<div class="sheet-title-row">
 			<h2>{t('settings.exercise')}</h2>
-			<button class="close-btn" onclick={() => (sheetOpen = false)} aria-label={t('settings.close')}>
+			<button
+				class="close-btn"
+				onclick={() => (sheetOpen = false)}
+				aria-label={t('settings.close')}
+			>
 				<X size={20} />
 			</button>
 		</div>
@@ -191,12 +208,13 @@
 		<ToggleGroup.Root
 			type="multiple"
 			value={settings.value.difficultyPool}
-			onValueChange={(v: string[]) => v.length > 0 && settings.update((s) => ({ ...s, difficultyPool: v as Difficulty[] }))}
+			onValueChange={(v: string[]) =>
+				v.length > 0 && settings.update((s) => ({ ...s, difficultyPool: v as Difficulty[] }))}
 			variant="outline"
 			class="w-full flex-wrap"
 			data-lock-active={settings.value.difficultyPool.length === 1 ? '' : undefined}
 		>
-			{#each (['simple', 'rich', 'complex'] as const) as d}
+			{#each ['simple', 'rich', 'complex'] as const as d}
 				<ToggleGroup.Item value={d}>{t('settings.difficulty.' + d)}</ToggleGroup.Item>
 			{/each}
 		</ToggleGroup.Root>
@@ -207,7 +225,8 @@
 		<ToggleGroup.Root
 			type="multiple"
 			value={settings.value.modePool}
-			onValueChange={(v: string[]) => v.length > 0 && settings.update((s) => ({ ...s, modePool: v }))}
+			onValueChange={(v: string[]) =>
+				v.length > 0 && settings.update((s) => ({ ...s, modePool: v }))}
 			variant="outline"
 			class="w-full flex-wrap"
 			data-lock-active={settings.value.modePool.length === 1 ? '' : undefined}
@@ -223,7 +242,8 @@
 		<ToggleGroup.Root
 			type="multiple"
 			value={settings.value.keyPool}
-			onValueChange={(v: string[]) => v.length > 0 && settings.update((s) => ({ ...s, keyPool: v }))}
+			onValueChange={(v: string[]) =>
+				v.length > 0 && settings.update((s) => ({ ...s, keyPool: v }))}
 			variant="outline"
 			class="w-full flex-wrap"
 			data-lock-active={settings.value.keyPool.length === 1 ? '' : undefined}
@@ -245,7 +265,9 @@
 		border-radius: var(--radius-card);
 		box-shadow: var(--shadow-card);
 		min-width: 460px;
-		transition: box-shadow 0.25s ease, transform 0.25s ease;
+		transition:
+			box-shadow 0.25s ease,
+			transform 0.25s ease;
 	}
 
 	@media (hover: hover) {
@@ -261,10 +283,18 @@
 			width: calc(100vw - 2rem);
 		}
 
-		.key { font-size: 1.25rem; }
-		.mode { font-size: 1.4rem; }
-		.separator { font-size: 1rem; }
-		.texture { font-size: 0.875rem; }
+		.key {
+			font-size: 1.25rem;
+		}
+		.mode {
+			font-size: 1.4rem;
+		}
+		.separator {
+			font-size: 1rem;
+		}
+		.texture {
+			font-size: 0.875rem;
+		}
 
 		.card-content {
 			padding: var(--sp-6) var(--sp-4) var(--sp-4);
@@ -305,7 +335,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		transition: color var(--dur-base), background var(--dur-base);
+		transition:
+			color var(--dur-base),
+			background var(--dur-base);
 	}
 
 	.action-btn:hover {
@@ -372,9 +404,17 @@
 		padding-bottom: var(--sp-1);
 	}
 
-	.chord { color: var(--text); cursor: pointer; }
-	.chord.tonic { color: var(--red); }
-	.arrow { color: var(--text-muted); font-weight: 400; }
+	.chord {
+		color: var(--text);
+		cursor: pointer;
+	}
+	.chord.tonic {
+		color: var(--red);
+	}
+	.arrow {
+		color: var(--text-muted);
+		font-weight: 400;
+	}
 
 	/* Exercise settings — desktop collapsible */
 	.exercise-settings {

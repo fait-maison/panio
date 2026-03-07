@@ -12,10 +12,10 @@ function loadPreferredDevice(): string | null {
 }
 
 let _pressed: SvelteSet<number> = new SvelteSet();
-let _status     = $state<MidiStatus>('disconnected');
+let _status = $state<MidiStatus>('disconnected');
 let _deviceName = $state<string | null>(null);
-let _inputList  = $state<MidiInput[]>([]);
-let _preferred  = $state<string | null>(loadPreferredDevice());
+let _inputList = $state<MidiInput[]>([]);
+let _preferred = $state<string | null>(loadPreferredDevice());
 
 let access: MIDIAccess | null = null;
 
@@ -24,7 +24,11 @@ function refreshStatus() {
 	const inputs = [...access.inputs.values()];
 	// Filter out Chrome/ALSA virtual routing ports (Linux: "Output connection" artifacts)
 	const realInputs = inputs.filter((i) => (i.name ?? '') !== 'Output connection');
-	_inputList = realInputs.map((i) => ({ id: i.id, name: i.name ?? '', manufacturer: i.manufacturer ?? '' }));
+	_inputList = realInputs.map((i) => ({
+		id: i.id,
+		name: i.name ?? '',
+		manufacturer: i.manufacturer ?? ''
+	}));
 
 	const preferred = _preferred ? inputs.find((i) => i.id === _preferred) : undefined;
 	const active = preferred ?? null;
@@ -85,7 +89,8 @@ async function init() {
 		connectInputs(access);
 		refreshStatus();
 	} catch (err) {
-		_status = err instanceof DOMException && err.name === 'SecurityError' ? 'denied' : 'unsupported';
+		_status =
+			err instanceof DOMException && err.name === 'SecurityError' ? 'denied' : 'unsupported';
 	}
 }
 
@@ -123,11 +128,21 @@ function destroy() {
 }
 
 export const midi = {
-	get pressedNotes()     { return _pressed; },
-	get status()           { return _status; },
-	get deviceName()       { return _deviceName; },
-	get inputList()        { return _inputList; },
-	get preferredDeviceId(){ return _preferred; },
+	get pressedNotes() {
+		return _pressed;
+	},
+	get status() {
+		return _status;
+	},
+	get deviceName() {
+		return _deviceName;
+	},
+	get inputList() {
+		return _inputList;
+	},
+	get preferredDeviceId() {
+		return _preferred;
+	},
 	init,
 	destroy,
 	sendNoteOn,

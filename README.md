@@ -13,12 +13,12 @@ A MIDI-driven practice tool for pianists who accompany theatrical improvisation.
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
+| Layer              | Technology                         |
+| ------------------ | ---------------------------------- |
 | Frontend + Backend | SvelteKit (full-stack, TypeScript) |
-| Music theory | tonal.js |
-| MIDI input | Web MIDI API (native browser) |
-| Package manager | pnpm |
+| Music theory       | tonal.js                           |
+| MIDI input         | Web MIDI API (native browser)      |
+| Package manager    | pnpm                               |
 
 > v1 has no audio playback from the app and no database. Tone.js and Drizzle ORM are planned for later phases.
 
@@ -43,27 +43,27 @@ If no MIDI device is found, the on-screen keyboard is available as a fallback.
 
 ## Mode / Mood Reference
 
-| Mode | Feel |
-|---|---|
-| Ionian (Major) | Bright, resolved, safe |
-| Dorian | Melancholic, bittersweet |
-| Phrygian | Dark, threatening, mysterious |
-| Lydian | Magical, ethereal, wonder |
-| Mixolydian | Heroic, open, confident |
-| Aeolian (Natural Minor) | Sad, dramatic, longing |
-| Locrian | Dissonant, dread, instability |
+| Mode                    | Feel                          |
+| ----------------------- | ----------------------------- |
+| Ionian (Major)          | Bright, resolved, safe        |
+| Dorian                  | Melancholic, bittersweet      |
+| Phrygian                | Dark, threatening, mysterious |
+| Lydian                  | Magical, ethereal, wonder     |
+| Mixolydian              | Heroic, open, confident       |
+| Aeolian (Natural Minor) | Sad, dramatic, longing        |
+| Locrian                 | Dissonant, dread, instability |
 
 ## Settings
 
 All difficulty is user-controlled — no hidden progression.
 
-| Setting | Default | Description |
-|---|---|---|
-| Interval | 3 min | How long before the autoadvance card appears |
-| Chord complexity | Simple | Which tiers to draw from: Simple / Rich / Complex (multi-select) |
-| Mode pool | All 8 modes | Which modes to include in random draws |
-| Key pool | All 12 keys | Which keys to include |
-| Hint mode | On | Highlight the active mode's notes on the keyboard |
+| Setting          | Default     | Description                                                      |
+| ---------------- | ----------- | ---------------------------------------------------------------- |
+| Interval         | 3 min       | How long before the autoadvance card appears                     |
+| Chord complexity | Simple      | Which tiers to draw from: Simple / Rich / Complex (multi-select) |
+| Mode pool        | All 8 modes | Which modes to include in random draws                           |
+| Key pool         | All 12 keys | Which keys to include                                            |
+| Hint mode        | On          | Highlight the active mode's notes on the keyboard                |
 
 ## Project Structure
 

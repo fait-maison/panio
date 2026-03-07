@@ -22,7 +22,9 @@
 	}
 
 	$effect(() => {
-		function onFsChange() { isFullscreen = !!document.fullscreenElement; }
+		function onFsChange() {
+			isFullscreen = !!document.fullscreenElement;
+		}
 		document.addEventListener('fullscreenchange', onFsChange);
 		return () => document.removeEventListener('fullscreenchange', onFsChange);
 	});
@@ -121,7 +123,9 @@
 		border-radius: 8px;
 		cursor: pointer;
 		color: var(--text-muted);
-		transition: background var(--dur-base), color var(--dur-base);
+		transition:
+			background var(--dur-base),
+			color var(--dur-base);
 	}
 
 	.icon-btn:hover {

@@ -17,6 +17,7 @@
 ### Task 1: Add DM Serif Display font + update design tokens
 
 **Files:**
+
 - Modify: `src/app.html:5` (add Google Fonts link)
 - Modify: `src/app.css:7-84` (update tokens)
 
@@ -25,9 +26,12 @@
 In `src/app.html`, add inside `<head>` before `%sveltekit.head%`:
 
 ```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap"
+	rel="stylesheet"
+/>
 ```
 
 **Step 2: Update CSS tokens in `src/app.css`**
@@ -40,15 +44,15 @@ In `:root`, update these tokens:
 --font-display: 'DM Serif Display', Georgia, serif;
 
 /* Update border color to warmer tone */
---border-key: #E8E0D4;
---border-subtle: #E8E0D4;
+--border-key: #e8e0d4;
+--border-subtle: #e8e0d4;
 
 /* Update text-muted to warmer tone */
---text-muted: #8A8078;
+--text-muted: #8a8078;
 
 /* Add new card tokens */
---shadow-card: 0 8px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.04);
---shadow-card-hover: 0 12px 48px rgba(0,0,0,0.14), 0 4px 12px rgba(0,0,0,0.06);
+--shadow-card: 0 8px 40px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
+--shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.06);
 --radius-card: 14px;
 ```
 
@@ -69,6 +73,7 @@ git commit -m "🎨 style: add DM Serif Display font + update design tokens"
 ### Task 2: Redesign Navbar (hamburger + logo, blends into background)
 
 **Files:**
+
 - Modify: `src/lib/components/Navbar.svelte` (full rewrite)
 - Modify: `src/routes/+layout.svelte` (remove gear click, simplify)
 - Modify: `src/lib/i18n.svelte.ts` (add new i18n keys)
@@ -91,72 +96,72 @@ Replace the entire `Navbar.svelte` with:
 
 ```svelte
 <script lang="ts">
-  import { t } from '$lib/i18n.svelte';
+	import { t } from '$lib/i18n.svelte';
 
-  let { onMenuClick = () => {} }: { onMenuClick?: () => void } = $props();
+	let { onMenuClick = () => {} }: { onMenuClick?: () => void } = $props();
 </script>
 
 <nav class="navbar">
-  <div class="nav-left">
-    <button class="hamburger" onclick={onMenuClick} aria-label={t('nav.menu')}>
-      <span></span><span></span><span></span>
-    </button>
-    <span class="logo">{t('app.title')}</span>
-  </div>
+	<div class="nav-left">
+		<button class="hamburger" onclick={onMenuClick} aria-label={t('nav.menu')}>
+			<span></span><span></span><span></span>
+		</button>
+		<span class="logo">{t('app.title')}</span>
+	</div>
 </nav>
 
 <style>
-  .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    padding: 0 var(--sp-4);
-    background: var(--bg);
-    z-index: var(--z-drawer);
-  }
+	.navbar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 52px;
+		display: flex;
+		align-items: center;
+		padding: 0 var(--sp-4);
+		background: var(--bg);
+		z-index: var(--z-drawer);
+	}
 
-  .nav-left {
-    display: flex;
-    align-items: center;
-    gap: var(--sp-3);
-  }
+	.nav-left {
+		display: flex;
+		align-items: center;
+		gap: var(--sp-3);
+	}
 
-  .logo {
-    font-family: var(--font-display);
-    font-size: 1.3rem;
-    color: var(--text);
-  }
+	.logo {
+		font-family: var(--font-display);
+		font-size: 1.3rem;
+		color: var(--text);
+	}
 
-  .hamburger {
-    background: none;
-    border: none;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background var(--dur-base);
-  }
+	.hamburger {
+		background: none;
+		border: none;
+		width: 40px;
+		height: 40px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 5px;
+		cursor: pointer;
+		border-radius: 8px;
+		transition: background var(--dur-base);
+	}
 
-  .hamburger:hover {
-    background: rgba(0, 0, 0, 0.05);
-  }
+	.hamburger:hover {
+		background: rgba(0, 0, 0, 0.05);
+	}
 
-  .hamburger span {
-    display: block;
-    width: 18px;
-    height: 2px;
-    background: var(--text);
-    border-radius: 1px;
-  }
+	.hamburger span {
+		display: block;
+		width: 18px;
+		height: 2px;
+		background: var(--text);
+		border-radius: 1px;
+	}
 </style>
 ```
 
@@ -166,13 +171,13 @@ Replace `src/routes/+layout.svelte`:
 
 ```svelte
 <script lang="ts">
-  import { Toaster } from '$lib/components/ui/sonner/index.js';
-  import Navbar from '$lib/components/Navbar.svelte';
-  import SettingsPanel from '$lib/components/SettingsPanel.svelte';
-  import '../app.css';
+	import { Toaster } from '$lib/components/ui/sonner/index.js';
+	import Navbar from '$lib/components/Navbar.svelte';
+	import SettingsPanel from '$lib/components/SettingsPanel.svelte';
+	import '../app.css';
 
-  let sidebarOpen = $state(false);
-  let { children } = $props();
+	let sidebarOpen = $state(false);
+	let { children } = $props();
 </script>
 
 <Navbar onMenuClick={() => (sidebarOpen = !sidebarOpen)} />
@@ -205,6 +210,7 @@ git commit -m "🍔 refactor: redesign navbar with hamburger + logo"
 ### Task 3: Redesign AmbianceCard (lifted shadow, DM Serif, no border)
 
 **Files:**
+
 - Modify: `src/lib/components/AmbianceCard.svelte:106-228` (styles section)
 
 **Step 1: Update AmbianceCard styles**
@@ -212,23 +218,26 @@ git commit -m "🍔 refactor: redesign navbar with hamburger + logo"
 In `src/lib/components/AmbianceCard.svelte`, replace the `<style>` block. Key changes:
 
 - `.ambiance-card`: remove `box-shadow: var(--shadow-card)` and `min-width: 430px`, replace with:
+
   ```css
   :global(.ambiance-card) {
-    overflow: hidden;
-    gap: 0;
-    padding: 0;
-    border: none;
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
-    min-width: 460px;
-    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  	overflow: hidden;
+  	gap: 0;
+  	padding: 0;
+  	border: none;
+  	border-radius: var(--radius-card);
+  	box-shadow: var(--shadow-card);
+  	min-width: 460px;
+  	transition:
+  		box-shadow 0.25s ease,
+  		transform 0.25s ease;
   }
 
   @media (hover: hover) {
-    :global(.ambiance-card:hover) {
-      box-shadow: var(--shadow-card-hover);
-      transform: translateY(-2px);
-    }
+  	:global(.ambiance-card:hover) {
+  		box-shadow: var(--shadow-card-hover);
+  		transform: translateY(-2px);
+  	}
   }
   ```
 
@@ -257,6 +266,7 @@ git commit -m "🎨 style: redesign ambiance card with lifted shadow + serif hea
 ### Task 4: Redesign PianoKeyboard (sticky bottom, black key shadows)
 
 **Files:**
+
 - Modify: `src/lib/components/PianoKeyboard.svelte:128-205` (styles section)
 - Modify: `src/routes/+page.svelte:44-61` (layout styles)
 
@@ -268,11 +278,13 @@ In `src/lib/components/PianoKeyboard.svelte`, update the `<style>` block:
 - `.black` (base style): change `background` to:
   ```css
   .black {
-    width: var(--black-w);
-    height: var(--black-h);
-    background: linear-gradient(180deg, #1A1A1A 0%, #2A2A2A 100%);
-    z-index: 2;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  	width: var(--black-w);
+  	height: var(--black-h);
+  	background: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 100%);
+  	z-index: 2;
+  	box-shadow:
+  		0 3px 6px rgba(0, 0, 0, 0.3),
+  		0 1px 2px rgba(0, 0, 0, 0.2);
   }
   ```
 - `.black.in-scale`: keep `background: var(--key-scale-black);` (overrides gradient)
@@ -284,11 +296,11 @@ In `src/routes/+page.svelte`, update the `<style>` block for `main`:
 
 ```css
 main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100dvh;
-  padding: 52px 0 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-height: 100dvh;
+	padding: 52px 0 0;
 }
 ```
 
@@ -296,18 +308,18 @@ Remove the `gap` and bottom padding — the keyboard sticks to the bottom natura
 
 ```css
 main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100dvh;
-  padding-top: 52px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-height: 100dvh;
+	padding-top: 52px;
 }
 
 /* Center the card in the space above keyboard */
 main > :global(:first-child) {
-  flex: 1;
-  display: flex;
-  align-items: center;
+	flex: 1;
+	display: flex;
+	align-items: center;
 }
 ```
 
@@ -336,6 +348,7 @@ git commit -m "🎹 style: sticky keyboard at bottom + black key shadows"
 ### Task 5: Refactor SettingsPanel into Sidebar (hamburger sidebar with global settings + exercise nav)
 
 **Files:**
+
 - Modify: `src/lib/components/SettingsPanel.svelte` (rewrite as sidebar)
 - Modify: `src/lib/i18n.svelte.ts` (add sidebar i18n keys)
 - Modify: `src/routes/+layout.svelte` (update prop name if needed)
@@ -405,6 +418,7 @@ git commit -m "🗄️ refactor: convert settings panel to hamburger sidebar wit
 ### Task 6: Add exercise settings inside AmbianceCard (desktop) + bottom sheet (mobile)
 
 **Files:**
+
 - Modify: `src/lib/components/AmbianceCard.svelte` (add in-card settings panel)
 - Create: `src/lib/components/ExerciseSettingsFab.svelte` (FAB + bottom sheet for mobile)
 - Modify: `src/routes/+page.svelte` (render FAB on mobile)
@@ -431,6 +445,7 @@ In `AmbianceCard.svelte`:
 - Wrap in `class="desktop-only"` with `@media (max-width: 480px) { .desktop-only { display: none; } }`
 
 Import needed:
+
 ```ts
 import SlidersHorizontal from '@lucide/svelte/icons/sliders-horizontal';
 import * as ToggleGroup from '$lib/components/ui/toggle-group/index.js';
@@ -477,6 +492,7 @@ git commit -m "⚙️ feat: add exercise settings in-card (desktop) + bottom she
 ### Task 7: Add landing page
 
 **Files:**
+
 - Modify: `src/routes/+page.svelte` (add landing/exercise conditional)
 - Modify: `src/lib/i18n.svelte.ts` (add landing page keys)
 
@@ -503,6 +519,7 @@ let currentExercise = $state<string | null>(null);
 When `currentExercise` is `null`, show the landing page card grid. When it's `'sandbox'`, show the current sandbox view.
 
 Landing page layout:
+
 - Hero: h1 (DM Serif Display) + subtitle
 - 2-column grid of exercise cards (Sandbox active, others disabled with "Soon" badge)
 - Cards use the same lifted shadow treatment as AmbianceCard

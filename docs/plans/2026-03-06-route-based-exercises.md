@@ -13,6 +13,7 @@
 ### Task 1: Create sandbox route
 
 **Files:**
+
 - Create: `src/routes/sandbox/+page.svelte`
 
 **Step 1: Create the sandbox page**
@@ -38,7 +39,11 @@ Extract the exercise view from `src/routes/+page.svelte` (lines 52-71) into a ne
 
 	let hoveredChordNotes = $state<Set<number>>(new Set());
 	let hoveredChordRoot = $state<number | null>(null);
-	$effect(() => { ambiance.current; hoveredChordNotes = new Set(); hoveredChordRoot = null; });
+	$effect(() => {
+		ambiance.current;
+		hoveredChordNotes = new Set();
+		hoveredChordRoot = null;
+	});
 
 	onMount(() => midi.init());
 	onDestroy(() => midi.destroy());
@@ -49,7 +54,10 @@ Extract the exercise view from `src/routes/+page.svelte` (lines 52-71) into a ne
 		<AmbianceCard
 			ambiance={ambiance.current}
 			{timer}
-			onChordHover={(notes, root) => { hoveredChordNotes = notes; hoveredChordRoot = root; }}
+			onChordHover={(notes, root) => {
+				hoveredChordNotes = notes;
+				hoveredChordRoot = root;
+			}}
 			onSkip={skipAmbiance}
 		/>
 	</div>
@@ -83,6 +91,7 @@ git commit -m "feat: add /sandbox route with exercise view"
 ### Task 2: Trim landing page
 
 **Files:**
+
 - Modify: `src/routes/+page.svelte`
 
 **Step 1: Remove exercise view, keep only landing page**
@@ -146,6 +155,7 @@ git commit -m "refactor: trim landing page, link active exercises to routes"
 ### Task 3: Update sidebar navigation
 
 **Files:**
+
 - Modify: `src/lib/components/SettingsPanel.svelte`
 
 **Step 1: Replace exercise store with URL-based navigation**
@@ -161,13 +171,18 @@ Replace `exercise` store import with SvelteKit navigation:
 ```
 
 Update exercise list item active state (line 35):
+
 ```svelte
 class:active={ex.active && $page.url.pathname === '/' + ex.key}
 ```
 
 Update button onclick (line 41):
+
 ```svelte
-onclick={() => { goto('/' + ex.key); open = false; }}
+onclick={() => {
+	goto('/' + ex.key);
+	open = false;
+}}
 ```
 
 **Step 2: Run check**
@@ -187,6 +202,7 @@ git commit -m "refactor: sidebar uses goto() for exercise navigation"
 ### Task 4: Delete exercise store
 
 **Files:**
+
 - Delete: `src/lib/stores/exercise.svelte.ts`
 
 **Step 1: Verify no remaining imports**
@@ -217,6 +233,7 @@ git commit -m "refactor: remove exercise store, URL is the state"
 ### Task 5: Update E2E test helper
 
 **Files:**
+
 - Modify: `tests/helpers.ts`
 
 **Step 1: Update `enterSandbox` to navigate directly**
@@ -248,6 +265,7 @@ git commit -m "test: update enterSandbox helper to use /sandbox route"
 ### Task 6: Update CLAUDE.md project structure
 
 **Files:**
+
 - Modify: `CLAUDE.md`
 
 **Step 1: Update project structure section**
