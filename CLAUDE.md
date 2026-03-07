@@ -24,6 +24,10 @@ pnpm run test         # vitest unit tests
 pnpm run test:coverage # vitest with v8 coverage report
 pnpm run test:e2e     # playwright e2e tests
 pnpm run preview      # preview production build
+pnpm run lint         # eslint (strict typescript + svelte)
+pnpm run lint:fix     # eslint with auto-fix
+pnpm run format       # prettier (write)
+pnpm run format:check # prettier (check only)
 ```
 
 ## Project Structure
@@ -132,7 +136,7 @@ Settings stored in `localStorage` key `piano-settings`. On load, spread-merged w
 - **Adapter:** `adapter-static` with `fallback: 'index.html'` (SPA mode for nginx)
 - **Platform:** `linux/amd64` only (tailwindcss oxide crashes under QEMU arm64)
 - **CI trigger:** push to `main` → build image; push `v*.*.*` tag → build + publish Helm chart
-- **CI pipeline:** `test` (check + vitest + playwright) → `build` (docker) → `helm-release` (on tags)
+- **CI pipeline:** `lint` (format:check + eslint) → `test` (check + vitest + playwright) → `build` (docker) → `helm-release` (on tags)
 - **Helm chart:** `helm/panio/`
 
 ## Conventions
@@ -141,6 +145,8 @@ Settings stored in `localStorage` key `piano-settings`. On load, spread-merged w
 - **Run `pnpm run check` after every code change** — don't ask, just do it.
 - **Update docs before committing** — DESIGN.md, README.md, CLAUDE.md as relevant.
 - **Run `/claude-md-management:revise-claude-md` before committing** when conventions, patterns, or project structure changed.
+- **Formatting:** Prettier runs on commit via lint-staged. Run `pnpm run format` to format all files.
+- **Linting:** ESLint strict-type-checked. Run `pnpm run lint` to check, `pnpm run lint:fix` to auto-fix.
 - **No over-engineering** — YAGNI. No abstractions for one-time operations.
 - **i18n:** all user-facing strings go through `t()` from `$lib/i18n.svelte`.
 - **Use skills** — always invoke applicable skills before starting work (brainstorming, TDD, debugging, feature-dev, etc.). If there's even a 1% chance a skill applies, use it.
