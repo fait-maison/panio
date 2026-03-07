@@ -37,6 +37,7 @@ src/
 ├── routes/
 │   ├── +layout.svelte        # app shell: Navbar, Toaster, SettingsPanel
 │   ├── +page.svelte          # landing page: exercise grid
+│   ├── about/+page.svelte    # about page: story, credits, links
 │   └── sandbox/+page.svelte  # sandbox exercise: AmbianceCard + PianoKeyboard
 ├── lib/
 │   ├── components/
@@ -55,7 +56,7 @@ src/
 │   ├── music/
 │   │   ├── modes.ts            # mode definitions, mood map
 │   │   ├── scale.ts            # scale note calculations
-│   │   ├── progressions.ts     # chord progression pools by mode/difficulty
+│   │   ├── progressions.ts     # chord progression pools, toChordSymbol/chordToRoman
 │   │   ├── textures.ts         # texture definitions (14 textures)
 │   │   └── generator.ts        # ambiance generator
 │   ├── audio.ts                # soundfont-player wrapper (on-screen keyboard audio)
@@ -129,6 +130,13 @@ export const store = {
 
 Settings stored in `localStorage` key `piano-settings`. On load, spread-merged with
 `DEFAULT_SETTINGS` to handle new keys gracefully.
+
+### tonal.js Chord.detect() quirks
+
+- Order-sensitive: first note = bass → slash chords. Sort MIDI notes by pitch before detecting.
+- Ranks exotic qualities first (e.g. `Em#5` over `CM/E`). Prefer Major/Minor via `Chord.get(s).quality`.
+- Returns `CM` for C major. Strip leading `M`/`^` to match app convention (`C`).
+- 2-note detection is limited: perfect fifths work (C5), but most intervals (thirds, etc.) return `[]`.
 
 ## Deployment
 

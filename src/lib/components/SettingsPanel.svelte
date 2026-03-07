@@ -57,6 +57,18 @@
 				</ul>
 			</section>
 
+			<!-- About link -->
+			<button
+				class="about-link"
+				class:active={$page.url.pathname === '/about'}
+				onclick={() => {
+					void goto(resolve('/about' as '/'));
+					open = false;
+				}}
+			>
+				{t('sidebar.about')}
+			</button>
+
 			<hr class="sep" />
 
 			<!-- Global settings -->
@@ -232,6 +244,34 @@
 		background: rgba(0, 0, 0, 0.06);
 		padding: 2px 8px;
 		border-radius: var(--radius-pill);
+	}
+
+	/* About link */
+	.about-link {
+		display: block;
+		width: 100%;
+		padding: var(--sp-2) var(--sp-3);
+		border-radius: 8px;
+		border: none;
+		background: none;
+		cursor: pointer;
+		text-align: left;
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--text-muted);
+		transition:
+			background var(--dur-base),
+			color var(--dur-base);
+	}
+
+	.about-link:hover {
+		background: rgba(0, 0, 0, 0.04);
+		color: var(--text);
+	}
+
+	.about-link.active {
+		background: rgba(0, 0, 0, 0.05);
+		color: var(--text);
 	}
 
 	/* Pin MIDI section to bottom of sidebar */

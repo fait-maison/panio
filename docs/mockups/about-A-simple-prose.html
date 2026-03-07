@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>About — A) Simple Prose</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			:root {
+				--bg: #f5f0e8;
+				--surface: #fffdf9;
+				--text: #1a1a1a;
+				--text-muted: #8a8078;
+				--red: #cc2936;
+				--red-light: #fecaca;
+				--blue: #1d4ed8;
+				--border: #e8e0d4;
+				--font-display: 'DM Serif Display', Georgia, serif;
+				--font-body: 'Inter', system-ui, sans-serif;
+				--radius: 14px;
+			}
+
+			html,
+			body {
+				height: 100%;
+				font-family: var(--font-body);
+				background: var(--bg);
+				color: var(--text);
+			}
+
+			/* ── Navbar ── */
+			nav {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 56px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 24px;
+				background: var(--bg);
+				z-index: 100;
+			}
+			.nav-left {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+			}
+			.hamburger {
+				background: none;
+				border: none;
+				color: var(--text-muted);
+				cursor: pointer;
+				padding: 8px;
+				display: flex;
+				align-items: center;
+			}
+			.hamburger:hover {
+				color: var(--text);
+			}
+			.logo {
+				font-family: var(--font-display);
+				font-size: 1.4rem;
+				letter-spacing: 0.02em;
+			}
+
+			/* ── Main content ── */
+			main {
+				max-width: 600px;
+				margin: 0 auto;
+				padding: 96px 24px 80px;
+			}
+
+			.section {
+				margin-bottom: 48px;
+			}
+			.section-title {
+				font-family: var(--font-body);
+				font-size: 0.7rem;
+				font-weight: 700;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
+				color: var(--red);
+				margin-bottom: 16px;
+			}
+			.section p {
+				font-size: 0.95rem;
+				line-height: 1.7;
+				color: var(--text);
+				margin-bottom: 12px;
+			}
+			.section p.muted {
+				color: var(--text-muted);
+			}
+
+			/* ── Separator ── */
+			.sep {
+				width: 40px;
+				height: 2px;
+				background: var(--border);
+				margin-bottom: 48px;
+			}
+
+			/* ── Credits list ── */
+			.credits-list {
+				list-style: none;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px 16px;
+				margin-top: 8px;
+			}
+			.credits-list li {
+				font-size: 0.85rem;
+				color: var(--text-muted);
+				font-weight: 500;
+			}
+			.credits-list li::before {
+				content: '';
+				display: inline-block;
+				width: 4px;
+				height: 4px;
+				background: var(--red);
+				border-radius: 50%;
+				margin-right: 8px;
+				vertical-align: middle;
+			}
+
+			/* ── Links ── */
+			a {
+				color: var(--red);
+				text-decoration: none;
+				font-weight: 600;
+				transition: opacity 0.15s;
+			}
+			a:hover {
+				opacity: 0.7;
+			}
+
+			/* ── Version ── */
+			.version {
+				font-size: 0.75rem;
+				color: var(--text-muted);
+				letter-spacing: 0.06em;
+				margin-top: 48px;
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			<div class="nav-left">
+				<button class="hamburger" aria-label="Menu">
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<line x1="3" y1="6" x2="21" y2="6" />
+						<line x1="3" y1="12" x2="21" y2="12" />
+						<line x1="3" y1="18" x2="21" y2="18" />
+					</svg>
+				</button>
+				<span class="logo">Panio</span>
+			</div>
+		</nav>
+
+		<main>
+			<div class="section">
+				<div class="section-title">Why Panio?</div>
+				<p>
+					I play piano for theatrical improv groups. Every night, a new scene unfolds and I need to
+					score it live &mdash; like a film composer with no script. A love scene? Tender arpeggios.
+					A chase? Driving octaves. The audience feels the shift before they understand it.
+				</p>
+				<p>
+					But that reflex &mdash; translating an emotion into the right mode, the right texture,
+					instantly &mdash; doesn't come naturally. It takes practice. Panio is the tool I built to
+					train it.
+				</p>
+			</div>
+
+			<div class="sep"></div>
+
+			<div class="section">
+				<div class="section-title">About me</div>
+				<p>
+					[Your name here]. Pianist, improviser, and developer based in [city]. I've been
+					accompanying improv troupes for [N] years and building tools to scratch my own itches for
+					even longer.
+				</p>
+				<p class="muted">Panio is open source and built with love. Contributions welcome.</p>
+			</div>
+
+			<div class="sep"></div>
+
+			<div class="section">
+				<div class="section-title">Credits</div>
+				<p class="muted">Built with:</p>
+				<ul class="credits-list">
+					<li>SvelteKit</li>
+					<li>Tailwind CSS</li>
+					<li>tonal.js</li>
+					<li>soundfont-player</li>
+					<li>Web MIDI API</li>
+					<li>shadcn-svelte</li>
+				</ul>
+			</div>
+
+			<div class="version"><a href="#">GitHub &nearr;</a> &nbsp;&middot;&nbsp; v1.0.0</div>
+		</main>
+	</body>
+</html>

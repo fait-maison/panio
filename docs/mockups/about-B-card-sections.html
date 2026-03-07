@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>About — B) Card Sections</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			:root {
+				--bg: #f5f0e8;
+				--surface: #fffdf9;
+				--text: #1a1a1a;
+				--text-muted: #8a8078;
+				--red: #cc2936;
+				--red-light: #fecaca;
+				--blue: #1d4ed8;
+				--border: #e8e0d4;
+				--font-display: 'DM Serif Display', Georgia, serif;
+				--font-body: 'Inter', system-ui, sans-serif;
+				--radius: 14px;
+			}
+
+			html,
+			body {
+				height: 100%;
+				font-family: var(--font-body);
+				background: var(--bg);
+				color: var(--text);
+			}
+
+			/* ── Navbar ── */
+			nav {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 56px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 24px;
+				background: var(--bg);
+				z-index: 100;
+			}
+			.nav-left {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+			}
+			.hamburger {
+				background: none;
+				border: none;
+				color: var(--text-muted);
+				cursor: pointer;
+				padding: 8px;
+				display: flex;
+				align-items: center;
+			}
+			.hamburger:hover {
+				color: var(--text);
+			}
+			.logo {
+				font-family: var(--font-display);
+				font-size: 1.4rem;
+				letter-spacing: 0.02em;
+			}
+
+			/* ── Main layout ── */
+			main {
+				max-width: 560px;
+				margin: 0 auto;
+				padding: 96px 16px 80px;
+				display: flex;
+				flex-direction: column;
+				gap: 20px;
+			}
+
+			/* ── Page title ── */
+			.page-title {
+				font-family: var(--font-display);
+				font-size: 1.8rem;
+				text-align: center;
+				margin-bottom: 8px;
+			}
+
+			/* ── Cards ── */
+			.card {
+				background: var(--surface);
+				border: none;
+				border-radius: var(--radius);
+				box-shadow:
+					0 8px 40px rgba(0, 0, 0, 0.1),
+					0 2px 8px rgba(0, 0, 0, 0.04);
+				padding: 28px 28px 24px;
+				transition:
+					box-shadow 0.25s ease,
+					transform 0.25s ease;
+			}
+			.card:hover {
+				box-shadow:
+					0 12px 48px rgba(0, 0, 0, 0.14),
+					0 4px 12px rgba(0, 0, 0, 0.06);
+				transform: translateY(-2px);
+			}
+			.card-label {
+				font-size: 0.65rem;
+				font-weight: 700;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
+				color: var(--red);
+				margin-bottom: 12px;
+			}
+			.card p {
+				font-size: 0.9rem;
+				line-height: 1.7;
+				color: var(--text);
+				margin-bottom: 8px;
+			}
+			.card p:last-child {
+				margin-bottom: 0;
+			}
+			.card p.muted {
+				color: var(--text-muted);
+			}
+
+			/* ── Credits grid ── */
+			.credits-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 8px 24px;
+				margin-top: 12px;
+			}
+			.credit-item {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				font-size: 0.85rem;
+				color: var(--text-muted);
+				font-weight: 500;
+			}
+			.credit-dot {
+				width: 6px;
+				height: 6px;
+				background: var(--red);
+				border-radius: 50%;
+				flex-shrink: 0;
+			}
+
+			/* ── Links ── */
+			a {
+				color: var(--red);
+				text-decoration: none;
+				font-weight: 600;
+				transition: opacity 0.15s;
+			}
+			a:hover {
+				opacity: 0.7;
+			}
+
+			/* ── Footer ── */
+			.footer {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 12px;
+				font-size: 0.75rem;
+				color: var(--text-muted);
+				margin-top: 8px;
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			<div class="nav-left">
+				<button class="hamburger" aria-label="Menu">
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<line x1="3" y1="6" x2="21" y2="6" />
+						<line x1="3" y1="12" x2="21" y2="12" />
+						<line x1="3" y1="18" x2="21" y2="18" />
+					</svg>
+				</button>
+				<span class="logo">Panio</span>
+			</div>
+		</nav>
+
+		<main>
+			<h1 class="page-title">About Panio</h1>
+
+			<div class="card">
+				<div class="card-label">Why Panio?</div>
+				<p>
+					I play piano for theatrical improv groups. Every night, a new scene unfolds and I need to
+					score it live &mdash; like a film composer with no script. A love scene? Tender arpeggios.
+					A chase? Driving octaves.
+				</p>
+				<p>
+					That reflex &mdash; translating an emotion into the right mode, the right texture,
+					instantly &mdash; doesn't come naturally. It takes practice. Panio is the tool I built to
+					train it.
+				</p>
+			</div>
+
+			<div class="card">
+				<div class="card-label">About me</div>
+				<p>
+					[Your name here]. Pianist, improviser, and developer based in [city]. I've been
+					accompanying improv troupes for [N] years and building tools to scratch my own itches for
+					even longer.
+				</p>
+				<p class="muted">Panio is open source and built with love. Contributions welcome.</p>
+			</div>
+
+			<div class="card">
+				<div class="card-label">Credits</div>
+				<p class="muted">Built with:</p>
+				<div class="credits-grid">
+					<div class="credit-item"><span class="credit-dot"></span> SvelteKit</div>
+					<div class="credit-item"><span class="credit-dot"></span> Tailwind CSS</div>
+					<div class="credit-item"><span class="credit-dot"></span> tonal.js</div>
+					<div class="credit-item"><span class="credit-dot"></span> soundfont-player</div>
+					<div class="credit-item"><span class="credit-dot"></span> Web MIDI API</div>
+					<div class="credit-item"><span class="credit-dot"></span> shadcn-svelte</div>
+				</div>
+			</div>
+
+			<div class="footer">
+				<a href="#">GitHub &nearr;</a>
+				<span>&middot;</span>
+				<span>v1.0.0</span>
+			</div>
+		</main>
+	</body>
+</html>

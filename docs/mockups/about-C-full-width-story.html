@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>About — C) Full-Width Storytelling</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			:root {
+				--bg: #f5f0e8;
+				--surface: #fffdf9;
+				--text: #1a1a1a;
+				--text-muted: #8a8078;
+				--red: #cc2936;
+				--red-light: #fecaca;
+				--blue: #1d4ed8;
+				--border: #e8e0d4;
+				--font-display: 'DM Serif Display', Georgia, serif;
+				--font-body: 'Inter', system-ui, sans-serif;
+				--radius: 14px;
+			}
+
+			html,
+			body {
+				height: 100%;
+				font-family: var(--font-body);
+				background: var(--bg);
+				color: var(--text);
+			}
+
+			/* ── Navbar ── */
+			nav {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 56px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 24px;
+				background: var(--bg);
+				z-index: 100;
+			}
+			.nav-left {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+			}
+			.hamburger {
+				background: none;
+				border: none;
+				color: var(--text-muted);
+				cursor: pointer;
+				padding: 8px;
+				display: flex;
+				align-items: center;
+			}
+			.hamburger:hover {
+				color: var(--text);
+			}
+			.logo {
+				font-family: var(--font-display);
+				font-size: 1.4rem;
+				letter-spacing: 0.02em;
+			}
+
+			/* ── Hero section ── */
+			.hero {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+				padding: 80px 24px 24px;
+			}
+			.hero-tagline {
+				font-family: var(--font-display);
+				font-size: 1.8rem;
+				line-height: 1.2;
+				margin-bottom: 10px;
+				max-width: 400px;
+			}
+			.hero-tagline .accent {
+				color: var(--red);
+			}
+			.hero-sub {
+				font-size: 0.9rem;
+				color: var(--text-muted);
+				font-style: italic;
+				letter-spacing: 0.02em;
+			}
+
+			/* ── Divider ── */
+			.divider {
+				width: 60px;
+				height: 2px;
+				background: var(--border);
+				margin: 0 auto;
+			}
+
+			/* ── Story sections ── */
+			.story {
+				max-width: 520px;
+				margin: 0 auto;
+				padding: 40px 24px;
+			}
+			.story p {
+				font-size: 1.05rem;
+				line-height: 1.8;
+				margin-bottom: 16px;
+			}
+			.story p:last-child {
+				margin-bottom: 0;
+			}
+			.story .pull-quote {
+				font-family: var(--font-display);
+				font-size: 1.5rem;
+				line-height: 1.4;
+				color: var(--red);
+				margin: 32px 0;
+				padding-left: 20px;
+				border-left: 3px solid var(--red);
+			}
+
+			/* ── About me section ── */
+			.about-me {
+				max-width: 520px;
+				margin: 0 auto;
+				padding: 0 24px 64px;
+			}
+			.about-me-label {
+				font-size: 0.65rem;
+				font-weight: 700;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
+				color: var(--red);
+				margin-bottom: 16px;
+			}
+			.about-me p {
+				font-size: 0.95rem;
+				line-height: 1.7;
+				margin-bottom: 8px;
+			}
+			.about-me p.muted {
+				color: var(--text-muted);
+			}
+
+			/* ── Credits bar ── */
+			.credits-bar {
+				background: var(--surface);
+				border-top: 1px solid var(--border);
+				padding: 40px 24px;
+				text-align: center;
+			}
+			.credits-label {
+				font-size: 0.65rem;
+				font-weight: 700;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
+				color: var(--text-muted);
+				margin-bottom: 16px;
+			}
+			.credits-row {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 8px 20px;
+				max-width: 480px;
+				margin: 0 auto 20px;
+			}
+			.credits-row span {
+				font-size: 0.85rem;
+				color: var(--text-muted);
+				font-weight: 500;
+			}
+			.credits-row .dot {
+				color: var(--border);
+			}
+
+			/* ── Links ── */
+			a {
+				color: var(--red);
+				text-decoration: none;
+				font-weight: 600;
+				transition: opacity 0.15s;
+			}
+			a:hover {
+				opacity: 0.7;
+			}
+			.footer-links {
+				display: flex;
+				justify-content: center;
+				gap: 12px;
+				font-size: 0.8rem;
+				color: var(--text-muted);
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			<div class="nav-left">
+				<button class="hamburger" aria-label="Menu">
+					<svg
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<line x1="3" y1="6" x2="21" y2="6" />
+						<line x1="3" y1="12" x2="21" y2="12" />
+						<line x1="3" y1="18" x2="21" y2="18" />
+					</svg>
+				</button>
+				<span class="logo">Panio</span>
+			</div>
+		</nav>
+
+		<div class="hero">
+			<h1 class="hero-tagline">Score the <span class="accent">moment.</span></h1>
+			<p class="hero-sub">Every improv scene deserves a live soundtrack.</p>
+		</div>
+
+		<div class="divider"></div>
+
+		<div class="story">
+			<p>
+				I play piano for theatrical improv groups. Every night, a new scene unfolds and I need to
+				score it live &mdash; like a film composer with no script.
+			</p>
+			<div class="pull-quote">
+				A love scene? Tender arpeggios.<br />
+				A chase? Driving octaves.<br />
+				The audience feels the shift before they understand it.
+			</div>
+			<p>
+				But that reflex &mdash; translating an emotion into the right mode, the right texture,
+				instantly &mdash; doesn't come naturally. It takes practice.
+			</p>
+			<p>
+				Panio is the tool I built to train it. It throws random musical ambiances at you &mdash; a
+				mode, a key, a texture &mdash; and you play. No evaluation. No scoring. Just you and the
+				moment.
+			</p>
+		</div>
+
+		<div class="divider"></div>
+
+		<div class="about-me" style="padding-top: 40px">
+			<div class="about-me-label">About me</div>
+			<p>
+				[Your name here]. Pianist, improviser, and developer based in [city]. I've been accompanying
+				improv troupes for [N] years and building tools to scratch my own itches for even longer.
+			</p>
+			<p class="muted">Panio is open source and built with love. Contributions welcome.</p>
+		</div>
+
+		<div class="credits-bar">
+			<div class="credits-label">Built with</div>
+			<div class="credits-row">
+				<span>SvelteKit</span>
+				<span class="dot">&middot;</span>
+				<span>Tailwind CSS</span>
+				<span class="dot">&middot;</span>
+				<span>tonal.js</span>
+				<span class="dot">&middot;</span>
+				<span>soundfont-player</span>
+				<span class="dot">&middot;</span>
+				<span>Web MIDI API</span>
+				<span class="dot">&middot;</span>
+				<span>shadcn-svelte</span>
+			</div>
+			<div class="footer-links">
+				<a href="#">GitHub &nearr;</a>
+				<span>&middot;</span>
+				<span>v1.0.0</span>
+			</div>
+		</div>
+	</body>
+</html>

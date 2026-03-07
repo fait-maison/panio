@@ -17,6 +17,18 @@ const translations = {
 		'exercise.rhythm': 'Rhythm & Texture',
 		'exercise.rhythm.desc': 'Accompaniment patterns',
 		'badge.soon': 'Soon',
+		// about page
+		'about.tagline': 'About',
+		'about.tagline.accent': 'Panio',
+		'about.story.p1': 'Panio is a free improv piano training app, made as a hobby project.',
+		'about.story.p2':
+			'I\u2019m an improviser at {lila}, I play piano, and I develop applications. This project is at the intersection of these three passions.',
+		'about.pullquote': 'I\u2019m still searching for a quote to put here.',
+		'about.story.p3': 'I wanted a tool to help me vary my style, so I made it.',
+		'about.contribute.title': 'Contribute',
+		'about.contribute.text':
+			'Contributions are welcome. Contact me on {github} to suggest enhancements.',
+		'sidebar.about': 'About',
 		'settings.exercise': 'Exercise settings',
 		// landing page
 		'landing.title': 'What are we practicing?',
@@ -98,6 +110,20 @@ const translations = {
 		'exercise.rhythm': 'Rythme & Texture',
 		'exercise.rhythm.desc': "Patterns d'accompagnement",
 		'badge.soon': 'Bientôt',
+		// about page
+		'about.tagline': 'À propos de',
+		'about.tagline.accent': 'Panio',
+		'about.story.p1':
+			'Panio est une application gratuite d\u2019entraînement au piano impro, créée comme projet perso.',
+		'about.story.p2':
+			'Je suis improvisateur à {lila}, je joue du piano et je développe des applications. Ce projet est à l\u2019intersection de ces trois passions.',
+		'about.pullquote': 'Je cherche encore une citation à mettre ici.',
+		'about.story.p3':
+			'Je voulais un outil pour m\u2019aider à varier mon style, alors je l\u2019ai fait.',
+		'about.contribute.title': 'Contribuer',
+		'about.contribute.text':
+			'Les contributions sont les bienvenues. Contactez-moi sur {github} pour proposer des améliorations.',
+		'sidebar.about': 'À propos',
 		'settings.exercise': "Paramètres de l'exercice",
 		'landing.title': 'On travaille quoi ?',
 		'landing.subtitle': 'Choisis un exercice et joue. Ton clavier MIDI est prêt.',
