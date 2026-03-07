@@ -1,9 +1,6 @@
 <script lang="ts">
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
-	import * as ToggleGroup from '$lib/components/ui/toggle-group/index.js';
-	import { settings } from '$lib/stores/settings.svelte';
-	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings.svelte';
-	import { t, locale, type Locale } from '$lib/i18n.svelte';
+	import { t } from '$lib/i18n.svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/stores';
@@ -11,12 +8,6 @@
 	import MidiStatus from '$lib/components/MidiStatus.svelte';
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();
-
-	const KEYBOARD_SIZES: { value: KeyboardSize; label: string }[] = [
-		{ value: 's', label: 'S' },
-		{ value: 'm', label: 'M' },
-		{ value: 'l', label: 'L' }
-	];
 </script>
 
 <Sheet.Root bind:open>
@@ -69,76 +60,17 @@
 				{t('sidebar.about')}
 			</button>
 
-			<hr class="sep" />
-
-			<!-- Global settings -->
-			<section>
-				<h3>{t('sidebar.settings')}</h3>
-			</section>
-
-			<section>
-				<h3>{t('settings.language')}</h3>
-				<ToggleGroup.Root
-					type="single"
-					value={locale.value}
-					onValueChange={(v: string) => v && locale.set(v as Locale)}
-					variant="outline"
-					class="w-full flex-wrap"
-					data-lock-active
-				>
-					<ToggleGroup.Item value="fr">FR</ToggleGroup.Item>
-					<ToggleGroup.Item value="en">EN</ToggleGroup.Item>
-				</ToggleGroup.Root>
-			</section>
-
-			<section>
-				<h3>{t('settings.keyboardSize')}</h3>
-				<ToggleGroup.Root
-					type="single"
-					value={settings.value.keyboardSize}
-					onValueChange={(v: string) =>
-						v && settings.update((s) => ({ ...s, keyboardSize: v as KeyboardSize }))}
-					variant="outline"
-					class="w-full flex-wrap"
-					data-lock-active
-				>
-					{#each KEYBOARD_SIZES as size}
-						<ToggleGroup.Item value={size.value}>{size.label}</ToggleGroup.Item>
-					{/each}
-				</ToggleGroup.Root>
-			</section>
-
-			<section>
-				<h3>{t('settings.hints')}</h3>
-				<ToggleGroup.Root
-					type="single"
-					value={settings.value.showHints ? 'on' : 'off'}
-					onValueChange={(v: string) =>
-						v && settings.update((s) => ({ ...s, showHints: v === 'on' }))}
-					variant="outline"
-					class="w-full flex-wrap"
-					data-lock-active
-				>
-					<ToggleGroup.Item value="on">{t('settings.hints.on')}</ToggleGroup.Item>
-					<ToggleGroup.Item value="off">{t('settings.hints.off')}</ToggleGroup.Item>
-				</ToggleGroup.Root>
-			</section>
-
-			<section>
-				<h3>{t('settings.progressionNotation')}</h3>
-				<ToggleGroup.Root
-					type="single"
-					value={settings.value.progressionNotation}
-					onValueChange={(v: string) =>
-						v && settings.update((s) => ({ ...s, progressionNotation: v as ProgressionNotation }))}
-					variant="outline"
-					class="w-full flex-wrap"
-					data-lock-active
-				>
-					<ToggleGroup.Item value="chord">{t('settings.notation.chord')}</ToggleGroup.Item>
-					<ToggleGroup.Item value="roman">{t('settings.notation.roman')}</ToggleGroup.Item>
-				</ToggleGroup.Root>
-			</section>
+			<!-- Settings link -->
+			<button
+				class="about-link"
+				class:active={$page.url.pathname === '/settings'}
+				onclick={() => {
+					void goto(resolve('/settings' as '/'));
+					open = false;
+				}}
+			>
+				{t('sidebar.settings')}
+			</button>
 		</div>
 
 		<section class="midi-section">
@@ -171,12 +103,6 @@
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 		color: var(--text-muted);
-	}
-
-	.sep {
-		border: none;
-		height: 1px;
-		background: var(--border-subtle);
 	}
 
 	/* Exercise list */
