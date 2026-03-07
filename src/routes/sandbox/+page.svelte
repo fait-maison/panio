@@ -6,7 +6,6 @@
 	import { midi } from '$lib/stores/midi.svelte';
 	import { settings } from '$lib/stores/settings.svelte';
 	import { chordToRoman } from '$lib/music/progressions';
-	import { t } from '$lib/i18n.svelte';
 
 	import AmbianceCard from '$lib/components/AmbianceCard.svelte';
 	import PianoKeyboard from '$lib/components/PianoKeyboard.svelte';
@@ -19,6 +18,7 @@
 
 	let hoveredChordNotes = $state<Set<number>>(new Set());
 	let hoveredChordRoot = $state<number | null>(null);
+	// eslint-disable-next-line @typescript-eslint/no-unused-expressions -- read ambiance.current to track reactive dependency
 	$effect(() => { ambiance.current; hoveredChordNotes = new Set(); hoveredChordRoot = null; });
 
 	// Chord detection from currently held MIDI notes
@@ -38,7 +38,7 @@
 		// Format label to match app convention: C not CM, Dm not Dmin
 		const afterTonic = best.slice(chord.tonic?.length ?? 0);
 		const label = (chord.tonic ?? '') + afterTonic.replace(/^(M(?!aj|in)|\^)/, '');
-		return { label, root: chord.tonic ? (Note.chroma(chord.tonic) as number) : null };
+		return { label, root: chord.tonic ? (Note.chroma(chord.tonic)) : null };
 	});
 
 	// Fade-out: keep label visible ~1s after all keys released
@@ -72,19 +72,19 @@
 	}
 
 	function onVisibilityChange() {
-		if (document.visibilityState === 'visible') requestWakeLock();
+		if (document.visibilityState === 'visible') void requestWakeLock();
 	}
 
 	onMount(() => {
-		midi.init();
-		requestWakeLock();
+		void midi.init();
+		void requestWakeLock();
 		document.addEventListener('visibilitychange', onVisibilityChange);
 	});
 
 	onDestroy(() => {
 		midi.destroy();
 		if (typeof document !== 'undefined') {
-			wakeLock?.release();
+			void wakeLock?.release();
 			document.removeEventListener('visibilitychange', onVisibilityChange);
 		}
 	});
@@ -95,7 +95,7 @@
 		<AmbianceCard
 			ambiance={ambiance.current}
 			{timer}
-			onChordHover={(notes, root) => { hoveredChordNotes = notes; hoveredChordRoot = root; }}
+			onChordHover={(notes: Set<number>, root: number | null) => { hoveredChordNotes = notes; hoveredChordRoot = root; }}
 			onSkip={skipAmbiance}
 		/>
 	</div>

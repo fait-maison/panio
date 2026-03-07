@@ -131,7 +131,7 @@ describe('getChordPitchClasses — extended', () => {
 	it('im7 in D dorian → 4 notes (D F A C)', () => {
 		const dm7 = getChordPitchClasses('D', 'dorian', 'im7');
 		expect(dm7.size).toBe(4);
-		expect(dm7.has(Note.chroma('C') as number)).toBe(true);
+		expect(dm7.has(Note.chroma('C'))).toBe(true);
 	});
 });
 

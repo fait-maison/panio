@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n.svelte';
+	import { resolve } from '$app/paths';
 	import { EXERCISES } from '$lib/exercises';
 </script>
 
@@ -11,7 +12,7 @@
 	<div class="exercise-grid">
 		{#each EXERCISES as ex}
 			{#if ex.active}
-				<a href="/{ex.key}" class="exercise-card">
+				<a href={resolve(`/${ex.key}` as '/')} class="exercise-card">
 					<span class="exercise-name">{t('exercise.' + ex.key)}</span>
 					<span class="exercise-desc">{t('exercise.' + ex.key + '.desc')}</span>
 				</a>

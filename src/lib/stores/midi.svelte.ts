@@ -1,3 +1,4 @@
+import { SvelteSet } from 'svelte/reactivity';
 import { playNote } from '$lib/audio';
 import { settings } from '$lib/stores/settings.svelte';
 
@@ -10,7 +11,7 @@ function loadPreferredDevice(): string | null {
 	return localStorage.getItem('piano-midi-device');
 }
 
-let _pressed    = $state<Set<number>>(new Set());
+let _pressed: SvelteSet<number> = new SvelteSet();
 let _status     = $state<MidiStatus>('disconnected');
 let _deviceName = $state<string | null>(null);
 let _inputList  = $state<MidiInput[]>([]);
@@ -43,13 +44,9 @@ function handleMessage(event: MIDIMessageEvent) {
 	const command = status & 0xf0;
 
 	if (command === 0x90 && velocity > 0) {
-		const next = new Set(_pressed);
-		next.add(note);
-		_pressed = next;
+		_pressed.add(note);
 	} else if (command === 0x80 || (command === 0x90 && velocity === 0)) {
-		const next = new Set(_pressed);
-		next.delete(note);
-		_pressed = next;
+		_pressed.delete(note);
 	}
 }
 
@@ -95,26 +92,24 @@ async function init() {
 function setPreferredDevice(id: string | null) {
 	_preferred = id;
 	if (typeof localStorage !== 'undefined') {
-		id
-			? localStorage.setItem('piano-midi-device', id)
-			: localStorage.removeItem('piano-midi-device');
+		if (id) {
+			localStorage.setItem('piano-midi-device', id);
+		} else {
+			localStorage.removeItem('piano-midi-device');
+		}
 	}
 	if (access) connectInputs(access);
 	refreshStatus();
 }
 
 function sendNoteOn(note: number, velocity = 64) {
-	const next = new Set(_pressed);
-	next.add(note);
-	_pressed = next;
+	_pressed.add(note);
 	playNote(note, settings.value.volume);
 	getTargetOutputs().forEach((output) => output.send([0x90, note, velocity]));
 }
 
 function sendNoteOff(note: number) {
-	const next = new Set(_pressed);
-	next.delete(note);
-	_pressed = next;
+	_pressed.delete(note);
 	getTargetOutputs().forEach((output) => output.send([0x80, note, 0]));
 }
 

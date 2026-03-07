@@ -67,7 +67,7 @@
 		ambiance.progression.map((roman) => {
 			const symbol = toChordSymbol(ambiance.key, ambiance.mode.tonalName, roman);
 			const tonic = Chord.get(symbol).tonic;
-			return tonic ? Note.chroma(tonic) as number : null;
+			return tonic ? Note.chroma(tonic) : null;
 		})
 	);
 
@@ -175,7 +175,7 @@
 		<ToggleGroup.Root
 			type="single"
 			value={String(settings.value.intervalMin)}
-			onValueChange={(v) => v && settings.update((s) => ({ ...s, intervalMin: Number(v) }))}
+			onValueChange={(v: string) => v && settings.update((s) => ({ ...s, intervalMin: Number(v) }))}
 			variant="outline"
 			class="w-full flex-wrap"
 			data-lock-active
@@ -191,7 +191,7 @@
 		<ToggleGroup.Root
 			type="multiple"
 			value={settings.value.difficultyPool}
-			onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, difficultyPool: v as Difficulty[] }))}
+			onValueChange={(v: string[]) => v.length > 0 && settings.update((s) => ({ ...s, difficultyPool: v as Difficulty[] }))}
 			variant="outline"
 			class="w-full flex-wrap"
 			data-lock-active={settings.value.difficultyPool.length === 1 ? '' : undefined}
@@ -207,7 +207,7 @@
 		<ToggleGroup.Root
 			type="multiple"
 			value={settings.value.modePool}
-			onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, modePool: v }))}
+			onValueChange={(v: string[]) => v.length > 0 && settings.update((s) => ({ ...s, modePool: v }))}
 			variant="outline"
 			class="w-full flex-wrap"
 			data-lock-active={settings.value.modePool.length === 1 ? '' : undefined}
@@ -223,7 +223,7 @@
 		<ToggleGroup.Root
 			type="multiple"
 			value={settings.value.keyPool}
-			onValueChange={(v) => v.length > 0 && settings.update((s) => ({ ...s, keyPool: v }))}
+			onValueChange={(v: string[]) => v.length > 0 && settings.update((s) => ({ ...s, keyPool: v }))}
 			variant="outline"
 			class="w-full flex-wrap"
 			data-lock-active={settings.value.keyPool.length === 1 ? '' : undefined}
