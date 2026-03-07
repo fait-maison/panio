@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { Note } from 'tonal';
-import { toChordSymbol, pickProgression, PROGRESSIONS, getChordPitchClasses } from './progressions';
+import { toChordSymbol, chordToRoman, pickProgression, PROGRESSIONS, getChordPitchClasses } from './progressions';
 
 describe('toChordSymbol', () => {
 	it('D dorian i → Dm', () => {
@@ -133,6 +133,81 @@ describe('getChordPitchClasses — extended', () => {
 		expect(dm7.size).toBe(4);
 		expect(dm7.has(Note.chroma('C') as number)).toBe(true);
 	});
+});
+
+describe('chordToRoman', () => {
+	it('C major diatonic triads', () => {
+		expect(chordToRoman('C', 'C', 'major')).toBe('I');
+		expect(chordToRoman('Dm', 'C', 'major')).toBe('ii');
+		expect(chordToRoman('Em', 'C', 'major')).toBe('iii');
+		expect(chordToRoman('F', 'C', 'major')).toBe('IV');
+		expect(chordToRoman('G', 'C', 'major')).toBe('V');
+		expect(chordToRoman('Am', 'C', 'major')).toBe('vi');
+	});
+
+	it('diminished chord → °', () => {
+		expect(chordToRoman('Bdim', 'C', 'major')).toBe('vii°');
+	});
+
+	it('7th extensions preserved', () => {
+		expect(chordToRoman('Dm7', 'C', 'major')).toBe('iim7');
+		expect(chordToRoman('Cmaj7', 'C', 'major')).toBe('Imaj7');
+		expect(chordToRoman('G7', 'C', 'major')).toBe('V7');
+	});
+
+	it('9th and sus extensions preserved', () => {
+		expect(chordToRoman('Cmaj9', 'C', 'major')).toBe('Imaj9');
+		expect(chordToRoman('Fsus4', 'C', 'major')).toBe('IVsus4');
+	});
+
+	it('chromatic chords get flat prefix', () => {
+		expect(chordToRoman('Ab', 'C', 'major')).toBe('bVI');
+		expect(chordToRoman('Eb', 'C', 'major')).toBe('bIII');
+		expect(chordToRoman('Bb', 'C', 'major')).toBe('bVII');
+	});
+
+	it('chromatic minor chords', () => {
+		expect(chordToRoman('Bbm', 'C', 'major')).toBe('bvii');
+	});
+
+	it('diatonic chords in dorian', () => {
+		expect(chordToRoman('Dm', 'D', 'dorian')).toBe('i');
+		expect(chordToRoman('G', 'D', 'dorian')).toBe('IV');
+		expect(chordToRoman('C', 'D', 'dorian')).toBe('VII');
+	});
+
+	it('slash chords — bass degree resolved', () => {
+		expect(chordToRoman('C/E', 'C', 'major')).toBe('I/III');
+		expect(chordToRoman('C/G', 'C', 'major')).toBe('I/V');
+	});
+
+	it('slash chords — chromatic bass gets flat prefix', () => {
+		expect(chordToRoman('C/Bb', 'C', 'major')).toBe('I/bVII');
+	});
+
+	it('returns chord symbol as-is for unrecognized input', () => {
+		expect(chordToRoman('???', 'C', 'major')).toBe('???');
+	});
+});
+
+describe('chordToRoman ↔ toChordSymbol roundtrip', () => {
+	const cases: [string, string, string][] = [
+		['C', 'major', 'I'],
+		['C', 'major', 'vi'],
+		['D', 'dorian', 'i'],
+		['D', 'dorian', 'IV'],
+		['C', 'major', 'V7'],
+		['C', 'major', 'Imaj7'],
+		['C', 'major', 'iim7'],
+		['C', 'major', 'IVsus4'],
+	];
+
+	for (const [key, mode, roman] of cases) {
+		it(`${key} ${mode}: ${roman} → chord → roman`, () => {
+			const chord = toChordSymbol(key, mode, roman);
+			expect(chordToRoman(chord, key, mode)).toBe(roman);
+		});
+	}
 });
 
 describe('PROGRESSIONS coverage', () => {
