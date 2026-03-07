@@ -5,7 +5,6 @@ import prettier from 'eslint-config-prettier';
 import globals from 'globals';
 import svelteConfig from './svelte.config.js';
 
-// eslint-disable-next-line @typescript-eslint/no-deprecated -- defineConfig not available in this eslint version
 export default tseslint.config(
 	js.configs.recommended,
 	...tseslint.configs.strictTypeChecked,
@@ -16,12 +15,7 @@ export default tseslint.config(
 			globals: { ...globals.browser, ...globals.node },
 			parserOptions: {
 				projectService: {
-					allowDefaultProject: [
-						'eslint.config.js',
-						'svelte.config.js',
-						'playwright.config.ts',
-						'vitest.config.ts'
-					]
+					allowDefaultProject: ['svelte.config.js', 'vitest.config.ts']
 				},
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- import.meta.dirname is string in Node ESM
 				tsconfigRootDir: import.meta.dirname
@@ -53,6 +47,14 @@ export default tseslint.config(
 		}
 	},
 	{
-		ignores: ['build/', '.svelte-kit/', 'coverage/', 'playwright-report/', 'test-results/']
+		ignores: [
+			'build/',
+			'.svelte-kit/',
+			'coverage/',
+			'playwright-report/',
+			'test-results/',
+			'eslint.config.js',
+			'playwright.config.ts'
+		]
 	}
 );
