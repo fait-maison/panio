@@ -188,6 +188,9 @@ This ensures code stays aligned with current library versions, not outdated trai
 - **Use `locator.blur()`** to leave focus groups, not Tab.
 - **bits-ui roles:** `type="single"` → `role="radio"`, `type="multiple"` → implicit `button`.
 - **Persistence tests** need their own `test.describe` with dedicated `addInitScript`.
+- **Cross-page tests** that change settings on `/settings` then verify on `/sandbox`:
+  `addInitScript` runs on every `page.goto()`, so guard `localStorage.removeItem` with a
+  `sessionStorage` flag to avoid wiping settings mid-test.
 
 ## App name
 
