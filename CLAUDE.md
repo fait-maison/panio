@@ -35,9 +35,10 @@ pnpm run format:check # prettier (check only)
 ```
 src/
 ├── routes/
-│   ├── +layout.svelte        # app shell: Navbar, Toaster, SettingsPanel
+│   ├── +layout.svelte        # app shell: Navbar, Toaster, SidebarNav
 │   ├── +page.svelte          # landing page: exercise grid
 │   ├── about/+page.svelte    # about page: story, credits, links
+│   ├── settings/+page.svelte # settings page: language, keyboard, hints, notation, MIDI
 │   └── sandbox/+page.svelte  # sandbox exercise: AmbianceCard + PianoKeyboard
 ├── lib/
 │   ├── components/
@@ -45,7 +46,7 @@ src/
 │   │   ├── AmbianceCard.svelte     # mood + mode + key + rhythm + progression
 │   │   ├── PianoKeyboard.svelte    # on-screen keyboard, MIDI highlighting
 │   │   ├── AutoadvanceToast.svelte # countdown toast (custom, not Sonner)
-│   │   ├── SettingsPanel.svelte    # Sheet-based settings UI
+│   │   ├── SidebarNav.svelte       # sidebar: exercise nav, about, settings link
 │   │   ├── MidiStatus.svelte       # MIDI device indicator + picker
 │   │   └── ui/                     # shadcn-svelte components
 │   ├── stores/

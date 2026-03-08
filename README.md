@@ -80,7 +80,7 @@ piano/
 │       ├── PianoKeyboard.svelte      # On-screen keyboard (responsive, real-time highlighting)
 │       ├── AmbianceCard.svelte       # Current mode / key / texture display
 │       ├── AutoadvanceCard.svelte    # "Next ambiance in 5s" countdown + Snooze
-│       └── SettingsPanel.svelte      # Interval, mode pool, key pool, hint mode
+│       └── SidebarNav.svelte         # Sidebar navigation (exercises, about, settings link)
 ├── static/
 └── PRD.md
 ```
