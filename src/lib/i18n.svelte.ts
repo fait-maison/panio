@@ -59,6 +59,7 @@ const translations = {
 		'midi.selectDevice': 'Select MIDI device',
 		'midi.noDevices': 'No devices found',
 		'midi.clearDevice': 'Clear selection',
+		'midi.noDevice': 'No device',
 		// toast
 		'toast.nextIn': 'Next ambiance in',
 		'toast.stay': 'Stay here',
@@ -163,6 +164,7 @@ const translations = {
 		'midi.selectDevice': "Choisir l'appareil MIDI",
 		'midi.noDevices': 'Aucun appareil trouvé',
 		'midi.clearDevice': 'Effacer la sélection',
+		'midi.noDevice': 'Aucun appareil',
 		'toast.nextIn': 'Prochaine ambiance dans',
 		'toast.stay': 'Rester ici',
 		'mode.Major': 'Majeur',
