@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Panio -- Rhythm - F + Notation (MPC Pads)</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<script src="https://cdn.jsdelivr.net/npm/vexflow@3.0.9/releases/vexflow-min.js"></script>
+		<style>
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+			:root {
+				--bg: #f5f0e8;
+				--surface: #fffdf9;
+				--surface2: #ede8e0;
+				--text: #1a1a1a;
+				--muted: #9a9088;
+				--red: #cc2936;
+				--blue: #1d4ed8;
+				--off: #e8e2d8;
+				--border: #d8d0c4;
+				--shadow-key: 0 4px 0 #c0b8b0;
+				--font-d: 'DM Serif Display', Georgia, serif;
+				--font-b: 'Inter', system-ui, sans-serif;
+			}
+			html,
+			body {
+				min-height: 100vh;
+				font-family: var(--font-b);
+				background: var(--bg);
+				color: var(--text);
+			}
+			nav {
+				height: 52px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 20px;
+				border-bottom: 1px solid var(--border);
+			}
+			.logo {
+				font-family: var(--font-d);
+				font-size: 1.3rem;
+			}
+			.back {
+				font-size: 0.7rem;
+				font-weight: 600;
+				color: var(--muted);
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				text-decoration: none;
+			}
+			main {
+				max-width: 480px;
+				margin: 0 auto;
+				padding: 24px 20px 48px;
+				display: flex;
+				flex-direction: column;
+				gap: 24px;
+			}
+
+			.header {
+				animation: rise 0.35s ease both;
+			}
+			.eyebrow {
+				font-size: 0.62rem;
+				font-weight: 700;
+				color: var(--red);
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+			}
+			.rname {
+				font-family: var(--font-d);
+				font-size: clamp(2.4rem, 10vw, 3.8rem);
+				line-height: 0.95;
+				letter-spacing: -0.01em;
+			}
+			.r-meta {
+				font-size: 0.72rem;
+				color: var(--muted);
+				margin-top: 4px;
+			}
+			.desc {
+				font-size: 0.78rem;
+				color: var(--muted);
+				line-height: 1.6;
+				margin-top: 6px;
+			}
+
+			/* Context */
+			.key-strip {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				font-size: 0.72rem;
+				color: var(--muted);
+				animation: rise 0.35s 0.05s ease both;
+			}
+			.key-pill {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 20px;
+				padding: 4px 14px;
+				font-size: 0.72rem;
+				font-weight: 700;
+				display: flex;
+				align-items: center;
+				gap: 6px;
+			}
+			.kp-key {
+				color: var(--red);
+			}
+
+			/* Notation card */
+			.notation-card {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 14px;
+				overflow: hidden;
+				animation: rise 0.35s 0.1s ease both;
+			}
+			.notation-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 12px 20px;
+				border-bottom: 1px solid var(--border);
+				background: var(--bg);
+			}
+			.notation-label {
+				font-size: 0.65rem;
+				font-weight: 700;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				color: var(--muted);
+			}
+			.notation-legend {
+				display: flex;
+				gap: 12px;
+			}
+			.leg {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+				font-size: 0.62rem;
+				font-weight: 600;
+				color: var(--muted);
+			}
+			.leg-dot {
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+			}
+			.notation-body {
+				padding: 4px 8px 0;
+				overflow-x: auto;
+			}
+			.notation-body svg {
+				display: block;
+				max-width: 100%;
+			}
+
+			/* MPC unit */
+			.mpc {
+				background: #e8e2d8;
+				border: 1px solid var(--border);
+				border-radius: 18px;
+				padding: 20px;
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				box-shadow:
+					0 6px 0 #c0b8b0,
+					0 12px 24px rgba(0, 0, 0, 0.12);
+				animation: rise 0.35s 0.15s ease both;
+			}
+			.mpc-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding-bottom: 12px;
+				border-bottom: 1px solid #d0c8bc;
+			}
+			.mpc-title {
+				font-size: 0.6rem;
+				font-weight: 800;
+				color: var(--muted);
+				letter-spacing: 0.2em;
+				text-transform: uppercase;
+			}
+			.mpc-indicator {
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				background: #b0a898;
+				border: 1px solid #a0988c;
+				transition:
+					background 0.1s,
+					box-shadow 0.1s;
+			}
+			.mpc-indicator.on {
+				background: var(--red);
+				box-shadow: 0 0 6px rgba(204, 41, 54, 0.5);
+			}
+
+			.pad-area {
+				display: flex;
+				flex-direction: column;
+				gap: 3px;
+			}
+			.pad-row {
+				display: flex;
+				gap: 3px;
+				align-items: stretch;
+			}
+			.row-label {
+				width: 40px;
+				flex-shrink: 0;
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				padding-right: 8px;
+				font-size: 0.55rem;
+				font-weight: 700;
+				color: #a09888;
+				text-transform: uppercase;
+				letter-spacing: 0.1em;
+			}
+			.pad {
+				flex: 1;
+				aspect-ratio: 1;
+				border-radius: 6px;
+				background: #f0ece4;
+				border: 1px solid #d8d0c4;
+				box-shadow: 0 3px 0 #c0b8b0;
+				cursor: default;
+				position: relative;
+				transition:
+					box-shadow 0.05s,
+					transform 0.05s,
+					background 0.08s;
+			}
+			.pad.bass-strong {
+				background: var(--red);
+				border-color: #a01e29;
+				box-shadow: 0 3px 0 #801018;
+			}
+			.pad.bass-weak {
+				background: #f5c0c4;
+				border-color: #e0a0a4;
+				box-shadow: 0 3px 0 #c08088;
+			}
+			.pad.chord-strong {
+				background: var(--blue);
+				border-color: #1438a8;
+				box-shadow: 0 3px 0 #102080;
+			}
+			.pad.active {
+				transform: translateY(3px);
+				box-shadow: none !important;
+				filter: brightness(1.15);
+			}
+
+			.mpc-transport {
+				display: flex;
+				gap: 10px;
+				align-items: center;
+				border-top: 1px solid #d0c8bc;
+				padding-top: 14px;
+			}
+			.t-btn {
+				height: 36px;
+				padding: 0 16px;
+				background: #f0ece4;
+				border: 1px solid #d0c8bc;
+				border-radius: 6px;
+				box-shadow: 0 2px 0 #b8b0a8;
+				font-family: var(--font-b);
+				font-size: 0.7rem;
+				font-weight: 700;
+				color: var(--text);
+				cursor: pointer;
+				letter-spacing: 0.08em;
+				transition:
+					box-shadow 0.08s,
+					transform 0.08s;
+			}
+			.t-btn:active {
+				transform: translateY(2px);
+				box-shadow: none;
+			}
+			.t-btn.play-active {
+				background: var(--red);
+				color: #fff;
+				border-color: #a01e29;
+				box-shadow: 0 2px 0 #801018;
+			}
+			.bpm-group {
+				flex: 1;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+			.bl {
+				font-size: 0.6rem;
+				font-weight: 700;
+				color: var(--muted);
+				text-transform: uppercase;
+				letter-spacing: 0.1em;
+			}
+			input[type='range'] {
+				flex: 1;
+				height: 4px;
+				-webkit-appearance: none;
+				background: linear-gradient(to right, var(--red) 48%, #d0c8bc 48%);
+				border-radius: 2px;
+				outline: none;
+				cursor: pointer;
+			}
+			input[type='range']::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				width: 16px;
+				height: 16px;
+				background: var(--surface);
+				border: 2px solid #c0b8b0;
+				border-radius: 4px;
+			}
+			.bv {
+				font-size: 0.72rem;
+				font-weight: 700;
+				min-width: 28px;
+				text-align: right;
+			}
+
+			@keyframes rise {
+				from {
+					opacity: 0;
+					transform: translateY(12px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			<span class="logo">Panio</span>
+			<a class="back" href="#">back to sandbox</a>
+		</nav>
+		<main>
+			<div class="header">
+				<div class="eyebrow">Rhythm training</div>
+				<h1 class="rname">Tango</h1>
+				<div class="r-meta">Argentine - 4/4 - 118 bpm</div>
+				<p class="desc">
+					Strong downbeat, habanera syncopation on the "and" of beat 2. Red pads = bass, blue =
+					chord stabs.
+				</p>
+			</div>
+
+			<div class="key-strip">
+				<span>Playing in</span>
+				<span class="key-pill"><span class="kp-key">D</span><span>Phrygian</span></span>
+				<span>from sandbox</span>
+			</div>
+
+			<!-- Notation -->
+			<div class="notation-card">
+				<div class="notation-header">
+					<span class="notation-label">Traditional notation - 1 bar</span>
+					<div class="notation-legend">
+						<div class="leg">
+							<div class="leg-dot" style="background: #cc2936"></div>
+							bass
+						</div>
+						<div class="leg">
+							<div class="leg-dot" style="background: #1d4ed8"></div>
+							chord
+						</div>
+					</div>
+				</div>
+				<div class="notation-body" id="notation"></div>
+			</div>
+
+			<!-- MPC unit -->
+			<div class="mpc">
+				<div class="mpc-header">
+					<span class="mpc-title">16-step loop - 4 beats</span>
+					<div class="mpc-indicator" id="mpc-led"></div>
+				</div>
+				<div class="pad-area" id="pad-area"></div>
+				<div class="mpc-transport">
+					<button class="t-btn" id="play-btn">Play</button>
+					<div class="bpm-group">
+						<span class="bl">BPM</span>
+						<input type="range" id="bpm" min="60" max="200" value="118" />
+						<span class="bv" id="bv">118</span>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<script>
+			// VexFlow notation
+			window.addEventListener('load', () => {
+				try {
+					const VF = Vex.Flow;
+					const div = document.getElementById('notation');
+					const W = Math.min(div.parentElement.offsetWidth - 16, 460);
+					const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+					renderer.resize(W, 148);
+					const ctx = renderer.getContext();
+
+					const stave = new VF.Stave(10, 12, W - 22);
+					stave.addClef('bass').addTimeSignature('4/4');
+					stave.setContext(ctx).draw();
+
+					const RED = '#cc2936',
+						BLUE = '#1d4ed8';
+					const bn = (keys, dur, stemDir) =>
+						new VF.StaveNote({ clef: 'bass', keys, duration: dur, stem_direction: stemDir });
+
+					const bassNotes = [
+						bn(['d/3'], 'q', -1),
+						bn(['b/3'], '8r', -1),
+						bn(['d/3'], '8', -1),
+						bn(['a/2'], 'q', -1),
+						bn(['b/3'], '8r', -1),
+						bn(['a/2'], '8', -1)
+					];
+					bassNotes.forEach((n) => n.setStyle({ fillStyle: RED, strokeStyle: RED }));
+
+					const chordNotes = [
+						bn(['b/2'], 'qr', 1),
+						bn(['f/3', 'a/3'], '8', 1),
+						bn(['b/2'], '8r', 1),
+						bn(['b/2'], '8r', 1),
+						bn(['f/3', 'a/3'], '8', 1),
+						bn(['b/2'], 'qr', 1)
+					];
+					chordNotes.forEach((n) => n.setStyle({ fillStyle: BLUE, strokeStyle: BLUE }));
+
+					const voice1 = new VF.Voice({ num_beats: 4, beat_value: 4 }).setStrict(false);
+					voice1.addTickables(bassNotes);
+					const voice2 = new VF.Voice({ num_beats: 4, beat_value: 4 }).setStrict(false);
+					voice2.addTickables(chordNotes);
+
+					const beams = [
+						new VF.Beam([bassNotes[1], bassNotes[2]]),
+						new VF.Beam([bassNotes[4], bassNotes[5]]),
+						new VF.Beam([chordNotes[1], chordNotes[2]]),
+						new VF.Beam([chordNotes[3], chordNotes[4]])
+					];
+					beams[0].setStyle({ fillStyle: RED, strokeStyle: RED });
+					beams[1].setStyle({ fillStyle: RED, strokeStyle: RED });
+					beams[2].setStyle({ fillStyle: BLUE, strokeStyle: BLUE });
+					beams[3].setStyle({ fillStyle: BLUE, strokeStyle: BLUE });
+
+					new VF.Formatter().joinVoices([voice1, voice2]).format([voice1, voice2], W - 92);
+					voice1.draw(ctx, stave);
+					voice2.draw(ctx, stave);
+					beams.forEach((bm) => bm.setContext(ctx).draw());
+				} catch (e) {
+					const div = document.getElementById('notation');
+					const msg = document.createElement('p');
+					msg.textContent = 'Notation unavailable';
+					msg.style.cssText = 'padding:16px;color:#aaa;font-size:0.8rem;';
+					div.appendChild(msg);
+				}
+			});
+
+			// MPC pads
+			const bassFlat = [1, 0, 0, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 2, 0];
+			const chordFlat = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0];
+			const padArea = document.getElementById('pad-area');
+
+			// Column labels header
+			const colRow = document.createElement('div');
+			colRow.className = 'pad-row';
+			const spacer = document.createElement('div');
+			spacer.className = 'row-label';
+			colRow.appendChild(spacer);
+			['1', 'e', '+', 'a'].forEach((label) => {
+				const d = document.createElement('div');
+				d.style.cssText =
+					'flex:1;text-align:center;font-size:0.52rem;font-weight:700;color:#a09888;padding-bottom:4px;';
+				d.textContent = label;
+				colRow.appendChild(d);
+			});
+			padArea.appendChild(colRow);
+
+			for (let beat = 0; beat < 4; beat++) {
+				const row = document.createElement('div');
+				row.className = 'pad-row';
+				const lbl = document.createElement('div');
+				lbl.className = 'row-label';
+				lbl.textContent = beat + 1;
+				row.appendChild(lbl);
+				for (let sub = 0; sub < 4; sub++) {
+					const idx = beat * 4 + sub;
+					const pad = document.createElement('div');
+					pad.className = 'pad';
+					pad.id = 'pad-' + idx;
+					if (bassFlat[idx] === 1) pad.classList.add('bass-strong');
+					else if (bassFlat[idx] === 2) pad.classList.add('bass-weak');
+					if (chordFlat[idx] === 1) pad.classList.add('chord-strong');
+					row.appendChild(pad);
+				}
+				padArea.appendChild(row);
+			}
+
+			const slider = document.getElementById('bpm');
+			const bvEl = document.getElementById('bv');
+			slider.addEventListener('input', () => {
+				bvEl.textContent = slider.value;
+				const pct = ((slider.value - 60) / 140) * 100;
+				slider.style.background =
+					'linear-gradient(to right,#cc2936 ' + pct + '%,#d0c8bc ' + pct + '%)';
+				if (playing) {
+					clearInterval(timer);
+					startLoop();
+				}
+			});
+
+			let playing = false,
+				step = 0,
+				timer = null;
+			const playBtn = document.getElementById('play-btn');
+			const led = document.getElementById('mpc-led');
+
+			function startLoop() {
+				const ms = (60 / parseInt(slider.value) / 4) * 1000;
+				timer = setInterval(() => {
+					document.querySelectorAll('.pad.active').forEach((p) => p.classList.remove('active'));
+					const pad = document.getElementById('pad-' + step);
+					if (pad) pad.classList.add('active');
+					if (step % 4 === 0) {
+						led.classList.add('on');
+					} else {
+						led.classList.remove('on');
+					}
+					step = (step + 1) % 16;
+				}, ms);
+			}
+
+			playBtn.addEventListener('click', () => {
+				playing = !playing;
+				if (playing) {
+					playBtn.textContent = 'Stop';
+					playBtn.classList.add('play-active');
+					step = 0;
+					startLoop();
+				} else {
+					playBtn.textContent = 'Play';
+					playBtn.classList.remove('play-active');
+					clearInterval(timer);
+					document.querySelectorAll('.pad.active').forEach((p) => p.classList.remove('active'));
+					led.classList.remove('on');
+				}
+			});
+		</script>
+	</body>
+</html>

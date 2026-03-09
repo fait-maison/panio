@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Panio — Rhythm Training · Option B (Dark Studio)</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			:root {
+				--bg: #0f0f0f;
+				--surface: #1a1a1a;
+				--surface2: #232323;
+				--text: #f0ece4;
+				--muted: #6b6560;
+				--red: #cc2936;
+				--blue: #3b82f6;
+				--border: #2a2a2a;
+				--grid-line: #1e1e1e;
+				--font-mono: 'Space Mono', monospace;
+				--font-b: 'Inter', system-ui, sans-serif;
+			}
+
+			html,
+			body {
+				min-height: 100vh;
+				font-family: var(--font-b);
+				background: var(--bg);
+				color: var(--text);
+			}
+
+			/* ── Nav ── */
+			nav {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 48px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 20px;
+				background: var(--bg);
+				border-bottom: 1px solid var(--border);
+				z-index: 100;
+			}
+			.logo {
+				font-family: var(--font-mono);
+				font-size: 0.9rem;
+				letter-spacing: 0.05em;
+				color: var(--text);
+			}
+			.back-link {
+				font-family: var(--font-mono);
+				font-size: 0.65rem;
+				color: var(--muted);
+				text-decoration: none;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				transition: color 0.15s;
+			}
+			.back-link:hover {
+				color: var(--text);
+			}
+
+			/* ── Main ── */
+			main {
+				max-width: 520px;
+				margin: 0 auto;
+				padding: 72px 20px 48px;
+				display: flex;
+				flex-direction: column;
+				gap: 24px;
+			}
+
+			/* ── Header ── */
+			.header {
+				display: flex;
+				flex-direction: column;
+				gap: 4px;
+			}
+			.eyebrow {
+				font-family: var(--font-mono);
+				font-size: 0.6rem;
+				color: var(--red);
+				letter-spacing: 0.2em;
+				text-transform: uppercase;
+			}
+			.rhythm-name {
+				font-family: var(--font-mono);
+				font-size: clamp(2.4rem, 10vw, 3.6rem);
+				font-weight: 700;
+				color: var(--text);
+				letter-spacing: -0.02em;
+				line-height: 1;
+			}
+			.meta-row {
+				display: flex;
+				gap: 16px;
+				align-items: center;
+				margin-top: 6px;
+			}
+			.meta-chip {
+				font-family: var(--font-mono);
+				font-size: 0.6rem;
+				color: var(--muted);
+				letter-spacing: 0.1em;
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 3px;
+				padding: 3px 8px;
+			}
+			.meta-chip.key-chip {
+				color: var(--red);
+				border-color: var(--red);
+			}
+			.description {
+				font-size: 0.8rem;
+				color: var(--muted);
+				line-height: 1.6;
+				margin-top: 4px;
+			}
+
+			/* ── Sequencer grid ── */
+			.sequencer {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				overflow: hidden;
+			}
+			.seq-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 10px 16px;
+				border-bottom: 1px solid var(--border);
+			}
+			.seq-title {
+				font-family: var(--font-mono);
+				font-size: 0.6rem;
+				color: var(--muted);
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+			}
+			.seq-beat-numbers {
+				display: flex;
+				gap: 4px;
+				padding: 6px 16px;
+				border-bottom: 1px solid var(--border);
+			}
+			.beat-num {
+				flex: 1;
+				text-align: center;
+				font-family: var(--font-mono);
+				font-size: 0.5rem;
+				color: var(--border);
+			}
+			.beat-num.on-beat {
+				color: var(--muted);
+			}
+
+			.seq-rows {
+				padding: 8px 16px;
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+			}
+			.seq-row {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+			.row-name {
+				font-family: var(--font-mono);
+				font-size: 0.55rem;
+				color: var(--muted);
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				width: 36px;
+				flex-shrink: 0;
+				text-align: right;
+			}
+			.seq-cells {
+				display: flex;
+				gap: 2px;
+				flex: 1;
+			}
+			.cell {
+				flex: 1;
+				height: 32px;
+				border-radius: 2px;
+				background: var(--surface2);
+				border: 1px solid var(--grid-line);
+				position: relative;
+				transition: background 0.05s;
+			}
+			/* Group spacing at beat boundaries */
+			.cell:nth-child(5),
+			.cell:nth-child(9),
+			.cell:nth-child(13) {
+				margin-left: 4px;
+			}
+			.cell.bass-strong {
+				background: var(--red);
+				border-color: var(--red);
+				box-shadow: 0 0 8px color-mix(in srgb, var(--red) 50%, transparent);
+			}
+			.cell.bass-weak {
+				background: color-mix(in srgb, var(--red) 35%, transparent);
+				border-color: color-mix(in srgb, var(--red) 50%, transparent);
+			}
+			.cell.chord-strong {
+				background: var(--blue);
+				border-color: var(--blue);
+				box-shadow: 0 0 8px color-mix(in srgb, var(--blue) 40%, transparent);
+			}
+			/* Playhead */
+			.cell.active {
+				outline: 1.5px solid rgba(255, 255, 255, 0.6);
+				outline-offset: 0px;
+			}
+			.seq-footer {
+				padding: 8px 16px;
+				border-top: 1px solid var(--border);
+				display: flex;
+				gap: 8px;
+				align-items: center;
+			}
+			.legend-item {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+				font-family: var(--font-mono);
+				font-size: 0.55rem;
+				color: var(--muted);
+			}
+			.legend-swatch {
+				width: 10px;
+				height: 10px;
+				border-radius: 2px;
+			}
+
+			/* ── Transport controls ── */
+			.transport {
+				background: var(--surface);
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				padding: 16px;
+				display: flex;
+				flex-direction: column;
+				gap: 14px;
+			}
+			.transport-row {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+			.play-btn {
+				width: 52px;
+				height: 52px;
+				background: var(--red);
+				border: none;
+				border-radius: 50%;
+				color: #fff;
+				font-size: 1.1rem;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-shrink: 0;
+				transition:
+					transform 0.1s,
+					box-shadow 0.15s;
+				box-shadow: 0 0 16px color-mix(in srgb, var(--red) 40%, transparent);
+			}
+			.play-btn:hover {
+				transform: scale(1.05);
+				box-shadow: 0 0 24px color-mix(in srgb, var(--red) 60%, transparent);
+			}
+			.play-btn:active {
+				transform: scale(0.97);
+			}
+			.transport-info {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 3px;
+			}
+			.transport-status {
+				font-family: var(--font-mono);
+				font-size: 0.6rem;
+				color: var(--muted);
+				text-transform: uppercase;
+				letter-spacing: 0.12em;
+			}
+			.transport-status.playing {
+				color: var(--red);
+			}
+			.bpm-display {
+				font-family: var(--font-mono);
+				font-size: 1.4rem;
+				font-weight: 700;
+				color: var(--text);
+				line-height: 1;
+			}
+			.bpm-sub {
+				font-family: var(--font-mono);
+				font-size: 0.55rem;
+				color: var(--muted);
+				letter-spacing: 0.1em;
+			}
+
+			.bpm-row {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+			.ctrl-label {
+				font-family: var(--font-mono);
+				font-size: 0.6rem;
+				color: var(--muted);
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+				min-width: 30px;
+			}
+			input[type='range'] {
+				flex: 1;
+				height: 2px;
+				-webkit-appearance: none;
+				background: linear-gradient(to right, var(--red) 0%, var(--red) 48%, var(--border) 48%);
+				border-radius: 1px;
+				outline: none;
+				cursor: pointer;
+			}
+			input[type='range']::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				width: 14px;
+				height: 14px;
+				background: var(--text);
+				border: none;
+				border-radius: 2px;
+				box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+			}
+			.bpm-val {
+				font-family: var(--font-mono);
+				font-size: 0.75rem;
+				font-weight: 700;
+				color: var(--text);
+				min-width: 30px;
+				text-align: right;
+			}
+
+			/* ── Animations ── */
+			@keyframes fadeSlide {
+				from {
+					opacity: 0;
+					transform: translateY(12px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+			.header {
+				animation: fadeSlide 0.35s ease both;
+			}
+			.sequencer {
+				animation: fadeSlide 0.35s 0.1s ease both;
+			}
+			.transport {
+				animation: fadeSlide 0.35s 0.2s ease both;
+			}
+			.info-card {
+				animation: fadeSlide 0.35s 0.3s ease both;
+			}
+
+			/* ── Info ── */
+			.info-card {
+				border: 1px solid var(--border);
+				border-radius: 8px;
+				padding: 14px 16px;
+				font-size: 0.75rem;
+				color: var(--muted);
+				line-height: 1.55;
+			}
+			.info-card strong {
+				color: var(--text);
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			<span class="logo">PANIO</span>
+			<a class="back-link" href="#">← sandbox</a>
+		</nav>
+
+		<main>
+			<div class="header">
+				<span class="eyebrow">// rhythm.training</span>
+				<h1 class="rhythm-name">TANGO</h1>
+				<div class="meta-row">
+					<span class="meta-chip">4/4</span>
+					<span class="meta-chip">Argentine</span>
+					<span class="meta-chip key-chip">D · Phrygian</span>
+				</div>
+				<p class="description">
+					Strong downbeat, habanera syncopation on the "and" of 2. Bass alternates root → fifth.
+					Chord stabs on off-beats.
+				</p>
+			</div>
+
+			<!-- Sequencer -->
+			<div class="sequencer">
+				<div class="seq-header">
+					<span class="seq-title">// 16-step loop</span>
+					<div style="display: flex; gap: 6px">
+						<div class="legend-item">
+							<div class="legend-swatch" style="background: #cc2936"></div>
+							bass
+						</div>
+						<div class="legend-item">
+							<div class="legend-swatch" style="background: #3b82f6"></div>
+							chord
+						</div>
+					</div>
+				</div>
+				<div class="seq-beat-numbers" id="beat-numbers">
+					<!-- generated -->
+				</div>
+				<div class="seq-rows">
+					<div class="seq-row">
+						<span class="row-name">bass</span>
+						<div class="seq-cells" id="bass-cells"></div>
+					</div>
+					<div class="seq-row">
+						<span class="row-name">chord</span>
+						<div class="seq-cells" id="chord-cells"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Transport -->
+			<div class="transport">
+				<div class="transport-row">
+					<button class="play-btn" id="play-btn">▶</button>
+					<div class="transport-info">
+						<span class="transport-status" id="transport-status">stopped</span>
+						<span class="bpm-display" id="bpm-display">118</span>
+						<span class="bpm-sub">BPM</span>
+					</div>
+				</div>
+				<div class="bpm-row">
+					<span class="ctrl-label">tempo</span>
+					<input type="range" id="bpm-slider" min="60" max="200" value="118" />
+					<span class="bpm-val" id="bpm-val">118</span>
+				</div>
+			</div>
+
+			<div class="info-card">
+				<strong>Practice tip</strong> — Let the loop anchor your left hand groove. Layer your right
+				hand with <strong>D Phrygian</strong> once the pattern feels automatic. Focus on the space
+				between the beats.
+			</div>
+		</main>
+
+		<script>
+			const bassPattern = [1, 0, 0, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 2, 0];
+			const chordPattern = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0];
+
+			// Beat numbers
+			const beatNumEl = document.getElementById('beat-numbers');
+			for (let i = 0; i < 16; i++) {
+				const d = document.createElement('div');
+				d.className = 'beat-num' + (i % 4 === 0 ? ' on-beat' : '');
+				d.textContent = i % 4 === 0 ? i / 4 + 1 : '·';
+				beatNumEl.appendChild(d);
+			}
+
+			function buildCells(id, pattern, type) {
+				const el = document.getElementById(id);
+				pattern.forEach((val, i) => {
+					const c = document.createElement('div');
+					c.className = 'cell';
+					c.id = `${type}-cell-${i}`;
+					if (type === 'bass' && val === 1) c.classList.add('bass-strong');
+					if (type === 'bass' && val === 2) c.classList.add('bass-weak');
+					if (type === 'chord' && val === 1) c.classList.add('chord-strong');
+					el.appendChild(c);
+				});
+			}
+			buildCells('bass-cells', bassPattern, 'bass');
+			buildCells('chord-cells', chordPattern, 'chord');
+
+			// BPM
+			const slider = document.getElementById('bpm-slider');
+			const bpmVal = document.getElementById('bpm-val');
+			const bpmDisp = document.getElementById('bpm-display');
+			slider.addEventListener('input', () => {
+				const v = slider.value;
+				bpmVal.textContent = v;
+				bpmDisp.textContent = v;
+				const pct = ((v - 60) / (200 - 60)) * 100;
+				slider.style.background = `linear-gradient(to right, var(--red) ${pct}%, var(--red) ${pct}%, var(--border) ${pct}%)`;
+				if (playing) {
+					clearInterval(timer);
+					startLoop();
+				}
+			});
+
+			let playing = false,
+				step = 0,
+				timer = null;
+			const playBtn = document.getElementById('play-btn');
+			const status = document.getElementById('transport-status');
+
+			function startLoop() {
+				const bpm = parseInt(slider.value);
+				const ms = (60 / bpm / 4) * 1000;
+				timer = setInterval(() => {
+					document.querySelectorAll('.cell.active').forEach((c) => c.classList.remove('active'));
+					document.getElementById(`bass-cell-${step}`)?.classList.add('active');
+					document.getElementById(`chord-cell-${step}`)?.classList.add('active');
+					step = (step + 1) % 16;
+				}, ms);
+			}
+
+			playBtn.addEventListener('click', () => {
+				playing = !playing;
+				if (playing) {
+					playBtn.textContent = '■';
+					playBtn.style.background = '#555';
+					playBtn.style.boxShadow = 'none';
+					status.textContent = '● playing';
+					status.classList.add('playing');
+					step = 0;
+					startLoop();
+				} else {
+					playBtn.textContent = '▶';
+					playBtn.style.background = '';
+					playBtn.style.boxShadow = '';
+					status.textContent = 'stopped';
+					status.classList.remove('playing');
+					clearInterval(timer);
+					document.querySelectorAll('.cell.active').forEach((c) => c.classList.remove('active'));
+				}
+			});
+		</script>
+	</body>
+</html>
