@@ -112,6 +112,13 @@ Always compare by value property (e.g. `mode.name`).
 Guard any browser globals (`document`, `window`, `navigator`) in `onDestroy` with
 `if (typeof document !== 'undefined')`. Same applies to module-level side effects in stores.
 
+### SSR gotcha: CJS-only npm packages fail during SSR
+
+Packages that use CommonJS `require()` internally (e.g. VexFlow 3) break in Vite's SSR mode
+because Vite externalizes them — Node's `require()` can't resolve relative paths that Rollup
+normally handles. Fix: add to `ssr.noExternal` in `vite.config.ts` so Vite bundles the package
+during SSR the same way it does for the browser build.
+
 ### Stores
 
 All stores use Svelte 5 runes pattern (not legacy stores):
