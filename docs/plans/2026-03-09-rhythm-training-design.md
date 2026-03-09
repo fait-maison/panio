@@ -84,7 +84,7 @@ type RhythmPattern = {
 
 Each of the 23 rhythm keys in `src/lib/music/rhythms.ts` maps to a `RhythmPattern | null`.
 Launch target: 8–10 patterns (tango, waltz, bossa nova, flamenco, ostinato, bolero,
-habanera, march). Remainder `null`.
+shuffle, march). Remainder `null`.
 
 ### Audio scheduler (`rhythmPlayer.svelte.ts`)
 
