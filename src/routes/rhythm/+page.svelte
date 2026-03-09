@@ -4,6 +4,12 @@
 	import { RHYTHMS } from '$lib/music/rhythms';
 	import { RHYTHM_PATTERNS } from '$lib/music/rhythmPatterns';
 	import { resolve } from '$app/paths';
+
+	function musicalBpm(bpm: number, ts: [number, number]): { value: number; unit: string } {
+		// Compound time (6/8, 12/8): scheduler bpm = 1.5 × dotted-quarter bpm
+		if (ts[1] === 8) return { value: Math.round(bpm / 1.5), unit: '♩.' };
+		return { value: bpm, unit: '♩' };
+	}
 </script>
 
 <svelte:head>
@@ -21,9 +27,10 @@
 		{#each RHYTHMS as key}
 			{@const pattern = RHYTHM_PATTERNS[key]}
 			{#if pattern !== null}
+				{@const mb = musicalBpm(pattern.bpm, pattern.timeSignature)}
 				<a class="card" href={resolve(`/rhythm/${key}` as '/')}>
 					<span class="card-name">{t(`rhythm.${key}`)}</span>
-					<span class="card-meta">{pattern.style} · ♩ = {pattern.bpm}</span>
+					<span class="card-meta">{pattern.style} · {mb.unit} = {mb.value}</span>
 				</a>
 			{:else}
 				<div class="card coming-soon" aria-disabled="true">

@@ -56,18 +56,38 @@
 		// Safe DOM clear — no innerHTML
 		while (container.firstChild) container.removeChild(container.firstChild);
 
-		const { Renderer, Stave, StaveNote, Voice, Formatter, Beam } = VexFlow;
+		const { Renderer, Stave, StaveNote, StaveConnector, Voice, Formatter, Beam } = VexFlow;
 		const width = Math.max(container.clientWidth || 0, 300);
 		const renderer = new Renderer(container, Renderer.Backends.SVG);
-		renderer.resize(width, 160);
+		renderer.resize(width, 220);
 		const ctx = renderer.getContext();
 
-		const stave = new Stave(10, 20, width - 20);
-		stave.addClef('bass');
-		stave.addTimeSignature(`${pat.timeSignature[0]}/${pat.timeSignature[1]}`);
-		stave.setContext(ctx).draw();
+		const ts = `${pat.timeSignature[0]}/${pat.timeSignature[1]}`;
+		const staveWidth = width - 20;
 
-		const rootMidi = 48 + CHROMATIC_KEYS.indexOf(rootNote); // C3=48
+		// Grand staff: treble (chords) on top, bass (bass notes) on bottom
+		const staveTop = new Stave(10, 10, staveWidth);
+		staveTop.addClef('treble').addTimeSignature(ts);
+		staveTop.setContext(ctx).draw();
+
+		const staveBottom = new Stave(10, 110, staveWidth);
+		staveBottom.addClef('bass').addTimeSignature(ts);
+		staveBottom.setContext(ctx).draw();
+
+		// Brace + left barline connecting both staves
+		new StaveConnector(staveTop, staveBottom)
+			.setType(StaveConnector.type.BRACE)
+			.setContext(ctx)
+			.draw();
+		new StaveConnector(staveTop, staveBottom)
+			.setType(StaveConnector.type.SINGLE_LEFT)
+			.setContext(ctx)
+			.draw();
+
+		const keyIdx = CHROMATIC_KEYS.indexOf(rootNote);
+		// Chord root at C5 (treble range); bass root at C4 (bass notes at octave -1 land on C3/G3)
+		const chordRootMidi = 72 + keyIdx;
+		const bassRootMidi = 60 + keyIdx;
 		const DEGREE_SEMI: Record<number, number> = { 1: 0, 3: 4, 5: 7 };
 		const total = totalSteps(pat.timeSignature);
 
@@ -90,7 +110,15 @@
 			return m[n] ?? '16';
 		}
 
-		function buildNotes(patSteps: typeof pat.bass, stemDir: number, color: string) {
+		function buildNotes(
+			patSteps: typeof pat.bass,
+			stemDir: number,
+			color: string,
+			restKey: string,
+			isChord: boolean,
+			clef: string,
+			noteRootMidi: number
+		) {
 			const notes: unknown[] = [];
 			const sorted = [...patSteps].sort((a, b) => a.step - b.step);
 			let cursor = 0;
@@ -99,17 +127,23 @@
 				if (s.step > cursor) {
 					notes.push(
 						new StaveNote({
-							keys: ['d/3'],
+							keys: [restKey],
 							duration: `${dur(s.step - cursor)}r`,
-							stem_direction: stemDir
+							stem_direction: stemDir,
+							clef
 						})
 					);
 				}
-				const midi = rootMidi + (DEGREE_SEMI[s.degree] ?? 0) + s.octave * 12;
+				// Chord voice: expand to full root-position triad (1-3-5)
+				// Bass voice: single note at the step's scale degree
+				const keys = isChord
+					? [1, 3, 5].map((d) => midiToVfKey(noteRootMidi + (DEGREE_SEMI[d] ?? 0) + s.octave * 12))
+					: [midiToVfKey(noteRootMidi + (DEGREE_SEMI[s.degree] ?? 0) + s.octave * 12)];
 				const note = new StaveNote({
-					keys: [midiToVfKey(midi)],
+					keys,
 					duration: dur(s.duration),
-					stem_direction: stemDir
+					stem_direction: stemDir,
+					clef
 				});
 				note.setStyle({ fillStyle: color, strokeStyle: color });
 				notes.push(note);
@@ -118,17 +152,19 @@
 			if (cursor < total) {
 				notes.push(
 					new StaveNote({
-						keys: ['d/3'],
+						keys: [restKey],
 						duration: `${dur(total - cursor)}r`,
-						stem_direction: stemDir
+						stem_direction: stemDir,
+						clef
 					})
 				);
 			}
 			return notes;
 		}
 
-		const bassNotes = buildNotes(pat.bass, -1, '#cc2936');
-		const chordNotes = buildNotes(pat.chords, 1, '#1d4ed8');
+		// Explicit stem directions: chord voice stems-up (treble), bass voice stems-down (bass)
+		const bassNotes = buildNotes(pat.bass, -1, '#cc2936', 'b/2', false, 'bass', bassRootMidi);
+		const chordNotes = buildNotes(pat.chords, 1, '#1d4ed8', 'b/4', true, 'treble', chordRootMidi);
 
 		const voiceBass = new Voice({
 			num_beats: pat.timeSignature[0],
@@ -141,13 +177,28 @@
 		});
 		voiceChord.addTickables(chordNotes);
 
-		const beams = [...Beam.generateBeams(bassNotes), ...Beam.generateBeams(chordNotes)];
-		new Formatter().joinVoices([voiceBass, voiceChord]).format([voiceBass, voiceChord], width - 60);
-		voiceBass.draw(ctx, stave);
-		voiceChord.draw(ctx, stave);
-		beams.forEach((b: unknown) =>
-			(b as { setContext: (c: unknown) => { draw: () => void } }).setContext(ctx).draw()
-		);
+		// Generate beams BEFORE drawing voices — sets note.beam so hasFlag() returns false,
+		// suppressing individual flags on beamed notes during voice.draw()
+		type VfBeam = {
+			setStyle: (s: object) => void;
+			setContext: (c: unknown) => { draw: () => void };
+		};
+		const bassBeams: VfBeam[] = Beam.generateBeams(bassNotes, { stem_direction: -1 });
+		const chordBeams: VfBeam[] = Beam.generateBeams(chordNotes, { stem_direction: 1 });
+		bassBeams.forEach((b) => b.setStyle({ fillStyle: '#cc2936', strokeStyle: '#cc2936' }));
+		chordBeams.forEach((b) => b.setStyle({ fillStyle: '#1d4ed8', strokeStyle: '#1d4ed8' }));
+
+		// Format both voices together so same-beat notes align across staves
+		new Formatter()
+			.joinVoices([voiceChord])
+			.joinVoices([voiceBass])
+			.format([voiceChord, voiceBass], width - 70);
+		voiceChord.draw(ctx, staveTop);
+		voiceBass.draw(ctx, staveBottom);
+
+		// Draw beams last (on top of note heads)
+		bassBeams.forEach((b) => b.setContext(ctx).draw());
+		chordBeams.forEach((b) => b.setContext(ctx).draw());
 	}
 
 	$effect(() => {
@@ -164,6 +215,12 @@
 		};
 	});
 
+	function musicalBpm(bpm: number, ts: [number, number]): { value: number; unit: string } {
+		// Compound time (6/8, 12/8): scheduler bpm = 1.5 × dotted-quarter bpm
+		if (ts[1] === 8) return { value: Math.round(bpm / 1.5), unit: '♩.' };
+		return { value: bpm, unit: '♩' };
+	}
+
 	onMount(() => {
 		if (pattern === null) goto('/rhythm');
 	});
@@ -178,11 +235,14 @@
 </svelte:head>
 
 {#if pattern !== null}
+	{@const mb = musicalBpm(pattern.bpm, pattern.timeSignature)}
 	<main>
 		<a class="back-link" href="/rhythm">{t('rhythm.backToAll')}</a>
 
 		<header>
-			<p class="eyebrow">{pattern.style} · {pattern.timeSignature[0]}/{pattern.timeSignature[1]}</p>
+			<p class="eyebrow">
+				{pattern.style} · {pattern.timeSignature[0]}/{pattern.timeSignature[1]} · {mb.unit} = {mb.value}
+			</p>
 			<h1 class="rhythm-name">{t(`rhythm.${name}`)}</h1>
 			<p class="desc">{pattern.description}</p>
 		</header>
@@ -309,7 +369,7 @@
 	}
 
 	#vf-notation {
-		min-height: 120px;
+		min-height: 220px;
 	}
 
 	.grid-section {
