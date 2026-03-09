@@ -1,5 +1,7 @@
 // src/lib/stores/rhythmPlayer.svelte.ts
 import { getAudioContext, scheduleNote } from '$lib/audio';
+import { scheduleMidiNote } from '$lib/stores/midi.svelte';
+import { settings } from '$lib/stores/settings.svelte';
 import { Note } from 'tonal';
 import type { RhythmPattern, PatternStep } from '$lib/music/rhythmPatterns';
 import { totalSteps } from '$lib/music/rhythmPatterns';
@@ -43,18 +45,31 @@ function scheduleAhead(): void {
 	if (!_pattern) return;
 	const ctx = getAudioContext();
 	const now = ctx.currentTime;
-	const allSteps = [..._pattern.bass, ..._pattern.chords];
 	const steps = totalSteps(_pattern.timeSignature);
 	const stepDur = stepDurationSec(_bpm);
 
 	while (_nextStepTime < now + LOOKAHEAD_SEC) {
-		const notesHere = allSteps.filter((s) => s.step === _stepIndex);
-		for (const s of notesHere) {
-			const midi = midiForStep(s, _rootMidi);
-			const gain = (s.velocity / 127) * 0.9;
-			// Cap note at 90% of its written duration so adjacent notes don't blur together
-			const duration = s.duration * stepDur * 0.9;
-			scheduleNote(midi, _nextStepTime, gain, duration);
+		const volume = settings.value.volume;
+		const noteParams = (s: { velocity: number; duration: number }) => ({
+			gain: (s.velocity / 127) * 0.9 * volume,
+			dur: s.duration * stepDur * 0.9
+		});
+
+		// Bass: single note at the step's degree
+		for (const s of _pattern.bass.filter((s) => s.step === _stepIndex)) {
+			const { gain, dur } = noteParams(s);
+			const note = midiForStep(s, _rootMidi);
+			scheduleNote(note, _nextStepTime, gain, dur);
+			scheduleMidiNote(note, s.velocity, _nextStepTime, now, dur);
+		}
+		// Chords: play full root-position triad (1-3-5) to match notation
+		for (const s of _pattern.chords.filter((s) => s.step === _stepIndex)) {
+			const { gain, dur } = noteParams(s);
+			for (const degree of [1, 3, 5] as const) {
+				const note = _rootMidi + (DEGREE_SEMITONES[degree] ?? 0) + s.octave * 12;
+				scheduleNote(note, _nextStepTime, gain, dur);
+				scheduleMidiNote(note, s.velocity, _nextStepTime, now, dur);
+			}
 		}
 		_stepQueue.push({ stepIndex: _stepIndex, audioTime: _nextStepTime });
 		_nextStepTime += stepDur;
