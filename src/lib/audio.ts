@@ -19,3 +19,18 @@ function getPlayer(): Promise<Player> {
 export function playNote(midi: number, gain = 1): void {
 	void getPlayer().then((player) => player.play(midi, undefined, { gain }));
 }
+
+export function getAudioContext(): AudioContext {
+	return getCtx();
+}
+
+/**
+ * Schedule a note to play at a specific AudioContext time.
+ * Used by rhythmPlayer for sample-accurate scheduling.
+ * @param midi - MIDI note number (0–127)
+ * @param when - AudioContext time in seconds (use audioCtx.currentTime + offset)
+ * @param gain - volume 0–1
+ */
+export function scheduleNote(midi: number, when: number, gain = 0.8): void {
+	void getPlayer().then((player) => player.play(midi, when, { gain }));
+}
