@@ -94,13 +94,11 @@
 	}
 
 	onMount(() => {
-		void midi.init();
 		void requestWakeLock();
 		document.addEventListener('visibilitychange', onVisibilityChange);
 	});
 
 	onDestroy(() => {
-		midi.destroy();
 		if (typeof document !== 'undefined') {
 			void wakeLock?.release();
 			document.removeEventListener('visibilitychange', onVisibilityChange);
