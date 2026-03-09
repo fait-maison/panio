@@ -25,6 +25,7 @@ test.describe('settings page', () => {
 		await expect(page.getByText('Keyboard size')).toBeVisible();
 		await expect(page.getByText('Display scales')).toBeVisible();
 		await expect(page.getByText('Chord notation')).toBeVisible();
+		await expect(page.getByText('Select MIDI device')).toBeVisible();
 	});
 
 	test('switching to large keyboard size widens the keyboard', async ({ page }) => {
@@ -104,6 +105,13 @@ test.describe('sidebar navigation', () => {
 		await enterSandbox(page);
 		await page.getByRole('button', { name: 'Menu' }).click();
 		await page.getByText('Settings', { exact: true }).click();
+		await expect(page).toHaveURL('/settings');
+	});
+
+	test('MIDI status badge links to /settings', async ({ page }) => {
+		await enterSandbox(page);
+		await page.getByRole('button', { name: 'Menu' }).click();
+		await page.locator('a.midi-status').click();
 		await expect(page).toHaveURL('/settings');
 	});
 });
