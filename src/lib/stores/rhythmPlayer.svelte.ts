@@ -53,7 +53,7 @@ function scheduleAhead(): void {
 			const gain = (s.velocity / 127) * 0.9;
 			scheduleNote(midi, _nextStepTime, gain);
 		}
-		_currentStep = _stepIndex;
+		_currentStep = _stepIndex; // $state write from setInterval — intentional, standard pattern for this codebase
 		_nextStepTime += stepDur;
 		_stepIndex = (_stepIndex + 1) % steps;
 	}
@@ -91,6 +91,9 @@ export const rhythmPlayer = {
 	 * before launching the scheduler so timestamps are always in the future.
 	 */
 	start(pattern: NonNullable<RhythmPattern>, keyNote: string, bpm: number): void {
+		// Stop any running scheduler before restarting (prevents double-scheduling
+		// if start() is called while already playing, e.g. on key change)
+		stopScheduler();
 		_pattern = pattern;
 		// Note.midi returns e.g. 48 for C3 — left-hand piano register
 		_rootMidi = Note.midi(`${keyNote}3`) ?? 48;
