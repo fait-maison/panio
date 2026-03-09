@@ -46,20 +46,34 @@ describe('RHYTHM_PATTERNS', () => {
 
 			const total = totalSteps(pattern.timeSignature);
 
-			for (const step of [...pattern.bass, ...pattern.chords]) {
-				it(`step ${step.step} is within grid [0, ${total - 1}]`, () => {
-					expect(step.step).toBeGreaterThanOrEqual(0);
-					expect(step.step).toBeLessThan(total);
-				});
+			for (const [voiceLabel, voiceSteps] of [
+				['bass', pattern.bass],
+				['chords', pattern.chords]
+			] as const) {
+				for (const step of voiceSteps) {
+					it(`${voiceLabel} step ${step.step} is within grid [0, ${total - 1}]`, () => {
+						expect(step.step).toBeGreaterThanOrEqual(0);
+						expect(step.step).toBeLessThan(total);
+					});
 
-				it(`step ${step.step} velocity is in range 1–127`, () => {
-					expect(step.velocity).toBeGreaterThan(0);
-					expect(step.velocity).toBeLessThanOrEqual(127);
-				});
+					it(`${voiceLabel} step ${step.step} velocity is in range 1–127`, () => {
+						expect(step.velocity).toBeGreaterThan(0);
+						expect(step.velocity).toBeLessThanOrEqual(127);
+					});
 
-				it(`step ${step.step} duration >= 1`, () => {
-					expect(step.duration).toBeGreaterThanOrEqual(1);
-				});
+					it(`${voiceLabel} step ${step.step} duration >= 1`, () => {
+						expect(step.duration).toBeGreaterThanOrEqual(1);
+					});
+
+					it(`${voiceLabel} step ${step.step} degree is a valid scale degree (1, 3, or 5)`, () => {
+						expect([1, 3, 5].includes(step.degree)).toBe(true);
+					});
+
+					it(`${voiceLabel} step ${step.step} octave is in range -2 to 2`, () => {
+						expect(step.octave).toBeGreaterThanOrEqual(-2);
+						expect(step.octave).toBeLessThanOrEqual(2);
+					});
+				}
 			}
 		});
 	}
