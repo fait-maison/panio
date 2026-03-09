@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Panio — Rhythm Training · Option C (Tactile)</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			:root {
+				--bg: #f5f0e8;
+				--cream: #fffdf9;
+				--text: #1a1a1a;
+				--muted: #9a9088;
+				--red: #cc2936;
+				--red-dim: #f5e0e2;
+				--blue: #1d4ed8;
+				--blue-dim: #dde7fb;
+				--border: #e0d8cc;
+				--shadow: 0 2px 0 #c8bfb0;
+				--font-d: 'DM Serif Display', Georgia, serif;
+				--font-mono: 'IBM Plex Mono', monospace;
+				--font-b: 'Inter', system-ui, sans-serif;
+			}
+
+			html,
+			body {
+				min-height: 100vh;
+				font-family: var(--font-b);
+				background: var(--bg);
+				color: var(--text);
+			}
+
+			/* ── Nav ── */
+			nav {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 52px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 20px;
+				background: var(--bg);
+				border-bottom: 1px solid var(--border);
+				z-index: 100;
+			}
+			.logo {
+				font-family: var(--font-d);
+				font-size: 1.3rem;
+			}
+			.back-btn {
+				font-size: 0.7rem;
+				font-weight: 600;
+				color: var(--muted);
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				background: var(--cream);
+				border: 1px solid var(--border);
+				border-radius: 6px;
+				padding: 5px 12px;
+				cursor: pointer;
+				box-shadow: var(--shadow);
+				text-decoration: none;
+				transition:
+					box-shadow 0.1s,
+					transform 0.1s;
+			}
+			.back-btn:active {
+				box-shadow: none;
+				transform: translateY(2px);
+			}
+
+			/* ── Main ── */
+			main {
+				max-width: 460px;
+				margin: 0 auto;
+				padding: 72px 20px 56px;
+				display: flex;
+				flex-direction: column;
+				gap: 28px;
+			}
+
+			/* ── Title block ── */
+			.title-block {
+				position: relative;
+				padding: 24px 20px 20px;
+				background: var(--cream);
+				border: 1px solid var(--border);
+				border-radius: 14px;
+				box-shadow: 0 3px 0 var(--border);
+			}
+			.tag-row {
+				display: flex;
+				gap: 6px;
+				margin-bottom: 10px;
+				flex-wrap: wrap;
+			}
+			.tag {
+				font-family: var(--font-mono);
+				font-size: 0.58rem;
+				font-weight: 700;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				padding: 3px 8px;
+				border-radius: 3px;
+			}
+			.tag-rhythm {
+				background: var(--red-dim);
+				color: var(--red);
+			}
+			.tag-key {
+				background: var(--blue-dim);
+				color: var(--blue);
+			}
+			.tag-time {
+				background: var(--bg);
+				color: var(--muted);
+				border: 1px solid var(--border);
+			}
+			.title-name {
+				font-family: var(--font-d);
+				font-size: clamp(3rem, 12vw, 4.8rem);
+				line-height: 0.9;
+				letter-spacing: -0.01em;
+				color: var(--text);
+			}
+			.title-name em {
+				font-style: italic;
+				color: var(--muted);
+			}
+			.desc {
+				margin-top: 10px;
+				font-size: 0.8rem;
+				color: var(--muted);
+				line-height: 1.6;
+			}
+
+			/* ── Piano-roll style beat grid ── */
+			.roll-wrap {
+				background: var(--cream);
+				border: 1px solid var(--border);
+				border-radius: 14px;
+				box-shadow: 0 3px 0 var(--border);
+				overflow: hidden;
+			}
+			.roll-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 10px 16px;
+				background: var(--bg);
+				border-bottom: 1px solid var(--border);
+			}
+			.roll-label {
+				font-family: var(--font-mono);
+				font-size: 0.6rem;
+				color: var(--muted);
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+			}
+			.roll-body {
+				padding: 12px 16px;
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+
+			/* Row */
+			.roll-row {
+				display: grid;
+				grid-template-columns: 40px 1fr;
+				gap: 8px;
+				align-items: center;
+			}
+			.roll-row-label {
+				font-family: var(--font-mono);
+				font-size: 0.58rem;
+				font-weight: 700;
+				color: var(--muted);
+				text-align: right;
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+			}
+			.roll-cells {
+				display: flex;
+				gap: 3px;
+			}
+
+			/* Individual "keys" — tactile push-button feel */
+			.rkey {
+				flex: 1;
+				height: 36px;
+				background: var(--bg);
+				border: 1px solid var(--border);
+				border-radius: 5px;
+				box-shadow: 0 2px 0 var(--border);
+				position: relative;
+				transition:
+					box-shadow 0.05s,
+					transform 0.05s;
+			}
+			/* Beat grouping */
+			.rkey:nth-child(5),
+			.rkey:nth-child(9),
+			.rkey:nth-child(13) {
+				margin-left: 5px;
+			}
+			.rkey.bass-strong {
+				background: var(--red);
+				border-color: #a01e29;
+				box-shadow: 0 2px 0 #a01e29;
+			}
+			.rkey.bass-weak {
+				background: var(--red-dim);
+				border-color: #e8aaaf;
+				box-shadow: 0 2px 0 #e8aaaf;
+			}
+			.rkey.chord-strong {
+				background: var(--blue);
+				border-color: #1640a8;
+				box-shadow: 0 2px 0 #1640a8;
+			}
+			/* Currently playing — "pressed" look */
+			.rkey.active {
+				transform: translateY(2px);
+				box-shadow: none !important;
+			}
+			.rkey.active.bass-strong {
+				background: #e8202e;
+			}
+			.rkey.active.chord-strong {
+				background: #2563eb;
+			}
+			.rkey.active:not(.bass-strong):not(.chord-strong) {
+				background: #d8d0c4;
+				border-color: #b8b0a4;
+			}
+
+			/* Beat number ruler */
+			.ruler {
+				display: grid;
+				grid-template-columns: 40px 1fr;
+				gap: 8px;
+				padding: 0 16px 8px;
+			}
+			.ruler-cells {
+				display: flex;
+				gap: 3px;
+			}
+			.ruler-cell {
+				flex: 1;
+				font-family: var(--font-mono);
+				font-size: 0.5rem;
+				color: var(--muted);
+				text-align: center;
+				line-height: 1;
+			}
+			.ruler-cell:nth-child(5),
+			.ruler-cell:nth-child(9),
+			.ruler-cell:nth-child(13) {
+				margin-left: 5px;
+			}
+			.ruler-cell.on-beat {
+				color: var(--text);
+				font-weight: 700;
+			}
+
+			/* ── Controls block — tactile buttons ── */
+			.controls-block {
+				background: var(--cream);
+				border: 1px solid var(--border);
+				border-radius: 14px;
+				box-shadow: 0 3px 0 var(--border);
+				padding: 20px;
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+			}
+
+			.play-row {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+			}
+			.big-play {
+				width: 64px;
+				height: 64px;
+				background: var(--red);
+				border: 1.5px solid #a01e29;
+				border-radius: 10px;
+				box-shadow: 0 4px 0 #a01e29;
+				color: #fff;
+				font-size: 1.4rem;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-shrink: 0;
+				transition:
+					box-shadow 0.08s,
+					transform 0.08s;
+			}
+			.big-play:active,
+			.big-play.active-state {
+				transform: translateY(4px);
+				box-shadow: none;
+			}
+			.play-meta {
+				display: flex;
+				flex-direction: column;
+				gap: 2px;
+			}
+			.play-status {
+				font-family: var(--font-mono);
+				font-size: 0.6rem;
+				color: var(--muted);
+				text-transform: uppercase;
+				letter-spacing: 0.12em;
+			}
+			.play-status.on {
+				color: var(--red);
+			}
+			.bpm-big {
+				font-family: var(--font-d);
+				font-size: 2rem;
+				line-height: 1;
+			}
+			.bpm-unit {
+				font-family: var(--font-mono);
+				font-size: 0.6rem;
+				color: var(--muted);
+			}
+
+			.slider-row {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+			.s-label {
+				font-family: var(--font-mono);
+				font-size: 0.6rem;
+				color: var(--muted);
+				text-transform: uppercase;
+				letter-spacing: 0.1em;
+				min-width: 28px;
+			}
+			input[type='range'] {
+				flex: 1;
+				height: 6px;
+				-webkit-appearance: none;
+				border-radius: 3px;
+				background: linear-gradient(to right, var(--red) 48%, var(--border) 48%);
+				outline: none;
+				cursor: pointer;
+			}
+			input[type='range']::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				width: 20px;
+				height: 20px;
+				background: var(--cream);
+				border: 2px solid var(--border);
+				border-radius: 4px;
+				box-shadow: 0 2px 0 var(--border);
+			}
+			.s-val {
+				font-family: var(--font-mono);
+				font-size: 0.75rem;
+				font-weight: 700;
+				min-width: 30px;
+				text-align: right;
+			}
+
+			/* ── Tip ── */
+			.tip {
+				font-size: 0.78rem;
+				color: var(--muted);
+				line-height: 1.6;
+				padding: 14px 16px;
+				background: var(--cream);
+				border: 1px solid var(--border);
+				border-radius: 10px;
+			}
+			.tip strong {
+				color: var(--text);
+			}
+
+			/* ── Stagger animation ── */
+			@keyframes rise {
+				from {
+					opacity: 0;
+					transform: translateY(14px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+			.title-block {
+				animation: rise 0.4s ease both;
+			}
+			.roll-wrap {
+				animation: rise 0.4s 0.08s ease both;
+			}
+			.controls-block {
+				animation: rise 0.4s 0.16s ease both;
+			}
+			.tip {
+				animation: rise 0.4s 0.24s ease both;
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			<span class="logo">Panio</span>
+			<a class="back-btn" href="#">← Sandbox</a>
+		</nav>
+
+		<main>
+			<!-- Title -->
+			<div class="title-block">
+				<div class="tag-row">
+					<span class="tag tag-rhythm">Rhythm</span>
+					<span class="tag tag-key">D · Phrygian</span>
+					<span class="tag tag-time">4/4</span>
+				</div>
+				<h1 class="title-name">Tango<em>.</em></h1>
+				<p class="desc">
+					Strong downbeat, habanera syncopation on the "and" of 2. Bass walks root → fifth. Charged,
+					deliberate, held tension.
+				</p>
+			</div>
+
+			<!-- Beat roll -->
+			<div class="roll-wrap">
+				<div class="roll-header">
+					<span class="roll-label">16-step loop</span>
+					<span
+						style="
+							display: flex;
+							gap: 10px;
+							font-size: 0.6rem;
+							font-family: 'IBM Plex Mono', monospace;
+							color: var(--muted);
+						"
+					>
+						<span style="display: flex; align-items: center; gap: 4px"
+							><span
+								style="
+									width: 8px;
+									height: 8px;
+									background: var(--red);
+									border-radius: 2px;
+									display: inline-block;
+								"
+							></span>
+							bass</span
+						>
+						<span style="display: flex; align-items: center; gap: 4px"
+							><span
+								style="
+									width: 8px;
+									height: 8px;
+									background: var(--blue);
+									border-radius: 2px;
+									display: inline-block;
+								"
+							></span>
+							chord</span
+						>
+					</span>
+				</div>
+				<div class="roll-body">
+					<div class="roll-row">
+						<span class="roll-row-label">bass</span>
+						<div class="roll-cells" id="bass-roll"></div>
+					</div>
+					<div class="roll-row">
+						<span class="roll-row-label">chord</span>
+						<div class="roll-cells" id="chord-roll"></div>
+					</div>
+				</div>
+				<div class="ruler">
+					<div></div>
+					<div class="ruler-cells" id="ruler"></div>
+				</div>
+			</div>
+
+			<!-- Controls -->
+			<div class="controls-block">
+				<div class="play-row">
+					<button class="big-play" id="play-btn">▶</button>
+					<div class="play-meta">
+						<span class="play-status" id="play-status">Stopped</span>
+						<span class="bpm-big" id="bpm-big">118</span>
+						<span class="bpm-unit">beats per minute</span>
+					</div>
+				</div>
+				<div class="slider-row">
+					<span class="s-label">BPM</span>
+					<input type="range" id="bpm-slider" min="60" max="200" value="118" />
+					<span class="s-val" id="s-val">118</span>
+				</div>
+			</div>
+
+			<p class="tip">
+				<strong>How to use:</strong> Listen to the pattern, then add your left hand playing along.
+				Once the groove is in your body, layer your right hand exploring
+				<strong>D Phrygian</strong> from the sandbox.
+			</p>
+		</main>
+
+		<script>
+			const bassPattern = [1, 0, 0, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 2, 0];
+			const chordPattern = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0];
+
+			// Ruler
+			const rulerEl = document.getElementById('ruler');
+			for (let i = 0; i < 16; i++) {
+				const d = document.createElement('div');
+				d.className = 'ruler-cell' + (i % 4 === 0 ? ' on-beat' : '');
+				d.textContent = i % 4 === 0 ? i / 4 + 1 : '';
+				rulerEl.appendChild(d);
+			}
+
+			function buildRoll(id, pattern, type) {
+				const el = document.getElementById(id);
+				pattern.forEach((val, i) => {
+					const k = document.createElement('div');
+					k.className = 'rkey';
+					k.id = `${type}-rkey-${i}`;
+					if (type === 'bass' && val === 1) k.classList.add('bass-strong');
+					if (type === 'bass' && val === 2) k.classList.add('bass-weak');
+					if (type === 'chord' && val === 1) k.classList.add('chord-strong');
+					el.appendChild(k);
+				});
+			}
+			buildRoll('bass-roll', bassPattern, 'bass');
+			buildRoll('chord-roll', chordPattern, 'chord');
+
+			// BPM
+			const slider = document.getElementById('bpm-slider');
+			const sVal = document.getElementById('s-val');
+			const bpmBig = document.getElementById('bpm-big');
+			slider.addEventListener('input', () => {
+				const v = slider.value;
+				sVal.textContent = v;
+				bpmBig.textContent = v;
+				const pct = ((v - 60) / (200 - 60)) * 100;
+				slider.style.background = `linear-gradient(to right, var(--red) ${pct}%, var(--border) ${pct}%)`;
+				if (playing) {
+					clearInterval(timer);
+					startLoop();
+				}
+			});
+
+			let playing = false,
+				step = 0,
+				timer = null;
+			const playBtn = document.getElementById('play-btn');
+			const playStatus = document.getElementById('play-status');
+
+			function startLoop() {
+				const bpm = parseInt(slider.value);
+				const ms = (60 / bpm / 4) * 1000;
+				timer = setInterval(() => {
+					document.querySelectorAll('.rkey.active').forEach((k) => k.classList.remove('active'));
+					document.getElementById(`bass-rkey-${step}`)?.classList.add('active');
+					document.getElementById(`chord-rkey-${step}`)?.classList.add('active');
+					step = (step + 1) % 16;
+				}, ms);
+			}
+
+			playBtn.addEventListener('click', () => {
+				playing = !playing;
+				if (playing) {
+					playBtn.textContent = '■';
+					playBtn.classList.add('active-state');
+					playBtn.style.background = '#555';
+					playBtn.style.borderColor = '#333';
+					playBtn.style.boxShadow = 'none';
+					playStatus.textContent = '● Playing';
+					playStatus.classList.add('on');
+					step = 0;
+					startLoop();
+				} else {
+					playBtn.textContent = '▶';
+					playBtn.classList.remove('active-state');
+					playBtn.style.background = '';
+					playBtn.style.borderColor = '';
+					playBtn.style.boxShadow = '';
+					playStatus.textContent = 'Stopped';
+					playStatus.classList.remove('on');
+					clearInterval(timer);
+					document.querySelectorAll('.rkey.active').forEach((k) => k.classList.remove('active'));
+				}
+			});
+		</script>
+	</body>
+</html>

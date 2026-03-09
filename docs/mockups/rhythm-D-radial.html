@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Panio — Rhythm · Option D (Radial Clock)</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+			:root {
+				--bg: #f5f0e8;
+				--surface: #fffdf9;
+				--text: #1a1a1a;
+				--muted: #9a9088;
+				--red: #cc2936;
+				--blue: #1d4ed8;
+				--border: #e0d8cc;
+				--font-d: 'DM Serif Display', Georgia, serif;
+				--font-b: 'Inter', system-ui, sans-serif;
+			}
+			html,
+			body {
+				min-height: 100vh;
+				font-family: var(--font-b);
+				background: var(--bg);
+				color: var(--text);
+				display: flex;
+				flex-direction: column;
+			}
+			nav {
+				height: 52px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 20px;
+				border-bottom: 1px solid var(--border);
+				flex-shrink: 0;
+			}
+			.logo {
+				font-family: var(--font-d);
+				font-size: 1.3rem;
+			}
+			.back {
+				font-size: 0.7rem;
+				font-weight: 600;
+				color: var(--muted);
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				text-decoration: none;
+			}
+
+			main {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding: 24px 20px 32px;
+				gap: 20px;
+			}
+
+			/* ── Title ── */
+			.title-row {
+				text-align: center;
+				animation: rise 0.4s ease both;
+			}
+			.eyebrow {
+				font-size: 0.65rem;
+				font-weight: 700;
+				color: var(--red);
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+			}
+			.rhythm-name {
+				font-family: var(--font-d);
+				font-size: clamp(2.2rem, 9vw, 3.4rem);
+				line-height: 1;
+				letter-spacing: -0.01em;
+			}
+			.meta {
+				font-size: 0.72rem;
+				color: var(--muted);
+				margin-top: 2px;
+			}
+
+			/* ── Clock ── */
+			.clock-wrap {
+				position: relative;
+				width: min(320px, 80vw);
+				height: min(320px, 80vw);
+				flex-shrink: 0;
+				animation: rise 0.4s 0.1s ease both;
+			}
+			#clock-svg {
+				width: 100%;
+				height: 100%;
+			}
+
+			/* ── Center info ── */
+			.clock-center {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				text-align: center;
+				pointer-events: none;
+			}
+			.center-key {
+				font-family: var(--font-d);
+				font-size: 1.6rem;
+				color: var(--text);
+				line-height: 1;
+			}
+			.center-mode {
+				font-size: 0.65rem;
+				color: var(--muted);
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				font-weight: 600;
+			}
+
+			/* ── Controls ── */
+			.controls {
+				width: 100%;
+				max-width: 320px;
+				display: flex;
+				flex-direction: column;
+				gap: 14px;
+				animation: rise 0.4s 0.2s ease both;
+			}
+			.play-btn {
+				width: 100%;
+				height: 50px;
+				background: var(--text);
+				color: #fff;
+				border: none;
+				border-radius: 10px;
+				font-family: var(--font-b);
+				font-size: 0.78rem;
+				font-weight: 700;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 8px;
+				transition: background 0.15s;
+			}
+			.play-btn:hover {
+				background: #2e2e2e;
+			}
+			.bpm-row {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+			.bl {
+				font-size: 0.65rem;
+				font-weight: 700;
+				color: var(--muted);
+				text-transform: uppercase;
+				letter-spacing: 0.1em;
+				min-width: 30px;
+			}
+			input[type='range'] {
+				flex: 1;
+				height: 4px;
+				-webkit-appearance: none;
+				background: linear-gradient(to right, var(--red) 48%, var(--border) 48%);
+				border-radius: 2px;
+				outline: none;
+				cursor: pointer;
+			}
+			input[type='range']::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				width: 16px;
+				height: 16px;
+				background: var(--surface);
+				border: 2px solid var(--red);
+				border-radius: 50%;
+			}
+			.bv {
+				font-size: 0.78rem;
+				font-weight: 700;
+				min-width: 32px;
+				text-align: right;
+			}
+
+			/* ── Description ── */
+			.desc {
+				max-width: 320px;
+				text-align: center;
+				font-size: 0.78rem;
+				color: var(--muted);
+				line-height: 1.6;
+				animation: rise 0.4s 0.3s ease both;
+			}
+
+			@keyframes rise {
+				from {
+					opacity: 0;
+					transform: translateY(12px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			<span class="logo">Panio</span>
+			<a class="back" href="#">← Sandbox</a>
+		</nav>
+		<main>
+			<div class="title-row">
+				<div class="eyebrow">Rhythm training</div>
+				<div class="rhythm-name">Tango</div>
+				<div class="meta">Argentine · 4/4 · ♩ = 118</div>
+			</div>
+
+			<div class="clock-wrap">
+				<svg id="clock-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+					<!-- Track rings -->
+					<circle
+						cx="160"
+						cy="160"
+						r="130"
+						fill="none"
+						stroke="#e0d8cc"
+						stroke-width="1"
+						stroke-dasharray="3 4"
+					/>
+					<circle
+						cx="160"
+						cy="160"
+						r="100"
+						fill="none"
+						stroke="#e0d8cc"
+						stroke-width="1"
+						stroke-dasharray="3 4"
+					/>
+					<!-- Beat ticks -->
+					<g id="ticks"></g>
+					<!-- Dots outer ring (bass) -->
+					<g id="bass-dots"></g>
+					<!-- Dots inner ring (chord) -->
+					<g id="chord-dots"></g>
+					<!-- Sweep hand -->
+					<line
+						id="sweep-hand"
+						x1="160"
+						y1="160"
+						x2="160"
+						y2="30"
+						stroke="#1a1a1a"
+						stroke-width="2"
+						stroke-linecap="round"
+						opacity="0.3"
+					/>
+					<!-- Center circle -->
+					<circle cx="160" cy="160" r="52" fill="#fffdf9" stroke="#e0d8cc" stroke-width="1.5" />
+				</svg>
+				<div class="clock-center">
+					<div class="center-key">D</div>
+					<div class="center-mode">Phrygian</div>
+				</div>
+			</div>
+
+			<div class="controls">
+				<button class="play-btn" id="play-btn">▶ &nbsp;Play loop</button>
+				<div class="bpm-row">
+					<span class="bl">BPM</span>
+					<input type="range" id="bpm" min="60" max="200" value="118" />
+					<span class="bv" id="bv">118</span>
+				</div>
+			</div>
+
+			<p class="desc">
+				Strong downbeat on 1, habanera syncopation on the "and" of 2. Outer ring = bass, inner ring
+				= chords.
+			</p>
+		</main>
+
+		<script>
+			const bassPattern = [1, 0, 0, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 2, 0];
+			const chordPattern = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0];
+			const CX = 160,
+				CY = 160;
+			const R_BASS = 130,
+				R_CHORD = 100,
+				R_TICK = 145;
+
+			function angleForStep(i) {
+				// Step 0 = top (−90°), going clockwise
+				return (i / 16) * Math.PI * 2 - Math.PI / 2;
+			}
+			function pt(r, angle) {
+				return { x: CX + r * Math.cos(angle), y: CY + r * Math.sin(angle) };
+			}
+
+			// Ticks at beat positions
+			const ticksEl = document.getElementById('ticks');
+			for (let i = 0; i < 16; i++) {
+				const a = angleForStep(i);
+				const inner = pt(R_TICK - (i % 4 === 0 ? 8 : 4), a);
+				const outer = pt(R_TICK, a);
+				const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+				line.setAttribute('x1', inner.x);
+				line.setAttribute('y1', inner.y);
+				line.setAttribute('x2', outer.x);
+				line.setAttribute('y2', outer.y);
+				line.setAttribute('stroke', i % 4 === 0 ? '#c0b8b0' : '#ddd8d0');
+				line.setAttribute('stroke-width', i % 4 === 0 ? '2' : '1');
+				ticksEl.appendChild(line);
+
+				// Beat number labels at quarter beats
+				if (i % 4 === 0) {
+					const lp = pt(R_TICK + 14, a);
+					const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+					txt.setAttribute('x', lp.x);
+					txt.setAttribute('y', lp.y);
+					txt.setAttribute('text-anchor', 'middle');
+					txt.setAttribute('dominant-baseline', 'middle');
+					txt.setAttribute('font-size', '10');
+					txt.setAttribute('font-family', 'Inter,sans-serif');
+					txt.setAttribute('font-weight', '700');
+					txt.setAttribute('fill', '#9a9088');
+					txt.textContent = i / 4 + 1;
+					ticksEl.appendChild(txt);
+				}
+			}
+
+			// Bass dots (outer ring)
+			const bassDotsEl = document.getElementById('bass-dots');
+			bassPattern.forEach((val, i) => {
+				if (!val) return;
+				const a = angleForStep(i);
+				const p = pt(R_BASS, a);
+				const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+				c.setAttribute('cx', p.x);
+				c.setAttribute('cy', p.y);
+				c.setAttribute('r', val === 1 ? 9 : 6);
+				c.setAttribute('fill', val === 1 ? '#cc2936' : '#f5b8bc');
+				c.setAttribute('id', `bass-dot-${i}`);
+				bassDotsEl.appendChild(c);
+			});
+
+			// Chord dots (inner ring)
+			const chordDotsEl = document.getElementById('chord-dots');
+			chordPattern.forEach((val, i) => {
+				if (!val) return;
+				const a = angleForStep(i);
+				const p = pt(R_CHORD, a);
+				const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+				c.setAttribute('cx', p.x);
+				c.setAttribute('cy', p.y);
+				c.setAttribute('r', 9);
+				c.setAttribute('fill', '#1d4ed8');
+				c.setAttribute('id', `chord-dot-${i}`);
+				chordDotsEl.appendChild(c);
+			});
+
+			// Sweep hand
+			const hand = document.getElementById('sweep-hand');
+			function setHand(step) {
+				const a = angleForStep(step);
+				const end = pt(125, a);
+				hand.setAttribute('x2', end.x);
+				hand.setAttribute('y2', end.y);
+				hand.setAttribute('opacity', '0.7');
+			}
+
+			// BPM
+			const slider = document.getElementById('bpm');
+			const bv = document.getElementById('bv');
+			slider.addEventListener('input', () => {
+				bv.textContent = slider.value;
+				const pct = ((slider.value - 60) / 140) * 100;
+				slider.style.background = `linear-gradient(to right,#cc2936 ${pct}%,#e0d8cc ${pct}%)`;
+				if (playing) {
+					clearInterval(timer);
+					startLoop();
+				}
+			});
+
+			let playing = false,
+				step = 0,
+				timer = null;
+			const playBtn = document.getElementById('play-btn');
+
+			// Highlight dot
+			function highlightStep(s) {
+				// Reset all
+				document.querySelectorAll('[id^="bass-dot-"]').forEach((d) => {
+					d.setAttribute('opacity', '1');
+					d.setAttribute('filter', '');
+				});
+				document.querySelectorAll('[id^="chord-dot-"]').forEach((d) => {
+					d.setAttribute('opacity', '1');
+					d.setAttribute('filter', '');
+				});
+				// Pulse current
+				const bd = document.getElementById(`bass-dot-${s}`);
+				const cd = document.getElementById(`chord-dot-${s}`);
+				if (bd) {
+					bd.setAttribute('r', parseFloat(bd.getAttribute('r')) + 3 + '');
+				}
+				if (cd) {
+					cd.setAttribute('r', '12');
+				}
+				setHand(s);
+			}
+
+			let prevStep = -1;
+			function restoreStep(s) {
+				const bd = document.getElementById(`bass-dot-${s}`);
+				const cd = document.getElementById(`chord-dot-${s}`);
+				if (bd) {
+					const orig = bassPattern[s] === 1 ? 9 : 6;
+					bd.setAttribute('r', orig + '');
+				}
+				if (cd) {
+					cd.setAttribute('r', '9');
+				}
+			}
+
+			function startLoop() {
+				const ms = (60 / parseInt(slider.value) / 4) * 1000;
+				timer = setInterval(() => {
+					if (prevStep >= 0) restoreStep(prevStep);
+					highlightStep(step);
+					prevStep = step;
+					step = (step + 1) % 16;
+				}, ms);
+			}
+
+			playBtn.addEventListener('click', () => {
+				playing = !playing;
+				if (playing) {
+					playBtn.textContent = '■  Stop';
+					playBtn.style.background = '#cc2936';
+					step = 0;
+					prevStep = -1;
+					hand.setAttribute('opacity', '0.7');
+					startLoop();
+				} else {
+					playBtn.textContent = '▶  Play loop';
+					playBtn.style.background = '';
+					clearInterval(timer);
+					if (prevStep >= 0) restoreStep(prevStep);
+					hand.setAttribute('opacity', '0.3');
+					// Reset hand to top
+					hand.setAttribute('x2', '160');
+					hand.setAttribute('y2', '30');
+				}
+			});
+		</script>
+	</body>
+</html>
