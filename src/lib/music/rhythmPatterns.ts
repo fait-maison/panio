@@ -3,7 +3,7 @@ import type { Rhythm } from './rhythms';
 
 export type PatternStep = {
 	step: number; // 0-based index into the step grid (0–15 for 4/4, 0–11 for 3/4)
-	degree: number; // scale degree: 1 = root, 3 = third, 5 = fifth
+	degree: 1 | 3 | 5; // scale degree: root, major third, perfect fifth
 	octave: number; // relative octave offset from middle register (-1, 0, 1)
 	duration: number; // length in steps (1 = 1/16th note)
 	velocity: number; // 0–127 MIDI velocity
