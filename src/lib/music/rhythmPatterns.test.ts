@@ -44,6 +44,11 @@ describe('RHYTHM_PATTERNS', () => {
 				expect(pattern.chords.length).toBeGreaterThan(0);
 			});
 
+			it('has a non-empty style string', () => {
+				expect(typeof pattern.style).toBe('string');
+				expect(pattern.style.length).toBeGreaterThan(0);
+			});
+
 			const total = totalSteps(pattern.timeSignature);
 
 			for (const [voiceLabel, voiceSteps] of [
@@ -63,6 +68,10 @@ describe('RHYTHM_PATTERNS', () => {
 
 					it(`${voiceLabel} step ${step.step} duration >= 1`, () => {
 						expect(step.duration).toBeGreaterThanOrEqual(1);
+					});
+
+					it(`${voiceLabel} step ${step.step} does not overflow the grid`, () => {
+						expect(step.step + step.duration).toBeLessThanOrEqual(total);
 					});
 
 					it(`${voiceLabel} step ${step.step} degree is a valid scale degree (1, 3, or 5)`, () => {
