@@ -6,7 +6,8 @@
 	import { rhythmPlayer } from '$lib/stores/rhythmPlayer.svelte';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Slider } from '$lib/components/ui/slider/index.js';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import Vex from 'vexflow';
 
 	const CHROMATIC_KEYS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -155,6 +156,10 @@
 		Promise.resolve().then(() => renderNotation(pat, key));
 	});
 
+	onMount(() => {
+		if (pattern === null) goto('/rhythm');
+	});
+
 	onDestroy(() => {
 		if (typeof document !== 'undefined') rhythmPlayer.stop();
 	});
@@ -164,12 +169,7 @@
 	<title>{t(`rhythm.${name}`)} — {t('rhythm.title')} — {t('app.title')}</title>
 </svelte:head>
 
-{#if pattern === null}
-	<main class="error-state">
-		<p>{t('rhythm.comingSoon')}</p>
-		<a href="/rhythm">{t('rhythm.backToAll')}</a>
-	</main>
-{:else}
+{#if pattern !== null}
 	<main>
 		<a class="back-link" href="/rhythm">{t('rhythm.backToAll')}</a>
 
