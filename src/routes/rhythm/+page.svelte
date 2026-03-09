@@ -3,7 +3,6 @@
 	import { t } from '$lib/i18n.svelte';
 	import { RHYTHMS } from '$lib/music/rhythms';
 	import { RHYTHM_PATTERNS } from '$lib/music/rhythmPatterns';
-	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 </script>
 
@@ -21,19 +20,17 @@
 	<div class="grid">
 		{#each RHYTHMS as key}
 			{@const pattern = RHYTHM_PATTERNS[key]}
-			<button
-				class="card"
-				class:coming-soon={pattern === null}
-				disabled={pattern === null}
-				onclick={() => void goto(resolve(`/rhythm/${key}` as '/'))}
-			>
-				<span class="card-name">{t(`rhythm.${key}`)}</span>
-				{#if pattern !== null}
+			{#if pattern !== null}
+				<a class="card" href={resolve(`/rhythm/${key}` as '/')}>
+					<span class="card-name">{t(`rhythm.${key}`)}</span>
 					<span class="card-meta">{pattern.style} · ♩ = {pattern.bpm}</span>
-				{:else}
+				</a>
+			{:else}
+				<div class="card coming-soon" aria-disabled="true">
+					<span class="card-name">{t(`rhythm.${key}`)}</span>
 					<span class="badge-soon">{t('rhythm.comingSoon')}</span>
-				{/if}
-			</button>
+				</div>
+			{/if}
 		{/each}
 	</div>
 </main>
@@ -42,7 +39,7 @@
 	main {
 		max-width: 640px;
 		margin: 0 auto;
-		padding: var(--sp-6) var(--sp-4) var(--sp-12);
+		padding: var(--sp-6) var(--sp-4) 3rem;
 		display: flex;
 		flex-direction: column;
 		gap: var(--sp-6);
@@ -97,9 +94,11 @@
 		flex-direction: column;
 		gap: var(--sp-1);
 		transition: background var(--dur-base);
+		text-decoration: none;
+		color: inherit;
 	}
 
-	.card:hover:not(:disabled) {
+	.card:hover:not(.coming-soon) {
 		background: rgba(0, 0, 0, 0.03);
 	}
 
