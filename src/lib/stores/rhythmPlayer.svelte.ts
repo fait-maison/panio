@@ -35,6 +35,7 @@ let _bpm = 120;
 let _nextStepTime = 0;
 let _stepIndex = 0;
 let _schedulerTimer: ReturnType<typeof setInterval> | null = null;
+let _stepQueue: Array<{ stepIndex: number; audioTime: number }> = [];
 
 // ── Scheduler ──────────────────────────────────────────────────────────────
 
@@ -53,9 +54,15 @@ function scheduleAhead(): void {
 			const gain = (s.velocity / 127) * 0.9;
 			scheduleNote(midi, _nextStepTime, gain);
 		}
-		_currentStep = _stepIndex; // $state write from setInterval — intentional, standard pattern for this codebase
+		_stepQueue.push({ stepIndex: _stepIndex, audioTime: _nextStepTime });
 		_nextStepTime += stepDur;
 		_stepIndex = (_stepIndex + 1) % steps;
+	}
+
+	// Advance playhead based on actual audio time (not schedule time)
+	while (_stepQueue.length > 0 && _stepQueue[0].audioTime <= now) {
+		_currentStep = _stepQueue[0].stepIndex; // $state write from setInterval — intentional, standard pattern for this codebase
+		_stepQueue.shift();
 	}
 }
 
@@ -74,6 +81,7 @@ function stopScheduler(): void {
 	}
 	_currentStep = -1;
 	_stepIndex = 0;
+	_stepQueue = [];
 }
 
 // ── Public API ─────────────────────────────────────────────────────────────
