@@ -15,6 +15,9 @@
 	const name = $derived($page.params.name);
 	const pattern = $derived(RHYTHM_PATTERNS[name as keyof typeof RHYTHM_PATTERNS] ?? null);
 	const steps = $derived(pattern ? totalSteps(pattern.timeSignature) : 16);
+	const beatSteps = $derived(
+		pattern ? (pattern.timeSignature[1] === 8 ? 6 : 16 / pattern.timeSignature[1]) : 4
+	);
 
 	let selectedKey = $state('C');
 	let bpm = $state(120);
@@ -257,6 +260,7 @@
 				{#each Array(steps) as _, i}
 					<div
 						class="cell"
+						class:beat-start={i > 0 && i % beatSteps === 0}
 						class:bass-strong={pattern.bass.some((s) => s.step === i && s.velocity > 70)}
 						class:bass-weak={pattern.bass.some((s) => s.step === i && s.velocity <= 70)}
 						class:bass-sustain={pattern.bass.some((s) => i > s.step && i < s.step + s.duration)}
@@ -270,6 +274,7 @@
 				{#each Array(steps) as _, i}
 					<div
 						class="cell"
+						class:beat-start={i > 0 && i % beatSteps === 0}
 						class:chord-hit={pattern.chords.some((s) => s.step === i)}
 						class:chord-sustain={pattern.chords.some((s) => i > s.step && i < s.step + s.duration)}
 						class:active={rhythmPlayer.currentStep === i}
@@ -398,6 +403,10 @@
 		border-radius: 4px;
 		background: var(--border);
 		transition: background 0.05s;
+	}
+
+	.cell.beat-start {
+		box-shadow: inset 3px 0 0 color-mix(in srgb, var(--text) 22%, transparent);
 	}
 
 	.cell.bass-strong {
