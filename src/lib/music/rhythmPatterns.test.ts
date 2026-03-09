@@ -19,8 +19,8 @@ describe('RHYTHM_PATTERNS', () => {
 		NonNullable<(typeof RHYTHM_PATTERNS)[keyof typeof RHYTHM_PATTERNS]>
 	][];
 
-	it('has 8 defined (non-null) patterns at launch', () => {
-		expect(defined.length).toBe(8);
+	it('has 17 defined (non-null) patterns at launch', () => {
+		expect(defined.length).toBe(17);
 	});
 
 	for (const [name, pattern] of defined) {

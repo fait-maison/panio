@@ -5,6 +5,8 @@
 	import SidebarNav from '$lib/components/SidebarNav.svelte';
 	import { midi } from '$lib/stores/midi.svelte';
 	import '../app.css';
+	import { onMount, onDestroy } from 'svelte';
+	import { midi } from '$lib/stores/midi.svelte';
 
 	import type { Snippet } from 'svelte';
 

@@ -118,6 +118,33 @@ function sendNoteOff(note: number) {
 	getTargetOutputs().forEach((output) => output.send([0x80, note, 0]));
 }
 
+/**
+ * Send a scheduled MIDI note-on + note-off to connected outputs.
+ * Uses Web MIDI's timestamp parameter (performance.now() base, in ms).
+ * @param note - MIDI note number
+ * @param velocity - 0–127
+ * @param audioOnTime - AudioContext time (seconds) when note should start
+ * @param audioCtxCurrentTime - AudioContext.currentTime at the moment of scheduling
+ * @param durationSec - note duration in seconds
+ */
+export function scheduleMidiNote(
+	note: number,
+	velocity: number,
+	audioOnTime: number,
+	audioCtxCurrentTime: number,
+	durationSec: number
+): void {
+	const outputs = getTargetOutputs();
+	if (!outputs.length) return;
+	const msFromNow = (audioOnTime - audioCtxCurrentTime) * 1000;
+	const onTs = performance.now() + msFromNow;
+	const offTs = onTs + durationSec * 1000;
+	outputs.forEach((output) => {
+		output.send([0x90, note, velocity], onTs);
+		output.send([0x80, note, 0], offTs);
+	});
+}
+
 function destroy() {
 	if (access) {
 		access.removeEventListener('statechange', onStateChange);
