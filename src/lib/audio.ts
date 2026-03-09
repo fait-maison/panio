@@ -20,6 +20,7 @@ export function playNote(midi: number, gain = 1): void {
 	void getPlayer().then((player) => player.play(midi, undefined, { gain }));
 }
 
+/** Returns the shared AudioContext singleton. Browser-only — do not call during SSR. */
 export function getAudioContext(): AudioContext {
 	return getCtx();
 }
@@ -27,6 +28,8 @@ export function getAudioContext(): AudioContext {
 /**
  * Schedule a note to play at a specific AudioContext time.
  * Used by rhythmPlayer for sample-accurate scheduling.
+ * The soundfont player must already be loaded before calling with a future timestamp —
+ * if the promise resolves after `when`, the note plays immediately or is dropped.
  * @param midi - MIDI note number (0–127)
  * @param when - AudioContext time in seconds (use audioCtx.currentTime + offset)
  * @param gain - volume 0–1
