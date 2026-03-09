@@ -259,6 +259,7 @@
 						class="cell"
 						class:bass-strong={pattern.bass.some((s) => s.step === i && s.velocity > 70)}
 						class:bass-weak={pattern.bass.some((s) => s.step === i && s.velocity <= 70)}
+						class:bass-sustain={pattern.bass.some((s) => i > s.step && i < s.step + s.duration)}
 						class:active={rhythmPlayer.currentStep === i}
 					></div>
 				{/each}
@@ -270,6 +271,7 @@
 					<div
 						class="cell"
 						class:chord-hit={pattern.chords.some((s) => s.step === i)}
+						class:chord-sustain={pattern.chords.some((s) => i > s.step && i < s.step + s.duration)}
 						class:active={rhythmPlayer.currentStep === i}
 					></div>
 				{/each}
@@ -406,6 +408,12 @@
 	}
 	.chord-track .cell.chord-hit {
 		background: #1d4ed8;
+	}
+	.cell.bass-sustain {
+		background: color-mix(in srgb, #cc2936 20%, transparent);
+	}
+	.chord-track .cell.chord-sustain {
+		background: color-mix(in srgb, #1d4ed8 20%, transparent);
 	}
 
 	.cell.active {
