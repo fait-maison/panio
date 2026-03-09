@@ -13,8 +13,8 @@
 		"test:e2e": "playwright test",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
-		"lint": "eslint .",
-		"lint:fix": "eslint --fix .",
+		"lint": "eslint --cache 'src/**/*.ts'",
+		"lint:fix": "eslint --cache --fix 'src/**/*.ts'",
 		"prepare": "husky"
 	},
 	"devDependencies": {
@@ -57,11 +57,11 @@
 	},
 	"type": "module",
 	"lint-staged": {
-		"*.{ts,svelte}": [
+		"*.ts": [
 			"eslint --fix",
 			"prettier --write"
 		],
-		"*.{css,json,md,html}": [
+		"*.{svelte,css,json,md,html}": [
 			"prettier --write"
 		]
 	}

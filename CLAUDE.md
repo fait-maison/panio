@@ -24,7 +24,7 @@ pnpm run test         # vitest unit tests
 pnpm run test:coverage # vitest with v8 coverage report
 pnpm run test:e2e     # playwright e2e tests
 pnpm run preview      # preview production build
-pnpm run lint         # eslint (strict typescript + svelte)
+pnpm run lint         # eslint on src/**/*.ts only (svelte files covered by check)
 pnpm run lint:fix     # eslint with auto-fix
 pnpm run format       # prettier (write)
 pnpm run format:check # prettier (check only)
@@ -156,7 +156,7 @@ Settings stored in `localStorage` key `piano-settings`. On load, spread-merged w
 - **Update docs before committing** — DESIGN.md, README.md, CLAUDE.md as relevant.
 - **Run `/claude-md-management:revise-claude-md` before committing** when conventions, patterns, or project structure changed.
 - **Formatting:** Prettier runs on commit via lint-staged. Run `pnpm run format` to format all files.
-- **Linting:** ESLint strict-type-checked. Run `pnpm run lint` to check, `pnpm run lint:fix` to auto-fix.
+- **Linting:** ESLint (syntax-only, no type-aware rules) on `.ts` files only — fast (~3s). `.svelte` type checking handled by `pnpm run check`. Run `pnpm run lint` to check, `pnpm run lint:fix` to auto-fix.
 - **No over-engineering** — YAGNI. No abstractions for one-time operations.
 - **i18n:** all user-facing strings go through `t()` from `$lib/i18n.svelte`.
 - **Use skills** — always invoke applicable skills before starting work (brainstorming, TDD, debugging, feature-dev, etc.). If there's even a 1% chance a skill applies, use it.
