@@ -54,7 +54,7 @@
 		"soundfont-player": "^0.12.0",
 		"svelte-sonner": "^1.0.7",
 		"tonal": "^6.0.0",
-		"vexflow": "^3.0.9"
+		"vexflow": "3.0.9"
 	},
 	"type": "module",
 	"lint-staged": {
