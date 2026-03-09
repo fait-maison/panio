@@ -11,7 +11,7 @@ function loadPreferredDevice(): string | null {
 	return localStorage.getItem('piano-midi-device');
 }
 
-let _pressed: SvelteSet<number> = new SvelteSet();
+const _pressed: SvelteSet<number> = new SvelteSet();
 let _status = $state<MidiStatus>('disconnected');
 let _deviceName = $state<string | null>(null);
 let _inputList = $state<MidiInput[]>([]);
