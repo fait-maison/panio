@@ -1,9 +1,10 @@
 <script lang="ts">
 	import * as ToggleGroup from '$lib/components/ui/toggle-group/index.js';
+	import * as Select from '$lib/components/ui/select/index.js';
 	import { settings } from '$lib/stores/settings.svelte';
 	import type { KeyboardSize, ProgressionNotation } from '$lib/stores/settings.svelte';
 	import { t, locale, type Locale } from '$lib/i18n.svelte';
-	import MidiStatus from '$lib/components/MidiStatus.svelte';
+	import { midi } from '$lib/stores/midi.svelte';
 
 	const KEYBOARD_SIZES: { value: KeyboardSize; label: string }[] = [
 		{ value: 's', label: 'S' },
@@ -86,8 +87,33 @@
 
 		<hr class="divider" />
 
-		<section class="midi-section">
-			<MidiStatus />
+		<section>
+			<h2>{t('midi.selectDevice')}</h2>
+			<Select.Root
+				type="single"
+				value={midi.preferredDeviceId ?? ''}
+				onValueChange={(v: string) => midi.setPreferredDevice(v === '' ? null : v)}
+				disabled={midi.inputList.length === 0}
+			>
+				<Select.Trigger class="w-full">
+					{#if midi.inputList.length === 0}
+						{t('midi.noDevices')}
+					{:else if midi.preferredDeviceId === null}
+						{t('midi.noDevice')}
+					{:else}
+						{midi.inputList.find((d) => d.id === midi.preferredDeviceId)?.name ??
+							t('midi.noDevice')}
+					{/if}
+				</Select.Trigger>
+				<Select.Content>
+					{#if midi.preferredDeviceId !== null}
+						<Select.Item value="">{t('midi.noDevice')}</Select.Item>
+					{/if}
+					{#each midi.inputList as device (device.id)}
+						<Select.Item value={device.id}>{device.name}</Select.Item>
+					{/each}
+				</Select.Content>
+			</Select.Root>
 		</section>
 	</div>
 </main>
@@ -147,13 +173,6 @@
 		background: var(--border-subtle);
 		margin: 0 auto;
 		border: none;
-	}
-
-	/* ── MIDI ── */
-	.midi-section {
-		display: flex;
-		align-items: center;
-		justify-content: center;
 	}
 
 	/* ── Responsive ── */
