@@ -36,7 +36,7 @@
 		selectedKey = newKey;
 		if (rhythmPlayer.playing && pattern) {
 			rhythmPlayer.stop();
-			rhythmPlayer.start(pattern, selectedKey, bpm);
+			rhythmPlayer.start(pattern, newKey, bpm);
 		}
 	}
 
@@ -95,6 +95,7 @@
 			const sorted = [...patSteps].sort((a, b) => a.step - b.step);
 			let cursor = 0;
 			for (const s of sorted) {
+				if (s.step < cursor) continue; // skip overlapping steps (future-proof guard)
 				if (s.step > cursor) {
 					notes.push(
 						new StaveNote({
@@ -153,7 +154,14 @@
 		const pat = pattern;
 		const key = selectedKey;
 		if (!pat) return;
-		Promise.resolve().then(() => renderNotation(pat, key));
+		let cancelled = false;
+		// Defer to microtask so the DOM node is mounted before reading clientWidth
+		Promise.resolve().then(() => {
+			if (!cancelled) renderNotation(pat, key);
+		});
+		return () => {
+			cancelled = true;
+		};
 	});
 
 	onMount(() => {
