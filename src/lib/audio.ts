@@ -33,7 +33,8 @@ export function getAudioContext(): AudioContext {
  * @param midi - MIDI note number (0–127)
  * @param when - AudioContext time in seconds (use audioCtx.currentTime + offset)
  * @param gain - volume 0–1
+ * @param duration - note duration in seconds (caps sustain; without it notes decay naturally)
  */
-export function scheduleNote(midi: number, when: number, gain = 0.8): void {
-	void getPlayer().then((player) => player.play(midi, when, { gain }));
+export function scheduleNote(midi: number, when: number, gain = 0.8, duration?: number): void {
+	void getPlayer().then((player) => player.play(midi, when, { gain, duration }));
 }

@@ -52,7 +52,9 @@ function scheduleAhead(): void {
 		for (const s of notesHere) {
 			const midi = midiForStep(s, _rootMidi);
 			const gain = (s.velocity / 127) * 0.9;
-			scheduleNote(midi, _nextStepTime, gain);
+			// Cap note at 90% of its written duration so adjacent notes don't blur together
+			const duration = s.duration * stepDur * 0.9;
+			scheduleNote(midi, _nextStepTime, gain, duration);
 		}
 		_stepQueue.push({ stepIndex: _stepIndex, audioTime: _nextStepTime });
 		_nextStepTime += stepDur;
