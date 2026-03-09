@@ -107,7 +107,19 @@ const translations = {
 		'rhythm.barcarolle': 'barcarolle',
 		'rhythm.flamenco': 'flamenco',
 		'rhythm.tarantella': 'tarantella',
-		'rhythm.samba': 'samba'
+		'rhythm.samba': 'samba',
+		// rhythm training pages
+		'rhythm.title': 'Rhythm Training',
+		'rhythm.comingSoon': 'Coming soon',
+		'rhythm.play': 'Play',
+		'rhythm.stop': 'Stop',
+		'rhythm.bpm': 'BPM',
+		'rhythm.key': 'Key',
+		'rhythm.notation': 'Notation',
+		'rhythm.beatGrid': 'Beat grid',
+		'rhythm.bass': 'Bass',
+		'rhythm.chord': 'Chord',
+		'rhythm.backToAll': '← All rhythms'
 	},
 	fr: {
 		'app.title': 'Panio',
@@ -210,7 +222,19 @@ const translations = {
 		'rhythm.barcarolle': 'barcarolle',
 		'rhythm.flamenco': 'flamenco',
 		'rhythm.tarantella': 'tarentelle',
-		'rhythm.samba': 'samba'
+		'rhythm.samba': 'samba',
+		// rhythm training pages
+		'rhythm.title': 'Entraînement rythmique',
+		'rhythm.comingSoon': 'Bientôt disponible',
+		'rhythm.play': 'Jouer',
+		'rhythm.stop': 'Arrêter',
+		'rhythm.bpm': 'BPM',
+		'rhythm.key': 'Tonalité',
+		'rhythm.notation': 'Notation',
+		'rhythm.beatGrid': 'Grille rythmique',
+		'rhythm.bass': 'Basse',
+		'rhythm.chord': 'Accord',
+		'rhythm.backToAll': '← Tous les rythmes'
 	}
 } satisfies Record<Locale, Record<string, string>>;
 
