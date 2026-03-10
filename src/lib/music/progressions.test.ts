@@ -222,6 +222,45 @@ describe('chordToRoman ↔ toChordSymbol roundtrip', () => {
 	}
 });
 
+describe('PROGRESSIONS notation consistency — all stored numerals round-trip via parallel major', () => {
+	const TONAL_NAME: Record<string, string> = {
+		Major: 'major',
+		Minor: 'aeolian',
+		'Harmonic Minor': 'harmonic minor',
+		Dorian: 'dorian',
+		Phrygian: 'phrygian',
+		Lydian: 'lydian',
+		Mixolydian: 'mixolydian',
+		Locrian: 'locrian'
+	};
+	// Representative key per mode (avoids enharmonic edge cases)
+	const KEY: Record<string, string> = {
+		Major: 'C',
+		Minor: 'A',
+		'Harmonic Minor': 'B',
+		Dorian: 'D',
+		Phrygian: 'E',
+		Lydian: 'F',
+		Mixolydian: 'G',
+		Locrian: 'B'
+	};
+
+	for (const [modeName, pools] of Object.entries(PROGRESSIONS)) {
+		const key = KEY[modeName];
+		const tonal = TONAL_NAME[modeName];
+		for (const [diff, progs] of Object.entries(pools)) {
+			for (const prog of progs as string[][]) {
+				for (const roman of prog) {
+					it(`${modeName} ${diff}: ${roman} round-trips`, () => {
+						const chord = toChordSymbol(key, tonal, roman);
+						expect(chordToRoman(chord, key)).toBe(roman);
+					});
+				}
+			}
+		}
+	}
+});
+
 describe('PROGRESSIONS coverage', () => {
 	const REQUIRED_MODES = [
 		'Major',
