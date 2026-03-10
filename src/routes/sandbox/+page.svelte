@@ -73,7 +73,7 @@
 	let chordLabel = $derived(
 		displayedChord
 			? settings.value.progressionNotation === 'roman'
-				? chordToRoman(displayedChord.label, ambiance.current.key, ambiance.current.mode.tonalName)
+				? chordToRoman(displayedChord.label, ambiance.current.key)
 				: displayedChord.label
 			: null
 	);

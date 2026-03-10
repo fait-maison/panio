@@ -301,12 +301,14 @@ function chromaToNumeral(chroma: number, chromas: number[]): string | null {
 	return null;
 }
 
-export function chordToRoman(chordLabel: string, key: string, tonalModeName: string): string {
+export function chordToRoman(chordLabel: string, key: string): string {
 	const slashIdx = chordLabel.indexOf('/');
 	const baseLabel = slashIdx >= 0 ? chordLabel.slice(0, slashIdx) : chordLabel;
 	const chord = Chord.get(baseLabel);
 	if (!chord.tonic) return chordLabel;
-	const scale = Scale.get(`${key} ${tonalModeName}`);
+	// Always use the parallel major as reference so numerals match stored progression notation:
+	// bIII/bVI/bVII in minor modes are relative to the parallel major, not the modal scale.
+	const scale = Scale.get(`${key} major`);
 	if (!scale.notes.length) return chordLabel;
 	const chromas = scale.notes.map((n) => Note.chroma(n));
 	const rootNumeral = chromaToNumeral(Note.chroma(chord.tonic), chromas);
