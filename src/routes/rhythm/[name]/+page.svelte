@@ -161,7 +161,8 @@
 						})
 					);
 				}
-				// Chord voice: expand to full root-position triad (1-3-5)
+				// Chord voice: always a root-position major triad (1-3-5). s.degree is unused for chords
+				// intentionally — the rhythm player also always plays a full triad, so notation matches audio.
 				// Bass voice: single note at the step's scale degree
 				const keys = isChord
 					? [1, 3, 5].map((d) => midiToVfKey(noteRootMidi + (DEGREE_SEMI[d] ?? 0) + s.octave * 12))
