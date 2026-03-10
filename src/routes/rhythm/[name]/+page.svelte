@@ -124,9 +124,17 @@
 				6: 'qd',
 				8: 'h',
 				12: 'hd',
-				16: 'w'
+				16: 'w',
+				24: 'w' // full bar in 12/8 (4 dotted-quarter beats); VexFlow has no 'wd', treat as whole
 			};
-			return m[n] ?? '16';
+			const result = m[n];
+			if (!result) {
+				console.error(
+					`[rhythm notation] unmapped duration: ${n} steps — defaulting to 16th. Extend dur() map.`
+				);
+				return '16';
+			}
+			return result;
 		}
 
 		function buildNotes(
