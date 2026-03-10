@@ -274,7 +274,6 @@
 			</p>
 			<h1 class="rhythm-name">{t(`rhythm.${name}`)}</h1>
 			<p class="desc">{pattern.description}</p>
-			<a class="practice-btn" href="/sandbox?rhythm={name}">{t('rhythm.practice')}</a>
 		</header>
 
 		<section class="notation-section" aria-label={t('rhythm.notation')}>
@@ -311,9 +310,12 @@
 		</section>
 
 		<section class="controls">
-			<button class="play-btn" class:playing={rhythmPlayer.playing} onclick={toggle}>
-				{rhythmPlayer.playing ? t('rhythm.stop') : t('rhythm.play')}
-			</button>
+			<div class="action-row">
+				<button class="play-btn" class:playing={rhythmPlayer.playing} onclick={toggle}>
+					{rhythmPlayer.playing ? t('rhythm.stop') : t('rhythm.play')}
+				</button>
+				<a class="practice-btn" href="/sandbox?rhythm={name}">{t('rhythm.practice')} →</a>
+			</div>
 
 			<div class="bpm-row">
 				<span class="ctrl-label">{t('rhythm.bpm')}</span>
@@ -394,23 +396,6 @@
 		line-height: 1.6;
 	}
 
-	.practice-btn {
-		display: inline-block;
-		padding: 0.5rem 1.25rem;
-		background: var(--text);
-		color: #fff;
-		border-radius: var(--radius-card);
-		font-size: 0.75rem;
-		font-weight: 700;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		text-decoration: none;
-		transition: background var(--dur-base);
-	}
-	.practice-btn:hover {
-		background: #cc2936;
-	}
-
 	.notation-section {
 		background: var(--card);
 		border: 1px solid var(--border);
@@ -481,13 +466,19 @@
 		gap: var(--sp-4);
 	}
 
+	.action-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--sp-3);
+	}
+
 	.play-btn {
 		height: 48px;
 		background: var(--text);
-		color: #fff;
+		color: var(--background);
 		border: none;
 		border-radius: var(--radius-card);
-		font-size: 0.8rem;
+		font-size: 0.75rem;
 		font-weight: 700;
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
@@ -495,7 +486,26 @@
 		transition: background var(--dur-base);
 	}
 	.play-btn.playing {
+		background: oklch(0.35 0.02 0);
+	}
+
+	.practice-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 48px;
 		background: #cc2936;
+		color: #fff;
+		border-radius: var(--radius-card);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		text-decoration: none;
+		transition: background var(--dur-base);
+	}
+	.practice-btn:hover {
+		background: oklch(from #cc2936 calc(l - 0.06) c h);
 	}
 
 	.bpm-row,
