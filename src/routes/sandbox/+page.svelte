@@ -6,6 +6,9 @@
 	import { midi } from '$lib/stores/midi.svelte';
 	import { settings } from '$lib/stores/settings.svelte';
 	import { chordToRoman } from '$lib/music/progressions';
+	import { page } from '$app/stores';
+	import { RHYTHM_PATTERNS } from '$lib/music/rhythmPatterns';
+	import type { Rhythm } from '$lib/music/rhythms';
 
 	import AmbianceCard from '$lib/components/AmbianceCard.svelte';
 	import PianoKeyboard from '$lib/components/PianoKeyboard.svelte';
@@ -96,12 +99,17 @@
 	onMount(() => {
 		void requestWakeLock();
 		document.addEventListener('visibilitychange', onVisibilityChange);
+		const rhythmParam = $page.url.searchParams.get('rhythm') as Rhythm | null;
+		if (rhythmParam && RHYTHM_PATTERNS[rhythmParam]) {
+			ambiance.lockRhythm(rhythmParam);
+		}
 	});
 
 	onDestroy(() => {
 		if (typeof document !== 'undefined') {
 			void wakeLock?.release();
 			document.removeEventListener('visibilitychange', onVisibilityChange);
+			ambiance.lockRhythm(null);
 		}
 	});
 </script>

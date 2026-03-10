@@ -273,6 +273,7 @@
 			</p>
 			<h1 class="rhythm-name">{t(`rhythm.${name}`)}</h1>
 			<p class="desc">{pattern.description}</p>
+			<a class="practice-btn" href="/sandbox?rhythm={name}">{t('rhythm.practice')}</a>
 		</header>
 
 		<section class="notation-section" aria-label={t('rhythm.notation')}>
@@ -390,6 +391,24 @@
 		font-size: 0.8rem;
 		color: var(--text-muted);
 		line-height: 1.6;
+	}
+
+	.practice-btn {
+		display: inline-block;
+		padding: 0.5rem 1.25rem;
+		background: var(--text);
+		color: #fff;
+		border-radius: var(--radius-card);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		text-decoration: none;
+		transition: background var(--dur-base);
+		align-self: flex-start;
+	}
+	.practice-btn:hover {
+		background: #cc2936;
 	}
 
 	.notation-section {

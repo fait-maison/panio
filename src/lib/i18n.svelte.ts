@@ -119,7 +119,8 @@ const translations = {
 		'rhythm.beatGrid': 'Beat grid',
 		'rhythm.bass': 'Bass',
 		'rhythm.chord': 'Chord',
-		'rhythm.backToAll': '← All rhythms'
+		'rhythm.backToAll': '← All rhythms',
+		'rhythm.practice': 'Practice'
 	},
 	fr: {
 		'app.title': 'Panio',
@@ -234,7 +235,8 @@ const translations = {
 		'rhythm.beatGrid': 'Grille rythmique',
 		'rhythm.bass': 'Basse',
 		'rhythm.chord': 'Accord',
-		'rhythm.backToAll': '← Tous les rythmes'
+		'rhythm.backToAll': '← Tous les rythmes',
+		'rhythm.practice': 'Pratiquer'
 	}
 } satisfies Record<Locale, Record<string, string>>;
 
