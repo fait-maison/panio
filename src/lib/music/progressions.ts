@@ -76,7 +76,7 @@ const PROGRESSIONS: Record<string, Record<Difficulty, RomanProgression[]>> = {
 			['bVI', 'V', 'i', 'V'],
 			['i', 'iv', 'vii°', 'V'],
 			['i', 'bVI', 'iv', 'V'],
-			['i', 'III+', 'bVI', 'V']
+			['i', 'bIII+', 'bVI', 'V']
 		],
 		rich: [
 			['im7', 'ivm7', 'V7', 'im7'],
