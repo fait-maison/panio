@@ -25,10 +25,22 @@
 
 	let selectedKey = $state('C');
 	let bpm = $state(120);
+	let _notationWidth = $state(0);
 
 	// Sync bpm with pattern default when pattern changes
 	$effect(() => {
 		if (pattern) bpm = pattern.bpm;
+	});
+
+	$effect(() => {
+		if (typeof document === 'undefined') return;
+		const el = document.getElementById('vf-notation');
+		if (!el) return;
+		const ro = new ResizeObserver((entries) => {
+			_notationWidth = entries[0]?.contentRect.width ?? el.clientWidth;
+		});
+		ro.observe(el);
+		return () => ro.disconnect();
 	});
 
 	function toggle() {
@@ -211,6 +223,7 @@
 	$effect(() => {
 		const pat = pattern;
 		const key = selectedKey;
+		void _notationWidth; // reactive dep — re-renders on container resize
 		if (!pat) return;
 		let cancelled = false;
 		// Defer to microtask so the DOM node is mounted before reading clientWidth
