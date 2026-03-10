@@ -16,7 +16,11 @@
 	const pattern = $derived(RHYTHM_PATTERNS[name as keyof typeof RHYTHM_PATTERNS] ?? null);
 	const steps = $derived(pattern ? totalSteps(pattern.timeSignature) : 16);
 	const beatSteps = $derived(
-		pattern ? (pattern.timeSignature[1] === 8 ? 6 : 16 / pattern.timeSignature[1]) : 4
+		pattern
+			? pattern.timeSignature[1] === 8 && pattern.timeSignature[0] % 3 === 0
+				? 6
+				: 16 / pattern.timeSignature[1]
+			: 4
 	);
 
 	let selectedKey = $state('C');
