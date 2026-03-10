@@ -405,7 +405,6 @@
 		text-transform: uppercase;
 		text-decoration: none;
 		transition: background var(--dur-base);
-		align-self: flex-start;
 	}
 	.practice-btn:hover {
 		background: #cc2936;
