@@ -282,29 +282,39 @@
 
 		<section class="grid-section" aria-label={t('rhythm.beatGrid')}>
 			<div class="track-label">{t('rhythm.bass')}</div>
-			<div class="beat-grid" style="grid-template-columns: repeat({steps}, 1fr)">
-				{#each Array(steps) as _, i}
-					<div
-						class="cell"
-						class:beat-start={i > 0 && i % beatSteps === 0}
-						class:bass-strong={pattern.bass.some((s) => s.step === i && s.velocity > 70)}
-						class:bass-weak={pattern.bass.some((s) => s.step === i && s.velocity <= 70)}
-						class:bass-sustain={pattern.bass.some((s) => i > s.step && i < s.step + s.duration)}
-						class:active={rhythmPlayer.currentStep === i}
-					></div>
+			<div class="beat-grid">
+				{#each Array(steps / beatSteps) as _, beatIdx}
+					<div class="beat-group" style="grid-template-columns: repeat({beatSteps}, 1fr)">
+						{#each Array(beatSteps) as _, stepInBeat}
+							{@const i = beatIdx * beatSteps + stepInBeat}
+							<div
+								class="cell"
+								class:bass-strong={pattern.bass.some((s) => s.step === i && s.velocity > 70)}
+								class:bass-weak={pattern.bass.some((s) => s.step === i && s.velocity <= 70)}
+								class:bass-sustain={pattern.bass.some((s) => i > s.step && i < s.step + s.duration)}
+								class:active={rhythmPlayer.currentStep === i}
+							></div>
+						{/each}
+					</div>
 				{/each}
 			</div>
 
 			<div class="track-label">{t('rhythm.chord')}</div>
-			<div class="beat-grid chord-track" style="grid-template-columns: repeat({steps}, 1fr)">
-				{#each Array(steps) as _, i}
-					<div
-						class="cell"
-						class:beat-start={i > 0 && i % beatSteps === 0}
-						class:chord-hit={pattern.chords.some((s) => s.step === i)}
-						class:chord-sustain={pattern.chords.some((s) => i > s.step && i < s.step + s.duration)}
-						class:active={rhythmPlayer.currentStep === i}
-					></div>
+			<div class="beat-grid chord-track">
+				{#each Array(steps / beatSteps) as _, beatIdx}
+					<div class="beat-group" style="grid-template-columns: repeat({beatSteps}, 1fr)">
+						{#each Array(beatSteps) as _, stepInBeat}
+							{@const i = beatIdx * beatSteps + stepInBeat}
+							<div
+								class="cell"
+								class:chord-hit={pattern.chords.some((s) => s.step === i)}
+								class:chord-sustain={pattern.chords.some(
+									(s) => i > s.step && i < s.step + s.duration
+								)}
+								class:active={rhythmPlayer.currentStep === i}
+							></div>
+						{/each}
+					</div>
 				{/each}
 			</div>
 		</section>
@@ -423,8 +433,14 @@
 	}
 
 	.beat-grid {
+		display: flex;
+		gap: 8px;
+	}
+
+	.beat-group {
 		display: grid;
 		gap: 3px;
+		flex: 1;
 	}
 
 	.cell {
@@ -432,10 +448,6 @@
 		border-radius: 4px;
 		background: var(--border);
 		transition: background 0.05s;
-	}
-
-	.cell.beat-start {
-		box-shadow: inset 3px 0 0 color-mix(in srgb, var(--text) 22%, transparent);
 	}
 
 	.cell.bass-strong {
