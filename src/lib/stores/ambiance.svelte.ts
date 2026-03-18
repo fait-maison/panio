@@ -1,6 +1,7 @@
 import { generateAmbiance, type Ambiance } from '$lib/music/generator';
 import { settings } from './settings.svelte';
 import type { Style } from '$lib/music/styles';
+import type { Pattern } from '$lib/music/patterns';
 
 let _current = $state<Ambiance>(
 	generateAmbiance(
@@ -11,6 +12,7 @@ let _current = $state<Ambiance>(
 	)
 );
 let _lockedStyle = $state<Style | null>(null);
+let _lockedPattern = $state<Pattern | null>(null);
 
 export const ambiance = {
 	get current() {
@@ -23,9 +25,17 @@ export const ambiance = {
 	},
 	lockStyle(style: Style | null): void {
 		_lockedStyle = style;
+		if (style) _lockedPattern = null; // clear locked pattern when locking a style
 		if (style) _current = { ..._current, style };
 	},
 	get lockedStyle() {
 		return _lockedStyle;
+	},
+	lockPattern(pattern: Pattern | null): void {
+		_lockedPattern = pattern;
+		if (pattern) _lockedStyle = null; // clear locked style when locking a pattern
+	},
+	get lockedPattern() {
+		return _lockedPattern;
 	}
 };

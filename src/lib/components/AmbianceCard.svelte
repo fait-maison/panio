@@ -4,6 +4,7 @@
 	import SlidersHorizontal from '@lucide/svelte/icons/sliders-horizontal';
 	import X from '@lucide/svelte/icons/x';
 	import type { Ambiance } from '$lib/music/generator';
+	import type { Pattern } from '$lib/music/patterns';
 	import { timer } from '$lib/stores/timer.svelte';
 	import { t } from '$lib/i18n.svelte';
 	import { settings } from '$lib/stores/settings.svelte';
@@ -16,11 +17,13 @@
 	let {
 		ambiance,
 		timer: timerProp,
+		lockedPattern = null,
 		onChordHover = () => {},
 		onSkip = () => {}
 	}: {
 		ambiance: Ambiance;
 		timer: typeof timer;
+		lockedPattern?: Pattern | null;
 		onChordHover?: (notes: Set<number>, root: number | null) => void;
 		onSkip?: () => void;
 	} = $props();
@@ -114,7 +117,9 @@
 				<span class="separator">·</span>
 				<span class="mode">{t('mode.' + ambiance.mode.name).toUpperCase()}</span>
 			</div>
-			<div class="musical-style">{t('style.' + ambiance.style)}</div>
+			<div class="musical-style">
+				{lockedPattern ? t('pattern.' + lockedPattern) : t('style.' + ambiance.style)}
+			</div>
 			<div class="progression-sep"></div>
 			<div
 				class="progression"
