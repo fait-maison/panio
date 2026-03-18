@@ -2,14 +2,8 @@
 <script lang="ts">
 	import { t } from '$lib/i18n.svelte';
 	import { STYLES } from '$lib/music/styles';
-	import { STYLE_PATTERNS } from '$lib/music/stylePatterns';
+	import { STYLE_PATTERNS, musicalBpm } from '$lib/music/stylePatterns';
 	import { resolve } from '$app/paths';
-
-	function musicalBpm(bpm: number, ts: [number, number]): { value: number; unit: string } {
-		// Compound time (6/8, 12/8): scheduler bpm = 1.5 × dotted-quarter bpm
-		if (ts[1] === 8) return { value: Math.round(bpm / 1.5), unit: '♩.' };
-		return { value: bpm, unit: '♩' };
-	}
 </script>
 
 <svelte:head>

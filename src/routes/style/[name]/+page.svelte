@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { t } from '$lib/i18n.svelte';
-	import { STYLE_PATTERNS, totalSteps } from '$lib/music/stylePatterns';
+	import { STYLE_PATTERNS, totalSteps, musicalBpm } from '$lib/music/stylePatterns';
 	import { stylePlayer } from '$lib/stores/stylePlayer.svelte';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Slider } from '$lib/components/ui/slider/index.js';
@@ -237,12 +237,6 @@
 			cancelled = true;
 		};
 	});
-
-	function musicalBpm(bpm: number, ts: [number, number]): { value: number; unit: string } {
-		// Compound time (6/8, 12/8): scheduler bpm = 1.5 × dotted-quarter bpm
-		if (ts[1] === 8) return { value: Math.round(bpm / 1.5), unit: '♩.' };
-		return { value: bpm, unit: '♩' };
-	}
 
 	onMount(() => {
 		if (pattern === null) goto('/style');
