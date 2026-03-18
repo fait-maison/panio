@@ -22,7 +22,7 @@ describe('getScaleNotes', () => {
 		const notes = getScaleNotes({
 			mode: mode('Major'),
 			key: 'C',
-			rhythm: '',
+			style: '',
 			mood: MOODS[0],
 			progression: []
 		});
@@ -36,7 +36,7 @@ describe('getScaleNotes', () => {
 		const notes = getScaleNotes({
 			mode: mode('Minor'),
 			key: 'A',
-			rhythm: '',
+			style: '',
 			mood: MOODS[0],
 			progression: []
 		});
@@ -50,7 +50,7 @@ describe('getScaleNotes', () => {
 		const notes = getScaleNotes({
 			mode: mode('Harmonic Minor'),
 			key: 'A',
-			rhythm: '',
+			style: '',
 			mood: MOODS[0],
 			progression: []
 		});
@@ -63,7 +63,7 @@ describe('getScaleNotes', () => {
 		const notes = getScaleNotes({
 			mode: mode('Dorian'),
 			key: 'C',
-			rhythm: '',
+			style: '',
 			mood: MOODS[0],
 			progression: []
 		});
@@ -77,7 +77,7 @@ describe('getScaleNotes', () => {
 	it('returns exactly 7 notes for every mode and key', () => {
 		for (const m of MODES) {
 			for (const key of ['C', 'F#', 'Bb']) {
-				const notes = getScaleNotes({ mode: m, key, rhythm: '', mood: MOODS[0], progression: [] });
+				const notes = getScaleNotes({ mode: m, key, style: '', mood: MOODS[0], progression: [] });
 				expect(notes.size, `${key} ${m.name} should have 7 notes`).toBe(7);
 			}
 		}

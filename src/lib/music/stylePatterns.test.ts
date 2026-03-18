@@ -1,26 +1,26 @@
-// src/lib/music/rhythmPatterns.test.ts
+// src/lib/music/stylePatterns.test.ts
 import { describe, it, expect } from 'vitest';
-import { RHYTHM_PATTERNS, totalSteps } from './rhythmPatterns';
-import { RHYTHMS } from './rhythms';
+import { STYLE_PATTERNS, totalSteps } from './stylePatterns';
+import { STYLES } from './styles';
 
-describe('RHYTHM_PATTERNS', () => {
-	it('has an entry for every rhythm key', () => {
-		for (const key of RHYTHMS) {
-			expect(key in RHYTHM_PATTERNS).toBe(true);
+describe('STYLE_PATTERNS', () => {
+	it('has an entry for every style key', () => {
+		for (const key of STYLES) {
+			expect(key in STYLE_PATTERNS).toBe(true);
 		}
 	});
 
-	it('has exactly 23 keys matching RHYTHMS', () => {
-		expect(Object.keys(RHYTHM_PATTERNS).length).toBe(RHYTHMS.length);
+	it('has exactly 10 keys matching STYLES', () => {
+		expect(Object.keys(STYLE_PATTERNS).length).toBe(STYLES.length);
 	});
 
-	const defined = Object.entries(RHYTHM_PATTERNS).filter(([, p]) => p !== null) as [
+	const defined = Object.entries(STYLE_PATTERNS) as [
 		string,
-		NonNullable<(typeof RHYTHM_PATTERNS)[keyof typeof RHYTHM_PATTERNS]>
+		(typeof STYLE_PATTERNS)[keyof typeof STYLE_PATTERNS]
 	][];
 
-	it('has 17 defined (non-null) patterns at launch', () => {
-		expect(defined.length).toBe(17);
+	it('has 10 defined (non-null) patterns', () => {
+		expect(defined.length).toBe(10);
 	});
 
 	for (const [name, pattern] of defined) {
@@ -28,6 +28,17 @@ describe('RHYTHM_PATTERNS', () => {
 			it('has BPM in range 40–240', () => {
 				expect(pattern.bpm).toBeGreaterThanOrEqual(40);
 				expect(pattern.bpm).toBeLessThanOrEqual(240);
+			});
+
+			it('has a valid ChordQuality', () => {
+				expect(
+					['Major', 'Minor', 'Augmented', 'Diminished', 'Unknown'].includes(pattern.quality)
+				).toBe(true);
+			});
+
+			it('has swing in range 0–0.5', () => {
+				expect(pattern.swing).toBeGreaterThanOrEqual(0);
+				expect(pattern.swing).toBeLessThanOrEqual(0.5);
 			});
 
 			it('has a valid time signature', () => {
@@ -44,9 +55,9 @@ describe('RHYTHM_PATTERNS', () => {
 				expect(pattern.chords.length).toBeGreaterThan(0);
 			});
 
-			it('has a non-empty style string', () => {
-				expect(typeof pattern.style).toBe('string');
-				expect(pattern.style.length).toBeGreaterThan(0);
+			it('has a non-empty origin string', () => {
+				expect(typeof pattern.origin).toBe('string');
+				expect(pattern.origin.length).toBeGreaterThan(0);
 			});
 
 			const total = totalSteps(pattern.timeSignature);
@@ -74,8 +85,13 @@ describe('RHYTHM_PATTERNS', () => {
 						expect(step.step + step.duration).toBeLessThanOrEqual(total);
 					});
 
-					it(`${voiceLabel} step ${step.step} degree is a valid scale degree (1, 3, or 5)`, () => {
-						expect([1, 3, 5].includes(step.degree)).toBe(true);
+					it(`${voiceLabel} step ${step.step} semitones is a non-empty array of numbers in range -24 to 24`, () => {
+						expect(Array.isArray(step.semitones)).toBe(true);
+						expect(step.semitones.length).toBeGreaterThan(0);
+						for (const s of step.semitones) {
+							expect(s).toBeGreaterThanOrEqual(-24);
+							expect(s).toBeLessThanOrEqual(24);
+						}
 					});
 
 					it(`${voiceLabel} step ${step.step} octave is in range -2 to 2`, () => {

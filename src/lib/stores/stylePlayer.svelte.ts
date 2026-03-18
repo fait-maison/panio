@@ -1,25 +1,13 @@
-// src/lib/stores/rhythmPlayer.svelte.ts
+// src/lib/stores/stylePlayer.svelte.ts
 import { getAudioContext, scheduleNote } from '$lib/audio';
 import { scheduleMidiNote } from '$lib/stores/midi.svelte';
 import { settings } from '$lib/stores/settings.svelte';
 import { Note } from 'tonal';
-import type { RhythmPattern, PatternStep } from '$lib/music/rhythmPatterns';
-import { totalSteps } from '$lib/music/rhythmPatterns';
+import type { PatternDef } from '$lib/music/stylePatterns';
+import { totalSteps } from '$lib/music/stylePatterns';
 
 const LOOKAHEAD_SEC = 0.1; // schedule 100ms ahead
 const SCHEDULE_INTERVAL_MS = 25; // check every 25ms
-
-// Scale degree → semitone offset from root
-const DEGREE_SEMITONES: Record<1 | 3 | 5, number> = {
-	1: 0, // root
-	3: 4, // major third
-	5: 7 // perfect fifth
-};
-
-function midiForStep(step: PatternStep, rootMidi: number): number {
-	const semitones = DEGREE_SEMITONES[step.degree as 1 | 3 | 5] ?? 0;
-	return rootMidi + semitones + step.octave * 12;
-}
 
 function stepDurationSec(bpm: number): number {
 	return 60 / bpm / 4; // 1/16th note in seconds
@@ -30,7 +18,7 @@ function stepDurationSec(bpm: number): number {
 let _currentStep = $state(-1);
 let _playing = $state(false);
 
-let _pattern: NonNullable<RhythmPattern> | null = null;
+let _pattern: PatternDef | null = null;
 let _rootMidi = 60; // C4
 let _bpm = 120;
 
@@ -55,24 +43,30 @@ function scheduleAhead(): void {
 			dur: s.duration * stepDur * 0.9
 		});
 
-		// Bass: single note at the step's degree
+		// Bass: one note per semitone offset (single note for bass lines, occasionally multi)
 		for (const s of _pattern.bass.filter((s) => s.step === _stepIndex)) {
 			const { gain, dur } = noteParams(s);
-			const note = midiForStep(s, _rootMidi);
-			scheduleNote(note, _nextStepTime, gain, dur);
-			scheduleMidiNote(note, s.velocity, _nextStepTime, now, dur);
+			for (const semi of s.semitones) {
+				const note = _rootMidi + semi + s.octave * 12;
+				scheduleNote(note, _nextStepTime, gain, dur);
+				scheduleMidiNote(note, s.velocity, _nextStepTime, now, dur);
+			}
 		}
-		// Chords: play full root-position triad (1-3-5) to match notation
+		// Chords: play all semitone offsets (triad, 7th, inversion — whatever the pattern specifies)
 		for (const s of _pattern.chords.filter((s) => s.step === _stepIndex)) {
 			const { gain, dur } = noteParams(s);
-			for (const degree of [1, 3, 5] as const) {
-				const note = _rootMidi + (DEGREE_SEMITONES[degree] ?? 0) + s.octave * 12;
+			for (const semi of s.semitones) {
+				const note = _rootMidi + semi + s.octave * 12;
 				scheduleNote(note, _nextStepTime, gain, dur);
 				scheduleMidiNote(note, s.velocity, _nextStepTime, now, dur);
 			}
 		}
 		_stepQueue.push({ stepIndex: _stepIndex, audioTime: _nextStepTime });
-		_nextStepTime += stepDur;
+
+		// Swing timing: odd steps land late (+sw), even steps land early (-sw).
+		// Total bar duration is unchanged — every push is matched by a pull.
+		const sw = _pattern.swing * stepDur;
+		_nextStepTime += _stepIndex % 2 === 0 ? stepDur + sw : stepDur - sw;
 		_stepIndex = (_stepIndex + 1) % steps;
 	}
 
@@ -103,7 +97,7 @@ function stopScheduler(): void {
 
 // ── Public API ─────────────────────────────────────────────────────────────
 
-export const rhythmPlayer = {
+export const stylePlayer = {
 	get currentStep() {
 		return _currentStep;
 	},
@@ -115,7 +109,7 @@ export const rhythmPlayer = {
 	 * Start playback. Pre-warms the soundfont player via getAudioContext()
 	 * before launching the scheduler so timestamps are always in the future.
 	 */
-	start(pattern: NonNullable<RhythmPattern>, keyNote: string, bpm: number): void {
+	start(pattern: PatternDef, keyNote: string, bpm: number): void {
 		// Stop any running scheduler before restarting (prevents double-scheduling
 		// if start() is called while already playing, e.g. on key change)
 		stopScheduler();

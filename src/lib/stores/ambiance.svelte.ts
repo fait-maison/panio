@@ -1,6 +1,6 @@
 import { generateAmbiance, type Ambiance } from '$lib/music/generator';
 import { settings } from './settings.svelte';
-import type { Rhythm } from '$lib/music/rhythms';
+import type { Style } from '$lib/music/styles';
 
 let _current = $state<Ambiance>(
 	generateAmbiance(
@@ -10,7 +10,7 @@ let _current = $state<Ambiance>(
 		settings.value.difficultyPool
 	)
 );
-let _lockedRhythm = $state<Rhythm | null>(null);
+let _lockedStyle = $state<Style | null>(null);
 
 export const ambiance = {
 	get current() {
@@ -19,10 +19,13 @@ export const ambiance = {
 	next() {
 		const s = settings.value;
 		_current = generateAmbiance(s.moodPool, s.modePool, s.keyPool, s.difficultyPool, _current);
-		if (_lockedRhythm) _current = { ..._current, rhythm: _lockedRhythm };
+		if (_lockedStyle) _current = { ..._current, style: _lockedStyle };
 	},
-	lockRhythm(rhythm: Rhythm | null): void {
-		_lockedRhythm = rhythm;
-		if (rhythm) _current = { ..._current, rhythm };
+	lockStyle(style: Style | null): void {
+		_lockedStyle = style;
+		if (style) _current = { ..._current, style };
+	},
+	get lockedStyle() {
+		return _lockedStyle;
 	}
 };

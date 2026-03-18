@@ -1,8 +1,8 @@
-<!-- src/routes/rhythm/+page.svelte -->
+<!-- src/routes/style/+page.svelte -->
 <script lang="ts">
 	import { t } from '$lib/i18n.svelte';
-	import { RHYTHMS } from '$lib/music/rhythms';
-	import { RHYTHM_PATTERNS } from '$lib/music/rhythmPatterns';
+	import { STYLES } from '$lib/music/styles';
+	import { STYLE_PATTERNS } from '$lib/music/stylePatterns';
 	import { resolve } from '$app/paths';
 
 	function musicalBpm(bpm: number, ts: [number, number]): { value: number; unit: string } {
@@ -13,31 +13,24 @@
 </script>
 
 <svelte:head>
-	<title>{t('rhythm.title')} — {t('app.title')}</title>
+	<title>{t('style.title')} — {t('app.title')}</title>
 </svelte:head>
 
 <main>
 	<header>
-		<p class="eyebrow">{t('exercise.rhythm')}</p>
-		<h1>{t('rhythm.title')}</h1>
-		<p class="subtitle">{t('exercise.rhythm.desc')}</p>
+		<p class="eyebrow">{t('exercise.style')}</p>
+		<h1>{t('style.title')}</h1>
+		<p class="subtitle">{t('exercise.style.desc')}</p>
 	</header>
 
 	<div class="grid">
-		{#each RHYTHMS as key}
-			{@const pattern = RHYTHM_PATTERNS[key]}
-			{#if pattern !== null}
-				{@const mb = musicalBpm(pattern.bpm, pattern.timeSignature)}
-				<a class="card" href={resolve(`/rhythm/${key}` as '/')}>
-					<span class="card-name">{t(`rhythm.${key}`)}</span>
-					<span class="card-meta">{pattern.style} · {mb.unit} = {mb.value}</span>
-				</a>
-			{:else}
-				<div class="card coming-soon" aria-disabled="true">
-					<span class="card-name">{t(`rhythm.${key}`)}</span>
-					<span class="badge-soon">{t('rhythm.comingSoon')}</span>
-				</div>
-			{/if}
+		{#each STYLES as key}
+			{@const pattern = STYLE_PATTERNS[key]}
+			{@const mb = musicalBpm(pattern.bpm, pattern.timeSignature)}
+			<a class="card" href={resolve(`/style/${key}` as '/')}>
+				<span class="card-name">{t(`style.${key}`)}</span>
+				<span class="card-meta">{pattern.origin} · {mb.unit} = {mb.value}</span>
+			</a>
 		{/each}
 	</div>
 </main>
@@ -105,13 +98,8 @@
 		color: inherit;
 	}
 
-	.card:hover:not(.coming-soon) {
+	.card:hover {
 		background: rgba(0, 0, 0, 0.03);
-	}
-
-	.card.coming-soon {
-		opacity: 0.45;
-		cursor: not-allowed;
 	}
 
 	.card-name {
@@ -124,14 +112,6 @@
 
 	.card-meta {
 		font-size: 0.7rem;
-		color: var(--text-muted);
-	}
-
-	.badge-soon {
-		font-size: 0.6rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
 		color: var(--text-muted);
 	}
 </style>
