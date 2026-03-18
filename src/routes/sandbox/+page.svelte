@@ -9,6 +9,8 @@
 	import { page } from '$app/stores';
 	import { STYLE_PATTERNS } from '$lib/music/stylePatterns';
 	import type { Style } from '$lib/music/styles';
+	import { PATTERN_DEFS } from '$lib/music/patternDefs';
+	import type { Pattern } from '$lib/music/patterns';
 
 	import AmbianceCard from '$lib/components/AmbianceCard.svelte';
 	import PianoKeyboard from '$lib/components/PianoKeyboard.svelte';
@@ -103,6 +105,10 @@
 		if (styleParam && STYLE_PATTERNS[styleParam]) {
 			ambiance.lockStyle(styleParam);
 		}
+		const patternParam = $page.url.searchParams.get('pattern') as Pattern | null;
+		if (patternParam && PATTERN_DEFS[patternParam]) {
+			ambiance.lockPattern(patternParam);
+		}
 	});
 
 	onDestroy(() => {
@@ -110,6 +116,7 @@
 			void wakeLock?.release();
 			document.removeEventListener('visibilitychange', onVisibilityChange);
 			ambiance.lockStyle(null);
+			ambiance.lockPattern(null);
 		}
 	});
 </script>
@@ -119,6 +126,7 @@
 		<AmbianceCard
 			ambiance={ambiance.current}
 			{timer}
+			lockedPattern={ambiance.lockedPattern}
 			onChordHover={(notes: Set<number>, root: number | null) => {
 				hoveredChordNotes = notes;
 				hoveredChordRoot = root;

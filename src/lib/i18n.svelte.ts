@@ -16,6 +16,8 @@ const translations = {
 		'exercise.ear.desc': 'Identify intervals & chords',
 		'exercise.style': 'Style',
 		'exercise.style.desc': 'Musical styles',
+		'exercise.pattern': 'Pattern',
+		'exercise.pattern.desc': 'Left-hand techniques',
 		'badge.soon': 'Soon',
 		// about page
 		'about.tagline': 'About',
@@ -107,7 +109,24 @@ const translations = {
 		'style.bass': 'Bass',
 		'style.chord': 'Chord',
 		'style.backToAll': '← All styles',
-		'style.practice': 'Practice'
+		'style.practice': 'Practice',
+		// pattern training pages
+		'pattern.title': 'Pattern Training',
+		'pattern.comingSoon': 'Coming soon',
+		'pattern.play': 'Play',
+		'pattern.stop': 'Stop',
+		'pattern.bpm': 'BPM',
+		'pattern.key': 'Key',
+		'pattern.notation': 'Notation',
+		'pattern.beatGrid': 'Beat grid',
+		'pattern.bass': 'Bass',
+		'pattern.chord': 'Chord',
+		'pattern.backToAll': '← All patterns',
+		'pattern.practice': 'Practice',
+		'pattern.ostinato': 'Ostinato',
+		'pattern.alberti-bass': 'Alberti Bass',
+		'pattern.arpeggio': 'Arpeggio',
+		'pattern.stride': 'Stride'
 	},
 	fr: {
 		'app.title': 'Panio',
@@ -122,6 +141,8 @@ const translations = {
 		'exercise.ear.desc': 'Identifier intervalles et accords',
 		'exercise.style': 'Style',
 		'exercise.style.desc': 'Styles musicaux',
+		'exercise.pattern': 'Pattern',
+		'exercise.pattern.desc': 'Techniques main gauche',
 		'badge.soon': 'Bientôt',
 		// about page
 		'about.tagline': 'À propos de',
@@ -210,7 +231,24 @@ const translations = {
 		'style.bass': 'Basse',
 		'style.chord': 'Accord',
 		'style.backToAll': '← Tous les styles',
-		'style.practice': 'Pratiquer'
+		'style.practice': 'Pratiquer',
+		// pattern training pages
+		'pattern.title': 'Entraînement aux patterns',
+		'pattern.comingSoon': 'Bientôt disponible',
+		'pattern.play': 'Jouer',
+		'pattern.stop': 'Arrêter',
+		'pattern.bpm': 'BPM',
+		'pattern.key': 'Tonalité',
+		'pattern.notation': 'Notation',
+		'pattern.beatGrid': 'Grille rythmique',
+		'pattern.bass': 'Basse',
+		'pattern.chord': 'Accord',
+		'pattern.backToAll': '← Tous les patterns',
+		'pattern.practice': 'Pratiquer',
+		'pattern.ostinato': 'Ostinato',
+		'pattern.alberti-bass': 'Basse Alberti',
+		'pattern.arpeggio': 'Arpège',
+		'pattern.stride': 'Stride'
 	}
 } satisfies Record<Locale, Record<string, string>>;
 
