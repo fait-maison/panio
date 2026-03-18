@@ -7,7 +7,7 @@ export interface Ambiance {
 	mood: MoodInfo;
 	mode: ModeInfo;
 	key: string;
-	rhythm: string;
+	style: string;
 	progression: RomanProgression;
 }
 
@@ -71,10 +71,10 @@ export function generateAmbiance(
 	const mode = modesToPick[Math.floor(Math.random() * modesToPick.length)];
 
 	const key = pickRandom(resolvedKeys, previous?.key);
-	// Rhythm is picked from the chosen mood's compatible rhythms
-	const rhythm = pickRandom(mood.rhythms as string[], previous?.rhythm);
+	// Style is picked from the chosen mood's compatible styles
+	const style = pickRandom(mood.styles as string[], previous?.style);
 	const difficulty = pickRandom(resolvedDifficulties);
 	const progression = pickProgression(mode.name, difficulty, previous?.progression);
 
-	return { mood, mode, key, rhythm, progression };
+	return { mood, mode, key, style, progression };
 }

@@ -1,61 +1,61 @@
-import type { Rhythm } from './rhythms';
+import type { Style } from './styles';
 
 export interface MoodInfo {
 	name: string;
 	modes: string[];
-	rhythms: Rhythm[];
+	styles: Style[];
 }
 
 export const MOODS: MoodInfo[] = [
 	{
 		name: 'tense',
 		modes: ['Phrygian', 'Locrian', 'Harmonic Minor'],
-		rhythms: ['ostinato', 'tango', 'tarantella', 'flamenco']
+		styles: ['tango', 'flamenco']
 	},
 	{
 		name: 'dark',
 		modes: ['Phrygian', 'Locrian', 'Minor'],
-		rhythms: ['funeral-march', 'nocturne', 'minimalist', 'ostinato']
+		styles: ['ballad', 'shuffle']
 	},
 	{
 		name: 'melancholic',
 		modes: ['Dorian', 'Minor', 'Harmonic Minor'],
-		rhythms: ['ballad', 'nocturne', 'waltz', 'blues', 'barcarolle']
+		styles: ['ballad', 'waltz']
 	},
 	{
 		name: 'bright',
 		modes: ['Major', 'Lydian', 'Mixolydian'],
-		rhythms: ['march', 'samba', 'polka', 'stride', 'fanfare']
+		styles: ['march', 'samba', 'polka']
 	},
 	{
 		name: 'romantic',
 		modes: ['Lydian', 'Dorian', 'Major'],
-		rhythms: ['waltz', 'bossa', 'bolero', 'ballad', 'barcarolle']
+		styles: ['waltz', 'bossa', 'ballad']
 	},
 	{
 		name: 'heroic',
 		modes: ['Mixolydian', 'Major', 'Dorian'],
-		rhythms: ['march', 'fanfare', 'ostinato', 'stride']
+		styles: ['march', 'samba', 'shuffle']
 	},
 	{
 		name: 'playful',
 		modes: ['Major', 'Mixolydian', 'Lydian'],
-		rhythms: ['polka', 'shuffle', 'stride', 'reggae', 'samba', 'funk']
+		styles: ['polka', 'shuffle', 'reggae', 'samba']
 	},
 	{
 		name: 'mysterious',
 		modes: ['Lydian', 'Phrygian', 'Locrian'],
-		rhythms: ['rubato', 'minimalist', 'nocturne', 'barcarolle']
+		styles: ['bossa', 'waltz', 'ballad']
 	},
 	{
 		name: 'dramatic',
 		modes: ['Harmonic Minor', 'Phrygian', 'Minor'],
-		rhythms: ['tango', 'flamenco', 'bolero', 'funeral-march']
+		styles: ['tango', 'flamenco']
 	},
 	{
 		name: 'pastoral',
 		modes: ['Major', 'Lydian', 'Mixolydian'],
-		rhythms: ['waltz', 'lullaby', 'ballad', 'reggae']
+		styles: ['waltz', 'ballad', 'reggae']
 	}
 ];
 

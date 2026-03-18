@@ -114,7 +114,7 @@
 				<span class="separator">·</span>
 				<span class="mode">{t('mode.' + ambiance.mode.name).toUpperCase()}</span>
 			</div>
-			<div class="rhythm">{t('rhythm.' + ambiance.rhythm)}</div>
+			<div class="musical-style">{t('style.' + ambiance.style)}</div>
 			<div class="progression-sep"></div>
 			<div
 				class="progression"
@@ -303,7 +303,7 @@
 		.separator {
 			font-size: 1rem;
 		}
-		.rhythm {
+		.musical-style {
 			font-size: 0.875rem;
 		}
 
@@ -331,7 +331,7 @@
 			font-size: 1.3rem;
 		}
 
-		.rhythm {
+		.musical-style {
 			font-size: 0.8rem;
 		}
 	}
@@ -417,7 +417,7 @@
 		color: var(--text);
 	}
 
-	.rhythm {
+	.musical-style {
 		font-size: 1rem;
 		color: oklch(0.52 0.13 265);
 		text-transform: uppercase;

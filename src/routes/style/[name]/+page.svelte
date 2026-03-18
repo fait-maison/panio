@@ -1,9 +1,9 @@
-<!-- src/routes/rhythm/[name]/+page.svelte -->
+<!-- src/routes/style/[name]/+page.svelte -->
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { t } from '$lib/i18n.svelte';
-	import { RHYTHM_PATTERNS, totalSteps } from '$lib/music/rhythmPatterns';
-	import { rhythmPlayer } from '$lib/stores/rhythmPlayer.svelte';
+	import { STYLE_PATTERNS, totalSteps } from '$lib/music/stylePatterns';
+	import { stylePlayer } from '$lib/stores/stylePlayer.svelte';
 	import * as Select from '$lib/components/ui/select/index.js';
 	import { Slider } from '$lib/components/ui/slider/index.js';
 	import { onDestroy, onMount } from 'svelte';
@@ -13,7 +13,7 @@
 	const CHROMATIC_KEYS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 	const name = $derived($page.params.name);
-	const pattern = $derived(RHYTHM_PATTERNS[name as keyof typeof RHYTHM_PATTERNS] ?? null);
+	const pattern = $derived(STYLE_PATTERNS[name as keyof typeof STYLE_PATTERNS] ?? null);
 	const steps = $derived(pattern ? totalSteps(pattern.timeSignature) : 16);
 	const beatSteps = $derived(
 		pattern
@@ -44,24 +44,24 @@
 	});
 
 	function toggle() {
-		if (rhythmPlayer.playing) {
-			rhythmPlayer.stop();
+		if (stylePlayer.playing) {
+			stylePlayer.stop();
 		} else if (pattern) {
-			rhythmPlayer.start(pattern, selectedKey, bpm);
+			stylePlayer.start(pattern, selectedKey, bpm);
 		}
 	}
 
 	function onKeyChange(newKey: string) {
 		selectedKey = newKey;
-		if (rhythmPlayer.playing && pattern) {
-			rhythmPlayer.stop();
-			rhythmPlayer.start(pattern, newKey, bpm);
+		if (stylePlayer.playing && pattern) {
+			stylePlayer.stop();
+			stylePlayer.start(pattern, newKey, bpm);
 		}
 	}
 
 	function onBpmChange(val: number) {
 		bpm = val;
-		rhythmPlayer.setBpm(bpm);
+		stylePlayer.setBpm(bpm);
 	}
 
 	// VexFlow rendering
@@ -107,7 +107,6 @@
 		// Chord root at C5 (treble range); bass root at C4 (bass notes at octave -1 land on C3/G3)
 		const chordRootMidi = 72 + keyIdx;
 		const bassRootMidi = 60 + keyIdx;
-		const DEGREE_SEMI: Record<number, number> = { 1: 0, 3: 4, 5: 7 };
 		const total = totalSteps(pat.timeSignature);
 
 		function midiToVfKey(midi: number): string {
@@ -142,7 +141,6 @@
 			stemDir: number,
 			color: string,
 			restKey: string,
-			isChord: boolean,
 			clef: string,
 			noteRootMidi: number
 		) {
@@ -161,12 +159,8 @@
 						})
 					);
 				}
-				// Chord voice: always a root-position major triad (1-3-5). s.degree is unused for chords
-				// intentionally — the rhythm player also always plays a full triad, so notation matches audio.
-				// Bass voice: single note at the step's scale degree
-				const keys = isChord
-					? [1, 3, 5].map((d) => midiToVfKey(noteRootMidi + (DEGREE_SEMI[d] ?? 0) + s.octave * 12))
-					: [midiToVfKey(noteRootMidi + (DEGREE_SEMI[s.degree] ?? 0) + s.octave * 12)];
+				// Use semitone offsets directly — voicing (inversions, 7ths, open 5ths) is in pattern data
+				const keys = s.semitones.map((semi) => midiToVfKey(noteRootMidi + semi + s.octave * 12));
 				const note = new StaveNote({
 					keys,
 					duration: dur(s.duration),
@@ -191,8 +185,8 @@
 		}
 
 		// Explicit stem directions: chord voice stems-up (treble), bass voice stems-down (bass)
-		const bassNotes = buildNotes(pat.bass, -1, '#cc2936', 'b/2', false, 'bass', bassRootMidi);
-		const chordNotes = buildNotes(pat.chords, 1, '#1d4ed8', 'b/4', true, 'treble', chordRootMidi);
+		const bassNotes = buildNotes(pat.bass, -1, '#cc2936', 'b/2', 'bass', bassRootMidi);
+		const chordNotes = buildNotes(pat.chords, 1, '#1d4ed8', 'b/4', 'treble', chordRootMidi);
 
 		const voiceBass = new Voice({
 			num_beats: pat.timeSignature[0],
@@ -251,37 +245,37 @@
 	}
 
 	onMount(() => {
-		if (pattern === null) goto('/rhythm');
+		if (pattern === null) goto('/style');
 	});
 
 	onDestroy(() => {
-		if (typeof document !== 'undefined') rhythmPlayer.stop();
+		if (typeof document !== 'undefined') stylePlayer.stop();
 	});
 </script>
 
 <svelte:head>
-	<title>{t(`rhythm.${name}`)} — {t('rhythm.title')} — {t('app.title')}</title>
+	<title>{t(`style.${name}`)} — {t('style.title')} — {t('app.title')}</title>
 </svelte:head>
 
 {#if pattern !== null}
 	{@const mb = musicalBpm(pattern.bpm, pattern.timeSignature)}
 	<main>
-		<a class="back-link" href="/rhythm">{t('rhythm.backToAll')}</a>
+		<a class="back-link" href="/style">{t('style.backToAll')}</a>
 
 		<header>
 			<p class="eyebrow">
-				{pattern.style} · {pattern.timeSignature[0]}/{pattern.timeSignature[1]} · {mb.unit} = {mb.value}
+				{pattern.origin} · {pattern.timeSignature[0]}/{pattern.timeSignature[1]} · {mb.unit} = {mb.value}
 			</p>
-			<h1 class="rhythm-name">{t(`rhythm.${name}`)}</h1>
+			<h1 class="rhythm-name">{t(`style.${name}`)}</h1>
 			<p class="desc">{pattern.description}</p>
 		</header>
 
-		<section class="notation-section" aria-label={t('rhythm.notation')}>
+		<section class="notation-section" aria-label={t('style.notation')}>
 			<div id="vf-notation"></div>
 		</section>
 
-		<section class="grid-section" aria-label={t('rhythm.beatGrid')}>
-			<div class="track-label">{t('rhythm.bass')}</div>
+		<section class="grid-section" aria-label={t('style.beatGrid')}>
+			<div class="track-label">{t('style.bass')}</div>
 			<div class="beat-grid">
 				{#each Array(steps / beatSteps) as _, beatIdx}
 					<div class="beat-group" style="grid-template-columns: repeat({beatSteps}, 1fr)">
@@ -292,14 +286,14 @@
 								class:bass-strong={pattern.bass.some((s) => s.step === i && s.velocity > 70)}
 								class:bass-weak={pattern.bass.some((s) => s.step === i && s.velocity <= 70)}
 								class:bass-sustain={pattern.bass.some((s) => i > s.step && i < s.step + s.duration)}
-								class:active={rhythmPlayer.currentStep === i}
+								class:active={stylePlayer.currentStep === i}
 							></div>
 						{/each}
 					</div>
 				{/each}
 			</div>
 
-			<div class="track-label">{t('rhythm.chord')}</div>
+			<div class="track-label">{t('style.chord')}</div>
 			<div class="beat-grid chord-track">
 				{#each Array(steps / beatSteps) as _, beatIdx}
 					<div class="beat-group" style="grid-template-columns: repeat({beatSteps}, 1fr)">
@@ -311,7 +305,7 @@
 								class:chord-sustain={pattern.chords.some(
 									(s) => i > s.step && i < s.step + s.duration
 								)}
-								class:active={rhythmPlayer.currentStep === i}
+								class:active={stylePlayer.currentStep === i}
 							></div>
 						{/each}
 					</div>
@@ -321,14 +315,14 @@
 
 		<section class="controls">
 			<div class="action-row">
-				<button class="play-btn" class:playing={rhythmPlayer.playing} onclick={toggle}>
-					{rhythmPlayer.playing ? t('rhythm.stop') : t('rhythm.play')}
+				<button class="play-btn" class:playing={stylePlayer.playing} onclick={toggle}>
+					{stylePlayer.playing ? t('style.stop') : t('style.play')}
 				</button>
-				<a class="practice-btn" href="/sandbox?rhythm={name}">{t('rhythm.practice')} →</a>
+				<a class="practice-btn" href="/sandbox?style={name}">{t('style.practice')} →</a>
 			</div>
 
 			<div class="bpm-row">
-				<span class="ctrl-label">{t('rhythm.bpm')}</span>
+				<span class="ctrl-label">{t('style.bpm')}</span>
 				<Slider
 					type="single"
 					min={40}
@@ -342,7 +336,7 @@
 			</div>
 
 			<div class="key-row">
-				<span class="ctrl-label">{t('rhythm.key')}</span>
+				<span class="ctrl-label">{t('style.key')}</span>
 				<Select.Root
 					type="single"
 					value={selectedKey}
