@@ -29,6 +29,13 @@ export function totalSteps(ts: [number, number]): number {
 	return ts[0] * (16 / ts[1]); // at 1/16th note resolution
 }
 
+// Helper: convert scheduler BPM + time signature to a human-readable musical BPM.
+// Compound time (6/8, 12/8): scheduler runs at 1.5× the dotted-quarter BPM.
+export function musicalBpm(bpm: number, ts: [number, number]): { value: number; unit: string } {
+	if (ts[1] === 8) return { value: Math.round(bpm / 1.5), unit: '♩.' };
+	return { value: bpm, unit: '♩' };
+}
+
 // ── Pattern definitions ──────────────────────────────────────────────────────
 // Beat positions (4/4): beat1=0, beat2=4, beat3=8, beat4=12
 // Semitone reference: [0]=root, [7]=P5, [0,3,7]=minor triad, [0,4,7]=major triad
