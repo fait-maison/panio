@@ -27,7 +27,7 @@ export function getAudioContext(): AudioContext {
 
 /**
  * Schedule a note to play at a specific AudioContext time.
- * Used by rhythmPlayer for sample-accurate scheduling.
+ * Used by stylePlayer for sample-accurate scheduling.
  * The soundfont player must already be loaded before calling with a future timestamp —
  * if the promise resolves after `when`, the note plays immediately or is dropped.
  * @param midi - MIDI note number (0–127)

@@ -129,7 +129,7 @@
 			const result = m[n];
 			if (!result) {
 				console.error(
-					`[rhythm notation] unmapped duration: ${n} steps — defaulting to 16th. Extend dur() map.`
+					`[style notation] unmapped duration: ${n} steps — defaulting to 16th. Extend dur() map.`
 				);
 				return '16';
 			}
@@ -266,7 +266,7 @@
 			<p class="eyebrow">
 				{pattern.origin} · {pattern.timeSignature[0]}/{pattern.timeSignature[1]} · {mb.unit} = {mb.value}
 			</p>
-			<h1 class="rhythm-name">{t(`style.${name}`)}</h1>
+			<h1 class="style-name">{t(`style.${name}`)}</h1>
 			<p class="desc">{pattern.description}</p>
 		</header>
 
@@ -386,7 +386,7 @@
 		text-transform: uppercase;
 	}
 
-	.rhythm-name {
+	.style-name {
 		font-family: 'DM Serif Display', Georgia, serif;
 		font-size: clamp(2.4rem, 10vw, 3.8rem);
 		line-height: 0.95;
