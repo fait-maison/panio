@@ -2,61 +2,61 @@ import { test, expect } from '@playwright/test';
 
 // ── Sidebar navigation ────────────────────────────────────────────────────────
 
-test.describe('sidebar rhythm navigation', () => {
+test.describe('sidebar style navigation', () => {
 	test.beforeEach(async ({ page }) => {
 		await page.addInitScript(() => {
 			localStorage.setItem('piano-locale', 'en');
 		});
 	});
 
-	test('sidebar has a Rhythm & Texture exercise button', async ({ page }) => {
+	test('sidebar has a Style exercise button', async ({ page }) => {
 		await page.goto('/', { waitUntil: 'networkidle' });
 		await page.getByRole('button', { name: 'Menu' }).click();
-		await expect(page.getByRole('button', { name: /rhythm/i })).toBeVisible();
+		await expect(page.getByRole('button', { name: /style/i })).toBeVisible();
 	});
 
-	test('clicking Rhythm & Texture navigates to /rhythm', async ({ page }) => {
+	test('clicking Style navigates to /style', async ({ page }) => {
 		await page.goto('/', { waitUntil: 'networkidle' });
 		await page.getByRole('button', { name: 'Menu' }).click();
-		await page.getByRole('button', { name: /rhythm/i }).click();
-		await expect(page).toHaveURL('/rhythm');
+		await page.getByRole('button', { name: /style/i }).click();
+		await expect(page).toHaveURL('/style');
 	});
 });
 
-// ── /rhythm list page ─────────────────────────────────────────────────────────
+// ── /style list page ──────────────────────────────────────────────────────────
 
-test.describe('/rhythm list page', () => {
+test.describe('/style list page', () => {
 	test.beforeEach(async ({ page }) => {
 		await page.addInitScript(() => {
 			localStorage.setItem('piano-locale', 'en');
 		});
-		await page.goto('/rhythm', { waitUntil: 'networkidle' });
+		await page.goto('/style', { waitUntil: 'networkidle' });
 	});
 
 	test('shows "tango" card text', async ({ page }) => {
 		await expect(page.getByText('tango')).toBeVisible();
 	});
 
-	test('shows exactly 8 active (non-coming-soon) rhythm cards', async ({ page }) => {
+	test('shows exactly 10 active style cards', async ({ page }) => {
 		// Active cards are <a class="card"> (links), coming-soon are <div class="card coming-soon">
 		const activeCards = page.locator('a.card');
-		await expect(activeCards).toHaveCount(8);
+		await expect(activeCards).toHaveCount(10);
 	});
 
-	test('clicking tango card navigates to /rhythm/tango', async ({ page }) => {
+	test('clicking tango card navigates to /style/tango', async ({ page }) => {
 		await page.locator('a.card').filter({ hasText: 'tango' }).click();
-		await expect(page).toHaveURL('/rhythm/tango');
+		await expect(page).toHaveURL('/style/tango');
 	});
 });
 
-// ── /rhythm/tango detail page ─────────────────────────────────────────────────
+// ── /style/tango detail page ──────────────────────────────────────────────────
 
-test.describe('/rhythm/tango detail page', () => {
+test.describe('/style/tango detail page', () => {
 	test.beforeEach(async ({ page }) => {
 		await page.addInitScript(() => {
 			localStorage.setItem('piano-locale', 'en');
 		});
-		await page.goto('/rhythm/tango', { waitUntil: 'networkidle' });
+		await page.goto('/style/tango', { waitUntil: 'networkidle' });
 	});
 
 	test('renders the #vf-notation container', async ({ page }) => {
@@ -77,14 +77,13 @@ test.describe('/rhythm/tango detail page', () => {
 	});
 
 	test('key selector shows C as default', async ({ page }) => {
-		// Select.Trigger renders the current value — look for the trigger button showing "C"
 		const trigger = page.locator('button.key-trigger');
 		await expect(trigger).toContainText('C');
 	});
 
-	test('back link navigates to /rhythm', async ({ page }) => {
+	test('back link navigates to /style', async ({ page }) => {
 		await page.locator('a.back-link').click();
-		await expect(page).toHaveURL('/rhythm');
+		await expect(page).toHaveURL('/style');
 	});
 
 	test('Play button text changes to Stop after click', async ({ page }) => {
@@ -95,14 +94,11 @@ test.describe('/rhythm/tango detail page', () => {
 	});
 
 	test('changing key to D updates SVG content in #vf-notation', async ({ page }) => {
-		// Capture initial SVG content
 		const svgBefore = await page.locator('#vf-notation svg').innerHTML();
 
-		// Open the key selector and pick D
 		await page.locator('button.key-trigger').click();
 		await page.getByRole('option', { name: 'D', exact: true }).click();
 
-		// Wait for VexFlow to re-render
 		await page.waitForFunction(
 			(before) => {
 				const svg = document.querySelector('#vf-notation svg');
