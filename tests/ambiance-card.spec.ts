@@ -10,11 +10,11 @@ test.describe('ambiance card', () => {
 		await enterSandbox(page);
 	});
 
-	test('shows mood, key, mode, rhythm and chord chips on load', async ({ page }) => {
+	test('shows mood, key, mode, style and chord chips on load', async ({ page }) => {
 		await expect(page.locator('.mood')).toBeVisible();
 		await expect(page.locator('.badge .key')).toBeVisible();
 		await expect(page.locator('.mode')).toBeVisible();
-		await expect(page.locator('.rhythm')).toBeVisible();
+		await expect(page.locator('.musical-style')).toBeVisible();
 		await expect(page.locator('.chord').first()).toBeVisible();
 	});
 
