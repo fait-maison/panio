@@ -1,8 +1,8 @@
 # Product Requirements Document — Piano Ear Training App
 
-**Version:** 0.5
-**Date:** 2026-03-05
-**Status:** v1 implemented
+**Version:** 0.6
+**Date:** 2026-03-19
+**Status:** v1 implemented + Style & Pattern exercises shipped
 
 ---
 
@@ -70,11 +70,18 @@ and nudges the user to switch after a configurable interval.
 
 No evaluation, no scoring, no audio from the app. Pure exploration.
 
+### Style Training ✅ shipped
+
+Browse 10 musical styles (waltz, tango, bossa, march, shuffle, reggae, ballad, polka, flamenco, samba). Each style page shows a VexFlow grand-staff notation, a MIDI playback player with tempo control, and a "Practice →" button that opens the sandbox locked to that style.
+
+### Pattern Training ✅ shipped
+
+Browse 4 left-hand accompaniment techniques (ostinato, alberti-bass, arpeggio, stride). Same layout as Style Training. These are reusable mechanisms that work across any key or mood. Practice button opens sandbox with the pattern active.
+
 ### v2+ — Additional Exercise Types
 
 - **Scene Prompt**: app shows a mood word or scene description, user plays for it
 - **Melodic Ear Training**: app plays a phrase from the active mode, user reproduces it
-- **Rhythm & Texture**: app plays an ostinato pattern, user locks it in
 
 ---
 
@@ -136,9 +143,9 @@ Session end (user closes / stops)
 ### 8.2 Ambiance Generator
 
 - Draw from tonal.js for scale/mode data
-- Randomly pick: mode (from pool) + key (from pool) + texture hint + chord progression at a random difficulty tier (from pool)
-- Texture hints are short descriptive strings, e.g.:
-  `"sparse"`, `"pedal tone"`, `"flowing arpeggios"`, `"sustained chords"`, `"driving pulse"`, `"silence and space"`
+- Randomly pick: mood → mode (from mood + user pool) + key (from pool) + style (from mood.styles, optionally filtered by stylePool) + chord progression at a random difficulty tier (from pool)
+- **Styles** are musical traditions associated with each mood (e.g. tense → tango/flamenco, romantic → waltz/bossa). 10 styles total.
+- **Pattern mode**: when `patternPool` is non-empty in settings, a random left-hand pattern is picked instead of a style (ostinato, alberti-bass, arpeggio, stride). Mutually exclusive with stylePool.
 - Chord progressions are curated per-mode pools, loopable:
   - Major and Harmonic Minor: **10 progressions per tier** (simple / rich / complex)
   - All other modes: 5 progressions per tier
@@ -163,8 +170,8 @@ Session end (user closes / stops)
 
 ### 8.5 UI
 
-- Context card: prominently shows mode name, key, texture hint, and suggested chord progression
-  - Tonic chord highlighted in red; remaining chords in default text color; arrows muted
+- Context card: prominently shows mood, key · mode, style/pattern name, and suggested chord progression
+  - Style or active pattern shown in blue-violet; tonic chord highlighted in red; arrows muted
   - Progression row scrolls horizontally on narrow screens (no overflow clipping)
 - Minimal chrome — nothing distracting while playing
 - Autoadvance card overlays the bottom of the screen (does not hide the keyboard)
@@ -178,6 +185,8 @@ Session end (user closes / stops)
 - **Progression notation:** chord symbols (`Dm → G → C`) or Roman numerals (`i → IV → VII`)
 - **Mode pool:** which of the 8 modes to include in the random draw
 - **Key pool:** restrict to specific keys if desired (e.g. only C, F, G for beginners)
+- **Style pool (sandbox):** restrict the style draw to a subset; empty = use all mood styles. Selecting any style clears the pattern pool.
+- **Pattern pool (sandbox):** activate pattern mode with a specific subset of left-hand patterns; empty = off. Selecting any pattern clears the style pool.
 - **Hint mode:** highlight active mode notes on keyboard
 - **Language:** EN / FR
 - All settings persisted to localStorage; spread-merge on load handles missing keys from older versions
@@ -210,6 +219,8 @@ The user configures their session through the settings panel:
 | Interval duration    | 15s / 1 / 3 / 5 / 10 min                                                                     |
 | Keyboard size        | S / M / L                                                                                    |
 | Progression notation | Chord symbols or Roman numerals                                                              |
+| Style pool           | Any subset of 10 styles (empty = all mood styles); mutually exclusive with pattern pool      |
+| Pattern pool         | Any subset of 4 patterns (empty = off); mutually exclusive with style pool                   |
 
 A beginner might restrict to Major + Dorian + Aeolian in a few familiar keys, Simple complexity only.
 An advanced user opens the full pool including Phrygian, Lydian, Locrian, and Harmonic Minor, with Rich + Complex enabled.
@@ -224,14 +235,17 @@ The app never makes this choice for the user.
 - SvelteKit scaffold + tonal.js (no Tone.js, no Drizzle)
 - MIDI input store (Web MIDI API) + MIDI device picker with localStorage persistence
 - On-screen keyboard with real-time MIDI highlighting and scale note tinting
-- Ambiance generator (mode + key + texture + chord progression)
-- Context card: mode, key, texture, chord progression row (tonic in red)
+- Ambiance generator: mood-driven (10 moods → mode + key + style + chord progression)
+- Context card: mood, key · mode, style/pattern, chord progression row (tonic in red)
 - Interval timer + autoadvance card ("Next ambiance in 5s" + Snooze)
-- Settings panel: interval, keyboard size, progression notation, mode pool, key pool, language (EN/FR), hint mode
+- Settings panel: interval, keyboard size, progression notation, mode pool, key pool, language (EN/FR), hint mode, style pool, pattern pool
 - Design system: Tailwind v4 + shadcn-svelte (Sheet, ToggleGroup, Card, Sonner)
 - Chord complexity (difficulty): multi-select Simple / Rich / Complex; generator picks random tier per ambiance
 - Expanded progression pools: Major + Harmonic Minor → 10 progressions per tier (real-world inspired)
 - ToggleGroup UX: last active item locked via CSS (`data-lock-active` pattern)
+- **Style exercise** (`/style`): 10 musical styles with MIDI playback (lookahead scheduler), VexFlow grand-staff notation, sandbox practice link
+- **Pattern exercise** (`/pattern`): 4 left-hand techniques (ostinato, alberti-bass, arpeggio, stride) with same player/notation infrastructure; sandbox practice link
+- Sandbox: style/pattern pool selection in exercise settings; URL params `?style=` / `?pattern=` for direct linking
 
 ### Phase 2 — Feedback Layer
 
@@ -243,7 +257,6 @@ The app never makes this choice for the user.
 
 - Scene Prompt (mood word / scene description)
 - Melodic Ear Training (phrase reproduction)
-- Rhythm & Texture (ostinato reproduction)
 
 ### Phase 4 — Persistence & Progress
 
