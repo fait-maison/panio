@@ -5,6 +5,9 @@
 	import X from '@lucide/svelte/icons/x';
 	import type { Ambiance } from '$lib/music/generator';
 	import type { Pattern } from '$lib/music/patterns';
+	import { PATTERNS } from '$lib/music/patterns';
+	import type { Style } from '$lib/music/styles';
+	import { STYLES } from '$lib/music/styles';
 	import { timer } from '$lib/stores/timer.svelte';
 	import { t } from '$lib/i18n.svelte';
 	import { settings } from '$lib/stores/settings.svelte';
@@ -17,13 +20,13 @@
 	let {
 		ambiance,
 		timer: timerProp,
-		lockedPattern = null,
+		activePattern = null,
 		onChordHover = () => {},
 		onSkip = () => {}
 	}: {
 		ambiance: Ambiance;
 		timer: typeof timer;
-		lockedPattern?: Pattern | null;
+		activePattern?: Pattern | null;
 		onChordHover?: (notes: Set<number>, root: number | null) => void;
 		onSkip?: () => void;
 	} = $props();
@@ -118,7 +121,7 @@
 				<span class="mode">{t('mode.' + ambiance.mode.name).toUpperCase()}</span>
 			</div>
 			<div class="musical-style">
-				{lockedPattern ? t('pattern.' + lockedPattern) : t('style.' + ambiance.style)}
+				{activePattern ? t('pattern.' + activePattern) : t('style.' + ambiance.style)}
 			</div>
 			<div class="progression-sep"></div>
 			<div
@@ -186,6 +189,40 @@
 
 <!-- Shared settings content rendered in both desktop collapsible and mobile sheet -->
 {#snippet settingsContent()}
+	<div class="settings-section">
+		<h4>{t('exercise.style')}</h4>
+		<ToggleGroup.Root
+			type="multiple"
+			value={settings.value.stylePool}
+			onValueChange={(v: string[]) => {
+				settings.update((s) => ({ ...s, stylePool: v as Style[], patternPool: [] }));
+			}}
+			variant="outline"
+			class="w-full flex-wrap"
+		>
+			{#each STYLES as style}
+				<ToggleGroup.Item value={style}>{t('style.' + style).toUpperCase()}</ToggleGroup.Item>
+			{/each}
+		</ToggleGroup.Root>
+	</div>
+
+	<div class="settings-section">
+		<h4>{t('exercise.pattern')}</h4>
+		<ToggleGroup.Root
+			type="multiple"
+			value={settings.value.patternPool}
+			onValueChange={(v: string[]) => {
+				settings.update((s) => ({ ...s, patternPool: v as Pattern[], stylePool: [] }));
+			}}
+			variant="outline"
+			class="w-full flex-wrap"
+		>
+			{#each PATTERNS as pattern}
+				<ToggleGroup.Item value={pattern}>{t('pattern.' + pattern)}</ToggleGroup.Item>
+			{/each}
+		</ToggleGroup.Root>
+	</div>
+
 	<div class="settings-section">
 		<h4>{t('settings.interval')}</h4>
 		<ToggleGroup.Root

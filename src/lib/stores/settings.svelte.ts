@@ -1,6 +1,8 @@
 import { KEYS } from '$lib/music/modes';
 import { ALL_MOOD_NAMES } from '$lib/music/moods';
 import type { Difficulty } from '$lib/music/progressions';
+import type { Style } from '$lib/music/styles';
+import type { Pattern } from '$lib/music/patterns';
 
 export type { Difficulty };
 export type KeyboardSize = 's' | 'm' | 'l';
@@ -16,6 +18,8 @@ export interface Settings {
 	showHints: boolean;
 	difficultyPool: Difficulty[];
 	volume: number;
+	stylePool: Style[];
+	patternPool: Pattern[];
 }
 
 const DEFAULT_SETTINGS: Settings = {
@@ -27,7 +31,9 @@ const DEFAULT_SETTINGS: Settings = {
 	progressionNotation: 'chord',
 	showHints: true,
 	difficultyPool: ['simple'],
-	volume: 0.5
+	volume: 0.5,
+	stylePool: [],
+	patternPool: []
 };
 
 function loadSettings(): Settings {

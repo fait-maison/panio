@@ -126,7 +126,7 @@
 		<AmbianceCard
 			ambiance={ambiance.current}
 			{timer}
-			lockedPattern={ambiance.lockedPattern}
+			activePattern={ambiance.activePattern}
 			onChordHover={(notes: Set<number>, root: number | null) => {
 				hoveredChordNotes = notes;
 				hoveredChordRoot = root;
