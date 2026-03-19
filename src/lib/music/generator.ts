@@ -22,6 +22,7 @@ export function generateAmbiance(
 	modePool: string[],
 	keyPool: string[],
 	difficultyPool: Difficulty[],
+	stylePool: string[],
 	previous?: Ambiance
 ): Ambiance {
 	const resolvedKeys = keyPool.length > 0 ? keyPool : KEYS;
@@ -71,8 +72,12 @@ export function generateAmbiance(
 	const mode = modesToPick[Math.floor(Math.random() * modesToPick.length)];
 
 	const key = pickRandom(resolvedKeys, previous?.key);
-	// Style is picked from the chosen mood's compatible styles
-	const style = pickRandom(mood.styles as string[], previous?.style);
+	// Style is picked from the chosen mood's compatible styles, filtered by stylePool if non-empty
+	const moodStyles = mood.styles as string[];
+	const filteredStyles =
+		stylePool.length > 0 ? moodStyles.filter((s) => stylePool.includes(s)) : moodStyles;
+	const styleOptions = filteredStyles.length > 0 ? filteredStyles : moodStyles;
+	const style = pickRandom(styleOptions, previous?.style);
 	const difficulty = pickRandom(resolvedDifficulties);
 	const progression = pickProgression(mode.name, difficulty, previous?.progression);
 

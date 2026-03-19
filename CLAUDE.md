@@ -39,25 +39,33 @@ src/
 │   ├── +page.svelte          # landing page: exercise grid
 │   ├── about/+page.svelte    # about page: story, credits, links
 │   ├── settings/+page.svelte # settings page: language, keyboard, hints, notation, MIDI
-│   └── sandbox/+page.svelte  # sandbox exercise: AmbianceCard + PianoKeyboard
+│   ├── sandbox/+page.svelte  # sandbox exercise: AmbianceCard + PianoKeyboard
+│   ├── style/+page.svelte                # style listing
+│   ├── style/[name]/+page.svelte         # style detail: player, notation, practice button
+│   ├── pattern/+page.svelte              # pattern listing
+│   └── pattern/[name]/+page.svelte       # pattern detail: player, notation, practice button
 ├── lib/
 │   ├── components/
 │   │   ├── Navbar.svelte           # top bar: Panio logo, nav items, gear
-│   │   ├── AmbianceCard.svelte     # mood + mode + key + rhythm + progression
+│   │   ├── AmbianceCard.svelte     # mood + mode + key + style/pattern + progression
 │   │   ├── PianoKeyboard.svelte    # on-screen keyboard, MIDI highlighting
 │   │   ├── AutoadvanceToast.svelte # countdown toast (custom, not Sonner)
 │   │   ├── SidebarNav.svelte       # sidebar: exercise nav, about, settings link
 │   │   ├── MidiStatus.svelte       # MIDI device indicator + picker
 │   │   └── ui/                     # shadcn-svelte components
 │   ├── stores/
-│   │   ├── ambiance.svelte.ts  # current mood + mode + key + rhythm
-│   │   ├── timer.svelte.ts     # interval countdown, autoadvance
-│   │   ├── settings.svelte.ts  # user prefs (localStorage)
-│   │   └── midi.svelte.ts      # Web MIDI API wrapper
+│   │   ├── ambiance.svelte.ts    # current mood + mode + key + style/pattern
+│   │   ├── stylePlayer.svelte.ts # lookahead MIDI scheduler (plays PatternDef)
+│   │   ├── timer.svelte.ts       # interval countdown, autoadvance
+│   │   ├── settings.svelte.ts    # user prefs (localStorage)
+│   │   └── midi.svelte.ts        # Web MIDI API wrapper
 │   ├── music/
 │   │   ├── modes.ts            # mode definitions
-│   │   ├── moods.ts            # 10 moods with compatible modes + rhythms
-│   │   ├── rhythms.ts          # 23 rhythmic pattern keys
+│   │   ├── moods.ts            # 10 moods with compatible modes + styles
+│   │   ├── styles.ts           # 10 musical style keys
+│   │   ├── stylePatterns.ts    # PatternDef map for all styles + musicalBpm helper
+│   │   ├── patterns.ts         # 4 left-hand technique keys
+│   │   ├── patternDefs.ts      # PatternDef map for all patterns
 │   │   ├── scale.ts            # scale note calculations
 │   │   ├── progressions.ts     # chord progression pools, toChordSymbol/chordToRoman
 │   │   └── generator.ts        # mood-driven ambiance generator
@@ -139,6 +147,15 @@ export const store = {
 
 Settings stored in `localStorage` key `piano-settings`. On load, spread-merged with
 `DEFAULT_SETTINGS` to handle new keys gracefully.
+
+### Pool settings contract
+
+All `*Pool` settings follow the same empty-means-default contract:
+
+- `moodPool: []` → not valid (always has items); `stylePool: []` → no filtering, pick from full `mood.styles`
+- `patternPool: []` → no pattern mode (use style); non-empty → pattern mode, overrides style generation
+- **Mutual exclusion:** selecting styles clears `patternPool`; selecting patterns clears `stylePool`
+- New pool settings default to `[]` in `DEFAULT_SETTINGS` — spread-merge handles migration automatically
 
 ### tonal.js Chord.detect() quirks
 

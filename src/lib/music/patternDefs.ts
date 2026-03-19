@@ -14,24 +14,24 @@ const ostinato: PatternDef = {
 	quality: 'Major',
 	swing: 0,
 	description:
-		'Repeated eighth-note bass figure against chord stabs on 2 and 4. Hypnotic and minimalist.',
+		'Root note repeated in eighth notes throughout the bar. Chord stabs on beats 2 and 4 add color without cluttering the bass. Hypnotic and minimal.',
 	bass: [
-		{ step: 0, semitones: [0], octave: -1, duration: 2, velocity: 80 }, // root
-		{ step: 2, semitones: [7], octave: -1, duration: 2, velocity: 68 }, // fifth
-		{ step: 4, semitones: [4], octave: -1, duration: 2, velocity: 72 }, // major third
-		{ step: 6, semitones: [7], octave: -1, duration: 2, velocity: 62 }, // fifth
-		{ step: 8, semitones: [0], octave: -1, duration: 2, velocity: 78 },
-		{ step: 10, semitones: [7], octave: -1, duration: 2, velocity: 65 },
-		{ step: 12, semitones: [4], octave: -1, duration: 2, velocity: 70 },
-		{ step: 14, semitones: [7], octave: -1, duration: 2, velocity: 60 }
+		{ step: 0, semitones: [0], octave: -1, duration: 2, velocity: 82 },
+		{ step: 2, semitones: [0], octave: -1, duration: 2, velocity: 68 },
+		{ step: 4, semitones: [0], octave: -1, duration: 2, velocity: 74 },
+		{ step: 6, semitones: [0], octave: -1, duration: 2, velocity: 64 },
+		{ step: 8, semitones: [0], octave: -1, duration: 2, velocity: 80 },
+		{ step: 10, semitones: [0], octave: -1, duration: 2, velocity: 66 },
+		{ step: 12, semitones: [0], octave: -1, duration: 2, velocity: 72 },
+		{ step: 14, semitones: [0], octave: -1, duration: 2, velocity: 62 }
 	],
 	chords: [
-		{ step: 4, semitones: [0, 4, 7], octave: 0, duration: 2, velocity: 60 },
-		{ step: 12, semitones: [0, 4, 7], octave: 0, duration: 2, velocity: 58 }
+		{ step: 4, semitones: [4, 7], octave: 0, duration: 2, velocity: 58 }, // 3rd+5th on beat 2
+		{ step: 12, semitones: [4, 7], octave: 0, duration: 2, velocity: 55 } // 3rd+5th on beat 4
 	]
 };
 
-// Alberti bass: low-mid-high-mid broken chord pattern.
+// Alberti bass: low-high-mid-high broken chord pattern.
 // Named after Domenico Alberti. Foundation of Classical keyboard style.
 // A sustained root note holds in the bass while the broken chord pattern
 // plays above it.
@@ -42,19 +42,19 @@ const albertiBass: PatternDef = {
 	quality: 'Major',
 	swing: 0,
 	description:
-		'Low-mid-high-mid broken chord pattern. Named after Domenico Alberti. Foundation of Classical keyboard style.',
+		'Low-high-mid-high broken chord pattern (1-5-3-5). Named after Domenico Alberti. Foundation of Classical keyboard style.',
 	bass: [
 		{ step: 0, semitones: [0], octave: -1, duration: 16, velocity: 50 } // sustained root throughout
 	],
 	chords: [
-		{ step: 0, semitones: [0], octave: 0, duration: 2, velocity: 75 },
-		{ step: 2, semitones: [4], octave: 0, duration: 2, velocity: 55 },
-		{ step: 4, semitones: [7], octave: 0, duration: 2, velocity: 60 },
-		{ step: 6, semitones: [4], octave: 0, duration: 2, velocity: 53 },
-		{ step: 8, semitones: [0], octave: 0, duration: 2, velocity: 73 },
-		{ step: 10, semitones: [4], octave: 0, duration: 2, velocity: 53 },
-		{ step: 12, semitones: [7], octave: 0, duration: 2, velocity: 58 },
-		{ step: 14, semitones: [4], octave: 0, duration: 2, velocity: 51 }
+		{ step: 0, semitones: [0], octave: 0, duration: 2, velocity: 75 }, // 1 (low)
+		{ step: 2, semitones: [7], octave: 0, duration: 2, velocity: 55 }, // 5 (high)
+		{ step: 4, semitones: [4], octave: 0, duration: 2, velocity: 60 }, // 3 (mid)
+		{ step: 6, semitones: [7], octave: 0, duration: 2, velocity: 53 }, // 5 (high)
+		{ step: 8, semitones: [0], octave: 0, duration: 2, velocity: 73 }, // 1 (low)
+		{ step: 10, semitones: [7], octave: 0, duration: 2, velocity: 53 }, // 5 (high)
+		{ step: 12, semitones: [4], octave: 0, duration: 2, velocity: 58 }, // 3 (mid)
+		{ step: 14, semitones: [7], octave: 0, duration: 2, velocity: 51 } // 5 (high)
 	]
 };
 
