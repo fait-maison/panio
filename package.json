@@ -48,7 +48,7 @@
 		"vitest": "^4.0.18"
 	},
 	"dependencies": {
-		"@lucide/svelte": "^0.577.0",
+		"@lucide/svelte": "^1.0.1",
 		"@tailwindcss/oxide-linux-x64-gnu": "^4.2.2",
 		"bits-ui": "^2.16.3",
 		"soundfont-player": "^0.12.0",
