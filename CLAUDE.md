@@ -76,7 +76,7 @@ src/
 ├── app.css                     # Tailwind + design tokens
 └── app.html                    # HTML shell
 helm/panio/                     # Helm chart
-Dockerfile                      # multi-stage: node:22-alpine → nginx:alpine
+Dockerfile                      # multi-stage: node:22-alpine → nginx-unprivileged (uid 101, :8080)
 .github/workflows/              # CI: test → docker build → helm publish
 ```
 
@@ -169,6 +169,7 @@ All `*Pool` settings follow the same empty-means-default contract:
 - **Image:** `ghcr.io/fait-maison/panio`
 - **Adapter:** `adapter-static` with `fallback: 'index.html'` (SPA mode for nginx)
 - **Platform:** `linux/amd64` only (tailwindcss oxide crashes under QEMU arm64)
+- **Runtime:** `nginxinc/nginx-unprivileged` as uid 101 on port 8080; the chart defaults pass Pod Security `restricted` (read-only root filesystem, `/tmp` is an emptyDir)
 - **CI trigger:** push to `main` → build image; push `v*.*.*` tag → build + publish Helm chart
 - **CI pipeline:** `lint` (format:check + eslint) → `test` (check + vitest + playwright) → `build` (docker) → `helm-release` (on tags)
 - **Helm chart:** `helm/panio/`
