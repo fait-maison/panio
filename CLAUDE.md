@@ -11,7 +11,7 @@ Train the reflex to translate a scene or emotion into music instantly — like l
 - **tonal.js** — music theory (modes, scales, keys, chords)
 - **Web MIDI API** — native browser API, wrapped in a Svelte store
 - **soundfont-player** — on-screen keyboard audio playback (Web Audio API)
-- **pnpm** — package manager
+- **pnpm** — package manager (pinned via `packageManager` in package.json; CI and the Dockerfile use that version)
 - No database, no backend API
 
 ## Commands
