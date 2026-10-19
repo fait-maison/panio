@@ -11,12 +11,14 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm run build
 
-# Stage 2 — Serve
-FROM nginx:alpine
+# Stage 2 — Serve (unprivileged nginx: runs as uid 101, listens on 8080)
+FROM nginxinc/nginx-unprivileged:1.31.7-alpine
 
 COPY --from=builder /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+USER 101
+
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
